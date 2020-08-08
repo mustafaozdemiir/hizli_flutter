@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "595434206167",
+    "firebase_url": "https://hizli-flutter.firebaseio.com",
+    "project_id": "hizli-flutter",
+    "storage_bucket": "hizli-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:595434206167:android:684833e3f2c7f7f5de5192",
+        "android_client_info": {
+          "package_name": "com.yazilimmotoru.hizliflutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "595434206167-n8461cvkhbcg7eeo6c5b31hsqhg5jtnq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCppGOMgLM2FyNUXW8x1qmTCdq0G-wfm-g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "595434206167-n8461cvkhbcg7eeo6c5b31hsqhg5jtnq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
