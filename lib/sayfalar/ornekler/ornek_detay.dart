@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hizliflutter/kodlar/appbar_kod.dart';
+import 'package:hizliflutter/kodlar/kod_appbar.dart';
 import 'package:hizliflutter/modeller/ornek.dart';
 import 'package:hizliflutter/servisler/kod_gosterimi/source_code_view.dart';
 import 'package:url_launcher/url_launcher.dart';

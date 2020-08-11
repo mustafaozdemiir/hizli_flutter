@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'sayfalar/haber/flutter_haber.dart';
 import 'sayfalar/ornekler/ornekler.dart';
@@ -29,6 +33,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final Firestore _db = Firestore.instance;
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+
   int _page = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();
   List<Widget> _sayfalar = [
@@ -37,6 +44,60 @@ class _MyHomePageState extends State<MyHomePage> {
     FlutterSoru(),
     Ornekler(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    /*  if (Platform.isIOS) {
+      iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {
+        // save the token  OR subscribe to a topic here
+      });*/
+    bool kisweb;
+    try{
+      if(Platform.isAndroid||Platform.isIOS) {
+        kisweb=false;
+      } else {
+        kisweb=true;
+      }
+    } catch(e){
+      kisweb=true;
+    }
+
+    if(!kisweb){
+
+      _fcm.requestNotificationPermissions(IosNotificationSettings());
+
+      _fcm.configure(
+        onMessage: (Map<String, dynamic> message) async {
+          print("onMessage: $message");
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(message['notification']['title']),
+              content: ListTile(
+                title: Text(message['notification']['body']),
+                //subtitle: Text(message['notification']['body']),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Tamam'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
+          );
+        },
+        onLaunch: (Map<String, dynamic> message) async {
+          print("onLaunch: $message");
+          // TODO optional
+        },
+        onResume: (Map<String, dynamic> message) async {
+          print("onResume: $message");
+          // TODO optional
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +128,6 @@ class _MyHomePageState extends State<MyHomePage> {
               size: 35,
               color: Colors.white,
             ),
-
           ],
           color: Colors.lightBlue,
           buttonBackgroundColor: Colors.lightBlue,

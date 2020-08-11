@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hizliflutter/kodlar/alt_yonlerdirme_cubuk.dart';
-import 'package:hizliflutter/kodlar/appbar_ornek.dart';
-import 'package:hizliflutter/kodlar/giris_ekrani.dart';
-import 'package:hizliflutter/kodlar/hesap_makinesi.dart';
-import 'package:hizliflutter/kodlar/sayfa_gecis.dart';
-import 'package:hizliflutter/kodlar/ust_yonlendirme_cubuk.dart';
+import 'package:hizliflutter/kodlar/ornek_alt_yonlerdirme_cubuk.dart';
+import 'package:hizliflutter/kodlar/ornek_appbar.dart';
+import 'package:hizliflutter/kodlar/ornek_giris_ekrani.dart';
+import 'package:hizliflutter/kodlar/ornek_hesap_makinesi.dart';
+import 'package:hizliflutter/kodlar/ornek_sayfa_gecis.dart';
+import 'package:hizliflutter/kodlar/ornek_ust_yonlendirme_cubuk.dart';
 import 'package:hizliflutter/modeller/ornek.dart';
 import 'ornek_detay.dart';
 
@@ -18,38 +18,38 @@ class _OrneklerState extends State<Ornekler> {
     Ornek(
         adi: 'Giriş Ekranı',
         ornek: GirisEkrani(),
-        kod: 'lib/kodlar/giris_ekrani.dart',
+        kod: 'lib/kodlar/ornek_giris_ekrani.dart',
         kaynak: 'https://github.com/ahmed-alzahrani/Flutter_Simple_Login',
         zorluk: 'basit'),
     Ornek(
         adi: 'Hesap Makinesi',
         ornek: HesapMakinesi(),
-        kod: 'lib/kodlar/hesap_makinesi.dart',
+        kod: 'lib/kodlar/ornek_hesap_makinesi.dart',
         kaynak: 'https://github.com/emilsharier/Calculator',
         zorluk: 'orta'),
     Ornek(
         adi: 'Sayfalar Arası Geçiş',
         ornek: SayfaGecis(),
-        kod: 'lib/kodlar/sayfa_gecis.dart',
+        kod: 'lib/kodlar/ornek_sayfa_gecis.dart',
         kaynak:
             'https://flutter.dev/docs/cookbook/navigation/navigation-basics',
         zorluk: 'basit'),
     Ornek(
         adi: 'Alt Yönlendirme Çubuğu',
         ornek: AltYonlendirmeCubugu(),
-        kod: 'lib/kodlar/alt_yonlerdirme_cubuk.dart',
+        kod: 'lib/kodlar/ornek_alt_yonlerdirme_cubuk.dart',
         kaynak: 'https://codesundar.com/flutter-bottom-navigation-tutorial/',
         zorluk: 'basit'),
     Ornek(
         adi: 'Üst Çubuk',
         ornek: AppBarOrnek(),
-        kod: 'lib/kodlar/appbar_ornek.dart',
+        kod: 'lib/kodlar/ornek_appbar.dart',
         kaynak: 'https://www.yazilimmotoru.com/',
         zorluk: 'basit'),
     Ornek(
         adi: 'Üst Yönlendirme Çubuğu',
         ornek: UstYonlendirmeCubugu(),
-        kod: 'lib/kodlar/ust_yonlendirme_cubuk.dart',
+        kod: 'lib/kodlar/ornek_ust_yonlendirme_cubuk.dart',
         kaynak: 'https://www.yazilimmotoru.com/',
         zorluk: 'basit'),
   ];
