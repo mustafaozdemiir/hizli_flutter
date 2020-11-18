@@ -17,7 +17,7 @@ class _GirisEkraniState extends State<GirisEkrani> {
   String _password = "";
   FormType _form = FormType.login; // our default setting is to login, and we should switch to creating an account when the user chooses to
 
-  _LoginPageState() {
+  _GirisEkraniState() {
     _emailFilter.addListener(_emailListen);
     _passwordFilter.addListener(_passwordListen);
   }

@@ -35,13 +35,13 @@ class _AltYonlendirmeCubuguState extends State<AltYonlendirmeCubugu> {
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.home), title: Text("Anasayfa")),
+                icon: Icon(Icons.home), label: "Anasayfa"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.search), title: Text("Ara")),
+                icon: Icon(Icons.search), label:"Ara"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart), title: Text("Sepet")),
+                icon: Icon(Icons.shopping_cart), label: "Sepet"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle), title: Text("Hesap")),
+                icon: Icon(Icons.account_circle), label: "Hesap"),
           ],
         ),
       ),
