@@ -4,9 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:hizliflutter/modeller/haber_model.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../servisler/youtube_full_screen.dart';
 
 class HaberDetay extends StatefulWidget {
   Haber model;
+
   HaberDetay(this.model);
 
   @override
@@ -15,6 +17,7 @@ class HaberDetay extends StatefulWidget {
 
 class _HaberDetayState extends State<HaberDetay> {
   Haber model;
+
   _HaberDetayState(this.model);
 
   YoutubePlayerController _controller;
@@ -23,9 +26,7 @@ class _HaberDetayState extends State<HaberDetay> {
 
   @override
   void initState() {
-    super.initState();
-
-    if(model.youtubeVideoUrl!="yok"){
+    if (model.youtubeVideoUrl != "yok") {
       _controller = YoutubePlayerController(
         initialVideoId: YoutubePlayer.convertUrlToId(model.youtubeVideoUrl),
         flags: const YoutubePlayerFlags(
@@ -34,7 +35,7 @@ class _HaberDetayState extends State<HaberDetay> {
         ),
       )..addListener(listener);
     }
-
+    super.initState();
   }
 
   void listener() {
@@ -73,10 +74,10 @@ class _HaberDetayState extends State<HaberDetay> {
             ),
             model.youtubeVideoUrl == "yok"
                 ? SliverToBoxAdapter(
-                  child: SizedBox(
+                    child: SizedBox(
                       height: 0,
                     ),
-                )
+                  )
                 : SliverList(
                     delegate: SliverChildListDelegate([
                       Padding(
@@ -87,6 +88,18 @@ class _HaberDetayState extends State<HaberDetay> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: YoutubePlayerBuilder(
+                          onEnterFullScreen: () =>
+                              SystemChrome.setPreferredOrientations([
+                            DeviceOrientation.landscapeRight,
+                            DeviceOrientation.landscapeLeft
+                          ]).whenComplete(
+                            () => Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => YoutubeFullScreen(model),
+                              ),
+                            ),
+                          ),
                           builder: (context, player) {
                             return Column(
                               children: <Widget>[

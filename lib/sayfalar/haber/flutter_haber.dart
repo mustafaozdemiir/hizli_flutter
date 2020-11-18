@@ -177,6 +177,12 @@ class _FlutterHaberState extends State<FlutterHaber> {
         ),
       );
     }
+    for(int i=0;i<liste.length;i++){
+      liste.sort((a,b){
+        return a.yayinTarihi.compareTo(b.yayinTarihi);
+      });
+    }
+
     return liste.reversed.toList();
   }
 

@@ -4,8 +4,8 @@ Hızlı Flutter
 
 ## Getting Started
 
-http://yazilimmotoru.com/ 
+https://yazilimmotoru.com/
 
 
 
-http://hizliflutter.yazilimmotoru.com/
+https://hizliflutter.yazilimmotoru.com/
