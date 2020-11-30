@@ -56,6 +56,9 @@ class _OrneklerState extends State<Ornekler> {
 
   @override
   Widget build(BuildContext context) {
+    String bannerMessage;
+    Color bannerColor;
+    Color bannerTextColor;
     return Scaffold(
       appBar: AppBar(
         title: Text('Örnek Uygulamalar'),
@@ -65,47 +68,48 @@ class _OrneklerState extends State<Ornekler> {
       body: ListView.builder(
           itemCount: ornekler.length,
           itemBuilder: (context, index) {
-            Icon zorlukIcon;
             switch (ornekler[index].zorluk) {
               case 'basit':
-                zorlukIcon = Icon(
-                  Icons.thumb_up,
-                  color: Colors.green,
-                );
+                bannerMessage = "Basit";
+                bannerColor = Colors.green;
+                bannerTextColor = Colors.white;
                 break;
               case 'orta':
-                zorlukIcon = Icon(
-                  Icons.thumbs_up_down,
-                  color: Colors.yellow,
-                );
+                bannerMessage = "Orta";
+                bannerColor = Colors.yellow;
+                bannerTextColor = Colors.black;
                 break;
               case 'zor':
-                zorlukIcon = Icon(
-                  Icons.thumb_down,
-                  color: Colors.red,
-                );
+                bannerMessage = "Zor";
+                bannerColor = Colors.red;
+                bannerTextColor = Colors.white;
                 break;
             }
-            return Card(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(width: 3, color: Colors.lightBlue),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(14),
-                  topRight: Radius.circular(14),
-                  bottomRight: Radius.circular(14),
+            return Banner(
+              location: BannerLocation.topStart,
+              message: bannerMessage,
+              color: bannerColor,
+              textStyle: TextStyle(color: bannerTextColor),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 3, color: Colors.lightBlue),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(14),
+                    topRight: Radius.circular(14),
+                    bottomRight: Radius.circular(14),
+                  ),
                 ),
-              ),
-              child: ListTile(
-                leading: zorlukIcon,
-                title: Center(child: Text(ornekler[index].adi)),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => OrnekDetay(ornekler[index]),
-                    ),
-                  );
-                },
+                child: ListTile(
+                  title: Center(child: Text(ornekler[index].adi)),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => OrnekDetay(ornekler[index]),
+                      ),
+                    );
+                  },
+                ),
               ),
             );
           }),

@@ -47,6 +47,9 @@ class _FlutterHaberState extends State<FlutterHaber> {
   }
 
   Widget _listView() {
+    String bannerMessage;
+    Color bannerColor;
+    Color bannerTextColor;
     return modelListe != null
         ? Expanded(
             child: ListView.builder(
@@ -56,24 +59,22 @@ class _FlutterHaberState extends State<FlutterHaber> {
                           .difference(modelListe[index].yayinTarihi.toDate())
                           .inDays ==
                       0) {
-                    zaman = Icon(
-                      Icons.new_releases,
-                      color: Colors.yellow,
-                    );
+                      bannerMessage = "Yeni";
+                      bannerColor = Colors.yellow;
+                      bannerTextColor = Colors.black;
                   } else {
                     if (DateTime.now()
                             .difference(modelListe[index].yayinTarihi.toDate())
                             .inDays <
                         365) {
-                      zaman = Text(
-                        DateTime.now()
+                        bannerMessage = DateTime.now()
                                 .difference(
                                     modelListe[index].yayinTarihi.toDate())
                                 .inDays
                                 .toString() +
-                            " Gün Önce",
-                        style: TextStyle(color: Colors.green),
-                      );
+                            " Gün Önce";
+                        bannerColor = Colors.green;
+                        bannerTextColor = Colors.white;
                     } else if (365 <=
                             DateTime.now()
                                 .difference(
@@ -84,60 +85,65 @@ class _FlutterHaberState extends State<FlutterHaber> {
                                     modelListe[index].yayinTarihi.toDate())
                                 .inDays <=
                             730) {
-                      zaman = Text(
-                        " 1 Yıl Önce",
-                        style: TextStyle(color: Colors.deepPurple),
-                      );
+                        bannerMessage = "1 Yıl Önce";
+                        bannerColor = Colors.purple;
+                        bannerTextColor = Colors.white;
                     } else if (DateTime.now()
                             .difference(modelListe[index].yayinTarihi.toDate())
                             .inDays >
                         365) {
-                      zaman = Text(
-                        " 2 Yıl Önce",
-                        style: TextStyle(color: Colors.black),
-                      );
+                        bannerMessage = "2 Yıl Önce";
+                        bannerColor = Colors.black;
+                        bannerTextColor = Colors.white;
                     }
                   }
                   /*Text(DateFormat('yyyy-MM-dd')
                           .format(modelListe[index].yayinTarihi.toDate())),*/
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 3, color: Colors.lightBlue),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(14),
-                        topRight: Radius.circular(14),
-                      ),
-                    ),
-                    child: ListTile(
-                      trailing: zaman,
-                      leading: CachedNetworkImage(
-                        imageUrl: modelListe[index].baslikResim,
-                        placeholder: (context, url) =>
-                            Image.asset('res/loading.gif'),
-                        errorWidget: (context, url, error) => Icon(
-                          Icons.error,
-                          semanticLabel: "Resim Kaldırılmış",
-                          size: 50,
+                  return Banner(
+                    message: bannerMessage,
+                    location: BannerLocation.topEnd,
+                    textStyle: TextStyle(color: bannerTextColor,fontSize: 10),
+                    color: bannerColor,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 3, color: Colors.lightBlue),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(14),
+                          topRight: Radius.circular(14),
                         ),
                       ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HaberDetay(modelListe[index]),
+                      child: ListTile(
+                        trailing: zaman,
+                        leading: CachedNetworkImage(
+                          imageUrl: modelListe[index].baslikResim,
+                          placeholder: (context, url) =>
+                              Image.asset('res/loading.gif'),
+                          errorWidget: (context, url, error) => Icon(
+                            Icons.error,
+                            semanticLabel: "Resim Kaldırılmış",
+                            size: 50,
                           ),
-                        );
-                      },
-                      title: Center(
-                        child: Text(
-                          modelListe[index].baslik,
-                          style: TextStyle(fontSize: 20),
                         ),
-                      ),
-                      subtitle: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(modelListe[index].kisaAciklama),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  HaberDetay(modelListe[index]),
+                            ),
+                          );
+                        },
+                        title: Center(
+                          child: Text(
+                            modelListe[index].baslik,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                        subtitle: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: Text(modelListe[index].kisaAciklama),
+                          ),
                         ),
                       ),
                     ),
@@ -177,8 +183,8 @@ class _FlutterHaberState extends State<FlutterHaber> {
         ),
       );
     }
-    for(int i=0;i<liste.length;i++){
-      liste.sort((a,b){
+    for (int i = 0; i < liste.length; i++) {
+      liste.sort((a, b) {
         return a.yayinTarihi.compareTo(b.yayinTarihi);
       });
     }

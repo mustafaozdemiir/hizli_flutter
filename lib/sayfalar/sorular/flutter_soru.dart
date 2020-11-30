@@ -25,7 +25,7 @@ class _FlutterSoruState extends State<FlutterSoru> {
   Color renk4 = Colors.white;
   int toplamPuan = 0;
   Color zorlukRenk = Colors.blue;
-  Icon sonCevap = Icon(Icons.thumbs_up_down);
+  bool sonCevap;
 
   bool cevapKontrol(Soru gelenSoru, String gelenCevap) {
     if (gelenSoru.cevap == gelenCevap) {
@@ -37,22 +37,34 @@ class _FlutterSoruState extends State<FlutterSoru> {
 
   @override
   Widget build(BuildContext context) {
+    String bannerMessage;
+    Color bannerColor;
+    Color bannerTextColor;
     if (sorular != null && soruNo < sorular.length) {
       switch (sorular[soruNo].zorluk) {
         case 'kolay':
           setState(() {
+            bannerMessage = "Kolay";
+            bannerColor = Colors.green;
+            bannerTextColor = Colors.white;
             zorlukRenk = Colors.blue;
           });
           break;
 
         case 'orta':
           setState(() {
+            bannerMessage = "Orta";
+            bannerColor = Colors.yellow;
+            bannerTextColor = Colors.black;
             zorlukRenk = Colors.yellow;
           });
           break;
 
         case 'zor':
           setState(() {
+            bannerMessage = "Zor";
+            bannerColor = Colors.red;
+            bannerTextColor = Colors.white;
             zorlukRenk = Colors.deepOrange;
           });
           break;
@@ -80,16 +92,22 @@ class _FlutterSoruState extends State<FlutterSoru> {
               : soruNo < sorular.length
                   ? ListView(
                       children: <Widget>[
-                        Card(
-                          color: zorlukRenk,
-                          child: ListTile(
-                            title: Text(
-                              sorular[soruNo].baslik,
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            leading: Text(
-                              (soruNo + 1).toString(),
-                              style: TextStyle(color: Colors.black),
+                        Banner(
+                          location: BannerLocation.topStart,
+                          message: bannerMessage,
+                          color: bannerColor,
+                          textStyle: TextStyle(color: bannerTextColor),
+                          child: Card(
+                            color: Colors.grey.shade300,
+                            child: ListTile(
+                              title: Text(
+                                sorular[soruNo].baslik,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              leading: Text(
+                                (soruNo + 1).toString(),
+                                style: TextStyle(color: Colors.black),
+                              ),
                             ),
                           ),
                         ),
@@ -104,17 +122,11 @@ class _FlutterSoruState extends State<FlutterSoru> {
                                 setState(() {
                                   renk = Colors.green;
                                   toplamPuan += sorular[soruNo].puan;
-                                  sonCevap = Icon(
-                                    Icons.thumb_up,
-                                    color: Colors.green,
-                                  );
+                                  sonCevap = true;
                                 });
                               } else {
                                 setState(() {
-                                  sonCevap = Icon(
-                                    Icons.thumb_down,
-                                    color: Colors.red,
-                                  );
+                                  sonCevap = false;
                                   renk = Colors.red;
                                   toplamPuan -= sorular[soruNo].puan % 2 == 0
                                       ? sorular[soruNo].puan / 2
@@ -144,19 +156,13 @@ class _FlutterSoruState extends State<FlutterSoru> {
                               if (cevapKontrol(sorular[soruNo],
                                   sorular[soruNo].cevaplar[1])) {
                                 setState(() {
-                                  sonCevap = Icon(
-                                    Icons.thumb_up,
-                                    color: Colors.green,
-                                  );
+                                  sonCevap = true;
                                   renk2 = Colors.green;
                                   toplamPuan += sorular[soruNo].puan;
                                 });
                               } else {
                                 setState(() {
-                                  sonCevap = Icon(
-                                    Icons.thumb_down,
-                                    color: Colors.red,
-                                  );
+                                  sonCevap = false;
                                   renk2 = Colors.red;
                                   toplamPuan -= sorular[soruNo].puan % 2 == 0
                                       ? sorular[soruNo].puan / 2
@@ -185,19 +191,13 @@ class _FlutterSoruState extends State<FlutterSoru> {
                               if (cevapKontrol(sorular[soruNo],
                                   sorular[soruNo].cevaplar[2])) {
                                 setState(() {
-                                  sonCevap = Icon(
-                                    Icons.thumb_up,
-                                    color: Colors.green,
-                                  );
+                                  sonCevap = true;
                                   renk3 = Colors.green;
                                   toplamPuan += sorular[soruNo].puan;
                                 });
                               } else {
                                 setState(() {
-                                  sonCevap = Icon(
-                                    Icons.thumb_down,
-                                    color: Colors.red,
-                                  );
+                                  sonCevap = false;
                                   renk3 = Colors.red;
                                   toplamPuan -= sorular[soruNo].puan % 2 == 0
                                       ? sorular[soruNo].puan / 2
@@ -226,19 +226,13 @@ class _FlutterSoruState extends State<FlutterSoru> {
                               if (cevapKontrol(sorular[soruNo],
                                   sorular[soruNo].cevaplar[3])) {
                                 setState(() {
-                                  sonCevap = Icon(
-                                    Icons.thumb_up,
-                                    color: Colors.green,
-                                  );
+                                  sonCevap = true;
                                   renk4 = Colors.green;
                                   toplamPuan += sorular[soruNo].puan;
                                 });
                               } else {
                                 setState(() {
-                                  sonCevap = Icon(
-                                    Icons.thumb_down,
-                                    color: Colors.red,
-                                  );
+                                  sonCevap = false;
                                   renk4 = Colors.red;
                                   toplamPuan -= sorular[soruNo].puan % 2 == 0
                                       ? sorular[soruNo].puan / 2
@@ -258,15 +252,33 @@ class _FlutterSoruState extends State<FlutterSoru> {
                         SizedBox(
                           height: 10,
                         ),
-                        Card(
-                          color: Colors.blue,
-                          child: Center(
-                            child: ListTile(
-                              title: Text(
-                                toplamPuan.toString(),
-                                style: TextStyle(fontSize: 30),
+                        Banner(
+                          location: BannerLocation.topEnd,
+                          message: sonCevap != null
+                              ? sonCevap
+                                  ? "Doğru"
+                                  : "Yanlış"
+                              : "",
+                          color: sonCevap != null
+                              ? sonCevap
+                                  ? Colors.green
+                                  : Colors.red
+                              : Colors.white,
+                          textStyle: TextStyle(
+                              color: sonCevap != null
+                                  ? sonCevap
+                                      ? Colors.white
+                                      : Colors.white
+                                  : Colors.white),
+                          child: Card(
+                            color: Colors.blue,
+                            child: Center(
+                              child: ListTile(
+                                title: Text(
+                                  toplamPuan.toString(),
+                                  style: TextStyle(fontSize: 30),
+                                ),
                               ),
-                              trailing: sonCevap,
                             ),
                           ),
                         ),

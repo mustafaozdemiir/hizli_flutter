@@ -115,27 +115,26 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
             child: ListView.builder(
                 itemCount: modelListe.length,
                 itemBuilder: (context, int index) {
-                  Widget tur;
+                  String messageBanner;
+                  Color bannerColor;
+                  Color bannerTextColor;
                   Widget cesit;
 
                   switch (modelListe[index].kodTuru) {
                     case 'basit':
-                      tur = Icon(
-                        Icons.thumb_up,
-                        color: Colors.green,
-                      );
+                      messageBanner = "Basit";
+                      bannerColor = Colors.green;
+                      bannerTextColor = Colors.white;
                       break;
                     case 'orta':
-                      tur = Icon(
-                        Icons.thumbs_up_down,
-                        color: Colors.yellow,
-                      );
+                      messageBanner = "Orta";
+                      bannerColor = Colors.yellow;
+                      bannerTextColor = Colors.black;
                       break;
                     case 'zor':
-                      tur = Icon(
-                        Icons.thumb_down,
-                        color: Colors.red,
-                      );
+                      messageBanner = "Zor";
+                      bannerColor = Colors.red;
+                      bannerTextColor = Colors.white;
                       break;
                   }
 
@@ -155,39 +154,47 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
                     default:
                       cesit = Text(
                         modelListe[index].cesit,
-                        style: TextStyle(color: Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0)),
+                        style: TextStyle(
+                            color: Color(
+                                    (Random().nextDouble() * 0xFFFFFF).toInt())
+                                .withOpacity(1.0)),
                       );
                   }
 
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 3, color: Colors.lightBlue),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(14),
-                        topRight: Radius.circular(14),
-                      ),
-                    ),
-                    child: ListTile(
-                      trailing: cesit,
-                      leading: tur,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => KodDetay(modelListe[index]),
-                          ),
-                        );
-                      },
-                      title: Center(
-                        child: Text(
-                          modelListe[index].adi,
-                          style: TextStyle(fontSize: 20),
+                  return Banner(
+                    message: messageBanner,
+                    location: BannerLocation.topStart,
+                    color: bannerColor,
+                    textStyle: TextStyle(color: bannerTextColor),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 3, color: Colors.lightBlue),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(14),
+                          topRight: Radius.circular(14),
                         ),
                       ),
-                      subtitle: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(modelListe[index].kisaAciklama),
+                      child: ListTile(
+                        trailing: cesit,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => KodDetay(modelListe[index]),
+                            ),
+                          );
+                        },
+                        title: Center(
+                          child: Text(
+                            modelListe[index].adi,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                        subtitle: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: Text(modelListe[index].kisaAciklama),
+                          ),
                         ),
                       ),
                     ),
@@ -210,36 +217,32 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
   }
 
   Widget _searchAddList() {
-
-
     return Flexible(
       child: ListView.builder(
           itemCount: _arananliste.length,
           itemBuilder: (context, int index) {
-            Widget tur;
+            String messageBanner;
+            Color bannerColor;
+            Color bannerTextColor;
             Widget cesit;
 
             switch (modelListe[index].kodTuru) {
               case 'basit':
-                tur = Icon(
-                  Icons.thumb_up,
-                  color: Colors.green,
-                );
+                messageBanner = "Basit";
+                bannerColor = Colors.green;
+                bannerTextColor = Colors.white;
                 break;
               case 'orta':
-                tur = Icon(
-                  Icons.thumbs_up_down,
-                  color: Colors.yellow,
-                );
+                messageBanner = "Orta";
+                bannerColor = Colors.yellow;
+                bannerTextColor = Colors.black;
                 break;
               case 'zor':
-                tur = Icon(
-                  Icons.thumb_down,
-                  color: Colors.red,
-                );
+                messageBanner = "Zor";
+                bannerColor = Colors.red;
+                bannerTextColor = Colors.white;
                 break;
             }
-
             switch (modelListe[index].cesit) {
               case 'Layout':
                 cesit = Text(
@@ -256,41 +259,49 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
               default:
                 cesit = Text(
                   modelListe[index].cesit,
-                  style: TextStyle(color: Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0)),
+                  style: TextStyle(
+                      color: Color((Random().nextDouble() * 0xFFFFFF).toInt())
+                          .withOpacity(1.0)),
                 );
             }
-            return Card(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(width: 6, color: Colors.lightBlue),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(28),
-                  topRight: Radius.circular(28),
-                ),
-              ),
-              child: ListTile(
-                trailing: cesit,
-                leading: tur,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => KodDetay(
-                          modelListe[_liste.indexOf(_arananliste[index])]),
-                    ),
-                  );
-                },
-                title: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Text(
-                        modelListe[_liste.indexOf(_arananliste[index])].adi),
+            return Banner(
+              message: messageBanner,
+              location: BannerLocation.topStart,
+              color: bannerColor,
+              textStyle: TextStyle(color: bannerTextColor),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 6, color: Colors.lightBlue),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(28),
+                    topRight: Radius.circular(28),
                   ),
                 ),
-                subtitle: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Text(modelListe[_liste.indexOf(_arananliste[index])]
-                        .kisaAciklama),
+                child: ListTile(
+                  trailing: cesit,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => KodDetay(
+                            modelListe[_liste.indexOf(_arananliste[index])]),
+                      ),
+                    );
+                  },
+                  title: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Text(
+                          modelListe[_liste.indexOf(_arananliste[index])].adi),
+                    ),
+                  ),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Text(
+                          modelListe[_liste.indexOf(_arananliste[index])]
+                              .kisaAciklama),
+                    ),
                   ),
                 ),
               ),
