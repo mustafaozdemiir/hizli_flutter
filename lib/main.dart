@@ -51,18 +51,17 @@ class _MyHomePageState extends State<MyHomePage> {
         // save the token  OR subscribe to a topic here
       });*/
     bool kisweb;
-    try{
-      if(Platform.isAndroid||Platform.isIOS) {
-        kisweb=false;
+    try {
+      if (Platform.isAndroid || Platform.isIOS) {
+        kisweb = false;
       } else {
-        kisweb=true;
+        kisweb = true;
       }
-    } catch(e){
-      kisweb=true;
+    } catch (e) {
+      kisweb = true;
     }
 
-    if(!kisweb){
-
+    if (!kisweb) {
       _fcm.requestNotificationPermissions(IosNotificationSettings());
 
       _fcm.configure(

@@ -321,7 +321,9 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
       List<WidgetMetod> metodlar = List<WidgetMetod>();
 
       liste.add(WidgetModel(
-        adi: querySnapshot.documents[k].data['adi'],
+        adi: querySnapshot.documents[k].data['adi']
+            .toString()
+            .replaceAll("/n", "\n"),
         kisaAciklama: querySnapshot.documents[k].data['kisaAciklama'],
         uzunAciklama: querySnapshot.documents[k].data['uzunAciklama'],
         kodTuru: querySnapshot.documents[k].data['kodTuru'],
@@ -333,7 +335,9 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
 
       for (int i = 0; i < querySnapshot.documents[k]['metodlar'].length; i++) {
         metodlar.add(WidgetMetod(
-          adi: querySnapshot.documents[k].data['metodlar'][i]['adi'],
+          adi: querySnapshot.documents[k].data['metodlar'][i]['adi']
+              .toString()
+              .replaceAll("/n", "\n"),
           turu: querySnapshot.documents[k].data['metodlar'][i]['turu'],
           aciklama: querySnapshot.documents[k].data['metodlar'][i]['aciklama'],
         ));

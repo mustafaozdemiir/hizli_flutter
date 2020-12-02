@@ -59,22 +59,22 @@ class _FlutterHaberState extends State<FlutterHaber> {
                           .difference(modelListe[index].yayinTarihi.toDate())
                           .inDays ==
                       0) {
-                      bannerMessage = "Yeni";
-                      bannerColor = Colors.yellow;
-                      bannerTextColor = Colors.black;
+                    bannerMessage = "Yeni";
+                    bannerColor = Colors.yellow;
+                    bannerTextColor = Colors.black;
                   } else {
                     if (DateTime.now()
                             .difference(modelListe[index].yayinTarihi.toDate())
                             .inDays <
                         365) {
-                        bannerMessage = DateTime.now()
-                                .difference(
-                                    modelListe[index].yayinTarihi.toDate())
-                                .inDays
-                                .toString() +
-                            " Gün Önce";
-                        bannerColor = Colors.green;
-                        bannerTextColor = Colors.white;
+                      bannerMessage = DateTime.now()
+                              .difference(
+                                  modelListe[index].yayinTarihi.toDate())
+                              .inDays
+                              .toString() +
+                          " Gün Önce";
+                      bannerColor = Colors.green;
+                      bannerTextColor = Colors.white;
                     } else if (365 <=
                             DateTime.now()
                                 .difference(
@@ -85,16 +85,16 @@ class _FlutterHaberState extends State<FlutterHaber> {
                                     modelListe[index].yayinTarihi.toDate())
                                 .inDays <=
                             730) {
-                        bannerMessage = "1 Yıl Önce";
-                        bannerColor = Colors.purple;
-                        bannerTextColor = Colors.white;
+                      bannerMessage = "1 Yıl Önce";
+                      bannerColor = Colors.purple;
+                      bannerTextColor = Colors.white;
                     } else if (DateTime.now()
                             .difference(modelListe[index].yayinTarihi.toDate())
                             .inDays >
                         365) {
-                        bannerMessage = "2 Yıl Önce";
-                        bannerColor = Colors.black;
-                        bannerTextColor = Colors.white;
+                      bannerMessage = "2 Yıl Önce";
+                      bannerColor = Colors.black;
+                      bannerTextColor = Colors.white;
                     }
                   }
                   /*Text(DateFormat('yyyy-MM-dd')
@@ -102,7 +102,7 @@ class _FlutterHaberState extends State<FlutterHaber> {
                   return Banner(
                     message: bannerMessage,
                     location: BannerLocation.topEnd,
-                    textStyle: TextStyle(color: bannerTextColor,fontSize: 10),
+                    textStyle: TextStyle(color: bannerTextColor, fontSize: 10),
                     color: bannerColor,
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -170,7 +170,9 @@ class _FlutterHaberState extends State<FlutterHaber> {
       }
       liste.add(
         Haber(
-          baslik: querySnapshot.documents[k].data['baslik'],
+          baslik: querySnapshot.documents[k].data['baslik']
+              .toString()
+              .replaceAll("/n", "\n"),
           kisaAciklama: querySnapshot.documents[k].data['kisaAciklama'],
           uzunAciklama: querySnapshot.documents[k].data['uzunAciklama'],
           kaynakLink: querySnapshot.documents[k].data['kaynakLink'],

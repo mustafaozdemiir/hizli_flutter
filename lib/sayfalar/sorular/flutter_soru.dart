@@ -313,7 +313,9 @@ class _FlutterSoruState extends State<FlutterSoru> {
       cevaplar.shuffle();
       liste.add(
         Soru(
-          baslik: querySnapshot.documents[k].data['baslik'],
+          baslik: querySnapshot.documents[k].data['baslik']
+              .toString()
+              .replaceAll("/n", "\n"),
           cevap: querySnapshot.documents[k].data['cevap'],
           zorluk: querySnapshot.documents[k].data['zorluk'],
           puan: querySnapshot.documents[k].data['puan'],
