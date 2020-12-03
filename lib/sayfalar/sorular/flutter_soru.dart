@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hizliflutter/modeller/soru_model.dart';
@@ -23,12 +25,15 @@ class _FlutterSoruState extends State<FlutterSoru> {
   Color renk2 = Colors.white;
   Color renk3 = Colors.white;
   Color renk4 = Colors.white;
-  int toplamPuan = 0;
+  double toplamPuan = 0;
   Color zorlukRenk = Colors.blue;
   bool sonCevap;
 
+  int dogruSayisi = 0;
+  int yanlisSayisi = 0;
+
   bool cevapKontrol(Soru gelenSoru, String gelenCevap) {
-    if (gelenSoru.cevap == gelenCevap) {
+    if (gelenSoru.cevap.compareTo(gelenCevap) == 0) {
       return true;
     } else {
       return false;
@@ -40,6 +45,7 @@ class _FlutterSoruState extends State<FlutterSoru> {
     String bannerMessage;
     Color bannerColor;
     Color bannerTextColor;
+
     if (sorular != null && soruNo < sorular.length) {
       switch (sorular[soruNo].zorluk) {
         case 'kolay':
@@ -76,7 +82,6 @@ class _FlutterSoruState extends State<FlutterSoru> {
           break;
       }
     }
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
@@ -123,6 +128,7 @@ class _FlutterSoruState extends State<FlutterSoru> {
                                   renk = Colors.green;
                                   toplamPuan += sorular[soruNo].puan;
                                   sonCevap = true;
+                                  dogruSayisi++;
                                 });
                               } else {
                                 setState(() {
@@ -131,6 +137,7 @@ class _FlutterSoruState extends State<FlutterSoru> {
                                   toplamPuan -= sorular[soruNo].puan % 2 == 0
                                       ? sorular[soruNo].puan / 2
                                       : 3;
+                                  yanlisSayisi++;
                                 });
                               }
                               setState(() {
@@ -159,6 +166,7 @@ class _FlutterSoruState extends State<FlutterSoru> {
                                   sonCevap = true;
                                   renk2 = Colors.green;
                                   toplamPuan += sorular[soruNo].puan;
+                                  dogruSayisi++;
                                 });
                               } else {
                                 setState(() {
@@ -167,6 +175,7 @@ class _FlutterSoruState extends State<FlutterSoru> {
                                   toplamPuan -= sorular[soruNo].puan % 2 == 0
                                       ? sorular[soruNo].puan / 2
                                       : 3;
+                                  yanlisSayisi++;
                                 });
                               }
                               setState(() {
@@ -194,6 +203,7 @@ class _FlutterSoruState extends State<FlutterSoru> {
                                   sonCevap = true;
                                   renk3 = Colors.green;
                                   toplamPuan += sorular[soruNo].puan;
+                                  dogruSayisi++;
                                 });
                               } else {
                                 setState(() {
@@ -202,6 +212,7 @@ class _FlutterSoruState extends State<FlutterSoru> {
                                   toplamPuan -= sorular[soruNo].puan % 2 == 0
                                       ? sorular[soruNo].puan / 2
                                       : 3;
+                                  yanlisSayisi++;
                                 });
                               }
                               setState(() {
@@ -229,6 +240,7 @@ class _FlutterSoruState extends State<FlutterSoru> {
                                   sonCevap = true;
                                   renk4 = Colors.green;
                                   toplamPuan += sorular[soruNo].puan;
+                                  dogruSayisi++;
                                 });
                               } else {
                                 setState(() {
@@ -237,6 +249,7 @@ class _FlutterSoruState extends State<FlutterSoru> {
                                   toplamPuan -= sorular[soruNo].puan % 2 == 0
                                       ? sorular[soruNo].puan / 2
                                       : 3;
+                                  yanlisSayisi++;
                                 });
                               }
                               setState(() {
@@ -253,7 +266,7 @@ class _FlutterSoruState extends State<FlutterSoru> {
                           height: 10,
                         ),
                         Banner(
-                          location: BannerLocation.topEnd,
+                          location: BannerLocation.bottomEnd,
                           message: sonCevap != null
                               ? sonCevap
                                   ? "Doğru"
@@ -271,22 +284,64 @@ class _FlutterSoruState extends State<FlutterSoru> {
                                       : Colors.white
                                   : Colors.white),
                           child: Card(
-                            color: Colors.blue,
-                            child: Center(
+                            color: Colors.blue.withOpacity(.1),
+                            child: Container(
                               child: ListTile(
-                                title: Text(
-                                  toplamPuan.toString(),
-                                  style: TextStyle(fontSize: 30),
+                                title: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.done,
+                                          size: 50,
+                                          color: Colors.green,
+                                        ),
+                                        Text(
+                                          dogruSayisi.toString(),
+                                          style: TextStyle(fontSize: 25),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.clear,
+                                          size: 50,
+                                          color: Colors.red,
+                                        ),
+                                        Text(
+                                          yanlisSayisi.toString(),
+                                          style: TextStyle(fontSize: 25),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                trailing: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 60, right: 60.0),
+                                  child: Text(
+                                    toplamPuan.toStringAsFixed(0),
+                                    style: TextStyle(fontSize: 30),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
+                      /*  Center(
+                          child: Text(
+                            sorular[soruNo].zaman.toString(),
+                            style: TextStyle(fontSize: 80),
+                          ),
+                        ),*/
                       ],
                     )
                   : Center(
                       child: Text(
-                        "TOPLAM PUAN: " + toplamPuan.toString(),
+                        "TOPLAM PUAN: " + (toplamPuan.toStringAsFixed(0)),
                         style: TextStyle(fontSize: 40),
                       ),
                     ),
