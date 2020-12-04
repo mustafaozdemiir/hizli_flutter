@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hizliflutter/modeller/haber_model.dart';
+import 'package:hizliflutter/modeller/haber.dart';
 
 import 'haber_detay.dart';
 
@@ -153,7 +153,7 @@ class _FlutterHaberState extends State<FlutterHaber> {
         : CircularProgressIndicator();
   }
 
-  static onlineHaberGetir() async {
+  /*static onlineHaberGetir() async {
     List<Haber> liste = List<Haber>();
 
     final Firestore _firestore = Firestore.instance;
@@ -184,6 +184,25 @@ class _FlutterHaberState extends State<FlutterHaber> {
           baslikResim: querySnapshot.documents[k].data['baslikResim'],
         ),
       );
+    }
+    for (int i = 0; i < liste.length; i++) {
+      liste.sort((a, b) {
+        return a.yayinTarihi.compareTo(b.yayinTarihi);
+      });
+    }
+
+    return liste.reversed.toList();
+  }*/
+
+  static onlineHaberGetir() async {
+    List<Haber> liste = List<Haber>();
+
+    final Firestore _firestore = Firestore.instance;
+    QuerySnapshot querySnapshot =
+        await _firestore.collection("haberler").getDocuments();
+
+    for (int k = 0; k < querySnapshot.documents.length; k++) {
+      liste.add(Haber.fromJson(querySnapshot.documents[k].data));
     }
     for (int i = 0; i < liste.length; i++) {
       liste.sort((a, b) {

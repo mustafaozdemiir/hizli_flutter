@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Haber{
+class Haber {
   String _baslik;
   String _kisaAciklama;
   String _uzunAciklama;
@@ -12,30 +12,28 @@ class Haber{
   List<String> _resimler;
   String _baslikResim;
 
-
-  Haber({
-  String baslik,
-  String kisaAciklama,
-  String uzunAciklama,
-  String turu,
-  String cesidi,
-  String youtubeVideoUrl,
-  String kaynakLink,
-  List<String> resimler,
-  Timestamp yayinTarihi,
-  String baslikResim}){
-  this._baslik=baslik;
-  this._kisaAciklama=kisaAciklama;
-  this._uzunAciklama=uzunAciklama;
-  this._turu=turu;
-  this._cesidi=cesidi;
-  this._youtubeVideoUrl=youtubeVideoUrl;
-  this._kaynakLink=kaynakLink;
-  this._resimler=resimler;
-  this._yayinTarihi=yayinTarihi;
-  this._baslikResim=baslikResim;
-}
-
+  Haber(
+      {String baslik,
+      String kisaAciklama,
+      String uzunAciklama,
+      String turu,
+      String cesidi,
+      String youtubeVideoUrl,
+      String kaynakLink,
+      List<String> resimler,
+      Timestamp yayinTarihi,
+      String baslikResim}) {
+    this._baslik = baslik;
+    this._kisaAciklama = kisaAciklama;
+    this._uzunAciklama = uzunAciklama;
+    this._turu = turu;
+    this._cesidi = cesidi;
+    this._youtubeVideoUrl = youtubeVideoUrl;
+    this._kaynakLink = kaynakLink;
+    this._resimler = resimler;
+    this._yayinTarihi = yayinTarihi;
+    this._baslikResim = baslikResim;
+  }
 
   String get baslik => _baslik;
 
@@ -95,5 +93,19 @@ class Haber{
 
   set baslikResim(String value) {
     _baslikResim = value;
+  }
+
+  factory Haber.fromJson(Map<String, dynamic> json) {
+    return Haber(
+        baslik: json['baslik'].toString().replaceAll("/n", "\n"),
+        kisaAciklama: json['kisaAciklama'],
+        uzunAciklama: json['uzunAciklama'],
+        turu: json['turu'],
+        cesidi: json['cesidi'],
+        youtubeVideoUrl: json['youtubeVideoUrl'],
+        kaynakLink: json['kaynakLink'],
+        yayinTarihi: json['yayinTarihi'],
+        baslikResim: json['baslikResim'],
+        resimler: List<String>.from(json['resimler']));
   }
 }

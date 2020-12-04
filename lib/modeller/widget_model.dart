@@ -1,4 +1,3 @@
-
 class WidgetMetod {
   String _adi;
   String _aciklama;
@@ -44,7 +43,6 @@ class WidgetModel {
   String _kodTuru;
   String _cesit;
 
-
   WidgetModel({
     String adi,
     String kisaAciklama,
@@ -60,7 +58,7 @@ class WidgetModel {
     this._metodlar = metodlar;
     this._kodDizin = kodDizin;
     this._kodTuru = kodTuru;
-    this._cesit=cesit;
+    this._cesit = cesit;
   }
 
   String get adi => _adi;
@@ -105,5 +103,16 @@ class WidgetModel {
     _cesit = value;
   }
 
-
+  factory WidgetModel.fromJson(Map<String, dynamic> json) {
+    var list = json['metodlar'] as List;
+    List<WidgetMetod> metodList = list.map((e) => WidgetMetod.fromJson(e)).toList();
+    return WidgetModel(
+        adi: json['adi'].toString().replaceAll("/n", "\n"),
+        kisaAciklama: json['kisaAciklama'],
+        uzunAciklama: json['uzunAciklama'],
+        kodDizin: json['kodDizin'],
+        kodTuru: json['kodTuru'],
+        cesit: json['cesit'],
+        metodlar: metodList);
+  }
 }

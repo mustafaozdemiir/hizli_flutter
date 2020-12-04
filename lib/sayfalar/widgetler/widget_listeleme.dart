@@ -310,38 +310,15 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
     );
   }
 
+
   static onlineWidgetGetir() async {
     List<WidgetModel> liste = List<WidgetModel>();
-
     final Firestore _firestore = Firestore.instance;
     QuerySnapshot querySnapshot =
         await _firestore.collection("widgetler").getDocuments();
 
     for (int k = 0; k < querySnapshot.documents.length; k++) {
-      List<WidgetMetod> metodlar = List<WidgetMetod>();
-
-      liste.add(WidgetModel(
-        adi: querySnapshot.documents[k].data['adi']
-            .toString()
-            .replaceAll("/n", "\n"),
-        kisaAciklama: querySnapshot.documents[k].data['kisaAciklama'],
-        uzunAciklama: querySnapshot.documents[k].data['uzunAciklama'],
-        kodTuru: querySnapshot.documents[k].data['kodTuru'],
-        kodDizin: querySnapshot.documents[k].data['kodDizin'],
-        metodlar: metodlar,
-        cesit: querySnapshot.documents[k].data['cesit'],
-      ));
-      for (int z = 0; z < metodlar.length; z++) {}
-
-      for (int i = 0; i < querySnapshot.documents[k]['metodlar'].length; i++) {
-        metodlar.add(WidgetMetod(
-          adi: querySnapshot.documents[k].data['metodlar'][i]['adi']
-              .toString()
-              .replaceAll("/n", "\n"),
-          turu: querySnapshot.documents[k].data['metodlar'][i]['turu'],
-          aciklama: querySnapshot.documents[k].data['metodlar'][i]['aciklama'],
-        ));
-      }
+      liste.add(WidgetModel.fromJson(querySnapshot.documents[k].data));
     }
     return liste;
   }

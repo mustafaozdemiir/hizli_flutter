@@ -44,4 +44,6 @@ class Ornek {
   set kaynak(String value) {
     _kaynak = value;
   }
+
+
 }

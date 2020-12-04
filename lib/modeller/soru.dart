@@ -14,11 +14,11 @@ class Soru {
       int puan,
       int zaman}) {
     this._baslik = baslik;
-    this.zorluk=zorluk;
-    this._cevap=cevap;
-    this._cevaplar=cevaplar;
-    this._puan=puan;
-    this._zaman=zaman;
+    this.zorluk = zorluk;
+    this._cevap = cevap;
+    this._cevaplar = cevaplar;
+    this._puan = puan;
+    this._zaman = zaman;
   }
 
   int get zaman => _zaman;
@@ -55,5 +55,18 @@ class Soru {
 
   set baslik(String value) {
     _baslik = value;
+  }
+
+  factory Soru.fromJson(Map<String, dynamic> json) {
+    var cevaplarList = List<String>.from(json['cevaplar']);
+    cevaplarList.shuffle();
+    return Soru(
+      baslik: json['baslik'].toString().replaceAll("/n", "\n"),
+      zorluk: json['zorluk'],
+      cevap: json['cevap'],
+      puan: json['puan'],
+      zaman: json['zaman'],
+      cevaplar: cevaplarList,
+    );
   }
 }

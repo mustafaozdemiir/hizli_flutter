@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hizliflutter/modeller/soru_model.dart';
+import 'package:hizliflutter/modeller/soru.dart';
 
 class FlutterSoru extends StatefulWidget {
   @override
@@ -331,7 +331,7 @@ class _FlutterSoruState extends State<FlutterSoru> {
                             ),
                           ),
                         ),
-                      /*  Center(
+                        /*  Center(
                           child: Text(
                             sorular[soruNo].zaman.toString(),
                             style: TextStyle(fontSize: 80),
@@ -358,26 +358,7 @@ class _FlutterSoruState extends State<FlutterSoru> {
         await _firestore.collection("sorular").getDocuments();
 
     for (int k = 0; k < querySnapshot.documents.length; k++) {
-      List<String> cevaplar = List<String>();
-
-      for (int i = 0; i < querySnapshot.documents[k]['cevaplar'].length; i++) {
-        cevaplar.add(
-          querySnapshot.documents[k].data['cevaplar'][i],
-        );
-      }
-      cevaplar.shuffle();
-      liste.add(
-        Soru(
-          baslik: querySnapshot.documents[k].data['baslik']
-              .toString()
-              .replaceAll("/n", "\n"),
-          cevap: querySnapshot.documents[k].data['cevap'],
-          zorluk: querySnapshot.documents[k].data['zorluk'],
-          puan: querySnapshot.documents[k].data['puan'],
-          zaman: querySnapshot.documents[k].data['zaman'],
-          cevaplar: cevaplar,
-        ),
-      );
+      liste.add(Soru.fromJson(querySnapshot.documents[k].data));
     }
     liste.shuffle();
     return liste;
