@@ -34,6 +34,7 @@ class _YoutubeFullScreenState extends State<YoutubeFullScreen> {
   @override
   void dispose() {
     super.dispose();
+    _controller.dispose();
   }
 
   void listener() {

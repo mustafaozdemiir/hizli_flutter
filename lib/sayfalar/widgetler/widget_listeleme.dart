@@ -49,6 +49,13 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
         (timeStamp) => _refreshIndicatorKey.currentState.show());
   }
 
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchEdit.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     onlineWidgetGetir().then((value) {

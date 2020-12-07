@@ -162,6 +162,7 @@ class _HaberDetayState extends State<HaberDetay> {
   @override
   void dispose() {
     super.dispose();
+    _controller.dispose();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);

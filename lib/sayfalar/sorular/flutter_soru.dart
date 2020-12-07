@@ -19,6 +19,12 @@ class _FlutterSoruState extends State<FlutterSoru> {
         (timeStamp) => _refreshIndicatorKey.currentState.show());
   }
 
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   List<Soru> sorular;
   int soruNo = 0;
   Color renk = Colors.white;

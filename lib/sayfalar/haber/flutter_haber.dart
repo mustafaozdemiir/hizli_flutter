@@ -22,6 +22,12 @@ class _FlutterHaberState extends State<FlutterHaber> {
         (timeStamp) => _refreshIndicatorKey.currentState.show());
   }
 
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,46 +159,6 @@ class _FlutterHaberState extends State<FlutterHaber> {
         : CircularProgressIndicator();
   }
 
-  /*static onlineHaberGetir() async {
-    List<Haber> liste = List<Haber>();
-
-    final Firestore _firestore = Firestore.instance;
-    QuerySnapshot querySnapshot =
-        await _firestore.collection("haberler").getDocuments();
-
-    for (int k = 0; k < querySnapshot.documents.length; k++) {
-      List<String> resimler = List<String>();
-
-      for (int i = 0; i < querySnapshot.documents[k]['resimler'].length; i++) {
-        resimler.add(
-          querySnapshot.documents[k].data['resimler'][i],
-        );
-      }
-      liste.add(
-        Haber(
-          baslik: querySnapshot.documents[k].data['baslik']
-              .toString()
-              .replaceAll("/n", "\n"),
-          kisaAciklama: querySnapshot.documents[k].data['kisaAciklama'],
-          uzunAciklama: querySnapshot.documents[k].data['uzunAciklama'],
-          kaynakLink: querySnapshot.documents[k].data['kaynakLink'],
-          youtubeVideoUrl: querySnapshot.documents[k].data['youtubeVideoUrl'],
-          resimler: resimler,
-          cesidi: querySnapshot.documents[k].data['cesit'],
-          turu: querySnapshot.documents[k].data['turu'],
-          yayinTarihi: querySnapshot.documents[k].data['yayinTarihi'],
-          baslikResim: querySnapshot.documents[k].data['baslikResim'],
-        ),
-      );
-    }
-    for (int i = 0; i < liste.length; i++) {
-      liste.sort((a, b) {
-        return a.yayinTarihi.compareTo(b.yayinTarihi);
-      });
-    }
-
-    return liste.reversed.toList();
-  }*/
 
   static onlineHaberGetir() async {
     List<Haber> liste = List<Haber>();
