@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hizliflutter/modeller/haber.dart';
+import 'package:hizliflutter/servisler/FetchService.dart';
 
 import 'haber_detay.dart';
 
@@ -11,17 +12,14 @@ class FlutterHaber extends StatefulWidget {
 }
 
 class _FlutterHaberState extends State<FlutterHaber> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
+
   List<Haber> modelListe;
   Widget zaman;
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback(
-        (timeStamp) => _refreshIndicatorKey.currentState.show());
+    super.initState();
   }
-
 
   @override
   void dispose() {
@@ -37,32 +35,37 @@ class _FlutterHaberState extends State<FlutterHaber> {
         title: Text("Flutter Haberler"),
       ),
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: RefreshIndicator(
-            key: _refreshIndicatorKey,
-            onRefresh: _yenile,
-            child: Column(
-              children: <Widget>[_listView()],
-            ),
-          ),
-        ),
+      body: GetBuilder<FetchService>(
+        initState: (_) => Get.find<FetchService>().getNews(),
+        builder: (s) {
+          return s.haberListe.length < 1
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Column(
+                      children: <Widget>[_listView(s)],
+                    ),
+                  ),
+                );
+        },
       ),
     );
   }
 
-  Widget _listView() {
+  Widget _listView(FetchService s) {
     String bannerMessage;
     Color bannerColor;
     Color bannerTextColor;
-    return modelListe != null
+    return s.haberListe != null
         ? Expanded(
             child: ListView.builder(
-                itemCount: modelListe.length,
+                itemCount: s.haberListe.length,
                 itemBuilder: (context, int index) {
                   if (DateTime.now()
-                          .difference(modelListe[index].yayinTarihi.toDate())
+                          .difference(s.haberListe[index].yayinTarihi.toDate())
                           .inDays ==
                       0) {
                     bannerMessage = "Yeni";
@@ -70,12 +73,12 @@ class _FlutterHaberState extends State<FlutterHaber> {
                     bannerTextColor = Colors.black;
                   } else {
                     if (DateTime.now()
-                            .difference(modelListe[index].yayinTarihi.toDate())
+                            .difference(s.haberListe[index].yayinTarihi.toDate())
                             .inDays <
                         365) {
                       bannerMessage = DateTime.now()
                               .difference(
-                                  modelListe[index].yayinTarihi.toDate())
+                          s.haberListe[index].yayinTarihi.toDate())
                               .inDays
                               .toString() +
                           " Gün Önce";
@@ -84,18 +87,18 @@ class _FlutterHaberState extends State<FlutterHaber> {
                     } else if (365 <=
                             DateTime.now()
                                 .difference(
-                                    modelListe[index].yayinTarihi.toDate())
+                                s.haberListe[index].yayinTarihi.toDate())
                                 .inDays &&
                         DateTime.now()
                                 .difference(
-                                    modelListe[index].yayinTarihi.toDate())
+                            s.haberListe[index].yayinTarihi.toDate())
                                 .inDays <=
                             730) {
                       bannerMessage = "1 Yıl Önce";
                       bannerColor = Colors.purple;
                       bannerTextColor = Colors.white;
                     } else if (DateTime.now()
-                            .difference(modelListe[index].yayinTarihi.toDate())
+                            .difference(s.haberListe[index].yayinTarihi.toDate())
                             .inDays >
                         365) {
                       bannerMessage = "2 Yıl Önce";
@@ -121,7 +124,7 @@ class _FlutterHaberState extends State<FlutterHaber> {
                       child: ListTile(
                         trailing: zaman,
                         leading: CachedNetworkImage(
-                          imageUrl: modelListe[index].baslikResim,
+                          imageUrl: s.haberListe[index].baslikResim,
                           placeholder: (context, url) =>
                               Image.asset('res/loading.gif'),
                           errorWidget: (context, url, error) => Icon(
@@ -135,20 +138,20 @@ class _FlutterHaberState extends State<FlutterHaber> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  HaberDetay(modelListe[index]),
+                                  HaberDetay(s.haberListe[index]),
                             ),
                           );
                         },
                         title: Center(
                           child: Text(
-                            modelListe[index].baslik,
+                            s.haberListe[index].baslik,
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
                         subtitle: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
-                            child: Text(modelListe[index].kisaAciklama),
+                            child: Text(s.haberListe[index].kisaAciklama),
                           ),
                         ),
                       ),
@@ -160,30 +163,4 @@ class _FlutterHaberState extends State<FlutterHaber> {
   }
 
 
-  static onlineHaberGetir() async {
-    List<Haber> liste = List<Haber>();
-
-    final Firestore _firestore = Firestore.instance;
-    QuerySnapshot querySnapshot =
-        await _firestore.collection("haberler").getDocuments();
-
-    for (int k = 0; k < querySnapshot.documents.length; k++) {
-      liste.add(Haber.fromJson(querySnapshot.documents[k].data));
-    }
-    for (int i = 0; i < liste.length; i++) {
-      liste.sort((a, b) {
-        return a.yayinTarihi.compareTo(b.yayinTarihi);
-      });
-    }
-
-    return liste.reversed.toList();
-  }
-
-  Future<void> _yenile() {
-    return onlineHaberGetir().then((gelenListe) {
-      setState(() {
-        modelListe = gelenListe;
-      });
-    });
-  }
 }

@@ -19,7 +19,6 @@ class _FlutterSoruState extends State<FlutterSoru> {
         (timeStamp) => _refreshIndicatorKey.currentState.show());
   }
 
-
   @override
   void dispose() {
     super.dispose();
@@ -371,10 +370,12 @@ class _FlutterSoruState extends State<FlutterSoru> {
   }
 
   Future<void> _yenile() {
-    return onlineSoruGetir().then((gelenListe) {
-      setState(() {
-        sorular = gelenListe;
+    if (mounted) {
+      return onlineSoruGetir().then((gelenListe) {
+        setState(() {
+          sorular = gelenListe;
+        });
       });
-    });
+    }
   }
 }

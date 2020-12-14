@@ -35,6 +35,7 @@ dependencies:
   cached_network_image: ^2.2.0+1
   intl: ^0.16.1
   firebase_messaging: ^6.0.16
+  get: ^3.22.2
 
 
 dev_dependencies:

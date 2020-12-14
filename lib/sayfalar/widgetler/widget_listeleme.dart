@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hizliflutter/modeller/widget_model.dart';
+import 'package:hizliflutter/servisler/FetchService.dart';
 
 import 'kod_detay.dart';
 
@@ -12,8 +14,10 @@ class WidgetListeleme extends StatefulWidget {
 }
 
 class _WidgetListelemeState extends State<WidgetListeleme> {
+  final FetchService fetchServiceController = Get.put(FetchService());
+
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
+  GlobalKey<RefreshIndicatorState>();
 
   List<WidgetModel> modelListe;
   List<WidgetModel> onlineListe;
@@ -45,16 +49,17 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback(
         (timeStamp) => _refreshIndicatorKey.currentState.show());
   }
-
 
   @override
   void dispose() {
     super.dispose();
     _searchEdit.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +94,116 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
       ),
     );
   }
+/*
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.lightBlue,
+        centerTitle: true,
+        title: Text("Widgetler"),
+      ),
+      backgroundColor: Colors.white,
+      body: GetBuilder<FetchService>(
+        initState: (_) => Get.find<FetchService>().getWidgets(),
+        builder: (s) {
+          return s.widgetListe.length < 1 ? Center(
+            child: CircularProgressIndicator(),):Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView.builder(
+                itemCount: s.widgetListe.length,
+                itemBuilder: (context, int index) {
+                  String messageBanner;
+                  Color bannerColor;
+                  Color bannerTextColor;
+                  Widget cesit;
+
+                  switch (s.widgetListe[index].kodTuru) {
+                    case 'basit':
+                      messageBanner = "Basit";
+                      bannerColor = Colors.green;
+                      bannerTextColor = Colors.white;
+                      break;
+                    case 'orta':
+                      messageBanner = "Orta";
+                      bannerColor = Colors.yellow;
+                      bannerTextColor = Colors.black;
+                      break;
+                    case 'zor':
+                      messageBanner = "Zor";
+                      bannerColor = Colors.red;
+                      bannerTextColor = Colors.white;
+                      break;
+                  }
+
+                  switch (s.widgetListe[index].cesit) {
+                    case 'Layout':
+                      cesit = Text(
+                        s.widgetListe[index].cesit,
+                        style: TextStyle(color: Colors.yellow[900]),
+                      );
+                      break;
+                    case 'Widget':
+                      cesit = Text(
+                        s.widgetListe[index].cesit,
+                        style: TextStyle(color: Colors.blue),
+                      );
+                      break;
+                    default:
+                      cesit = Text(
+                        s.widgetListe[index].cesit,
+                        style: TextStyle(
+                            color:
+                            Color((Random().nextDouble() * 0xFFFFFF).toInt())
+                                .withOpacity(1.0)),
+                      );
+                  }
+
+                  return Banner(
+                    message: messageBanner,
+                    location: BannerLocation.topStart,
+                    color: bannerColor,
+                    textStyle: TextStyle(color: bannerTextColor),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 3, color: Colors.lightBlue),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(14),
+                          topRight: Radius.circular(14),
+                        ),
+                      ),
+                      child: ListTile(
+                        trailing: cesit,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  KodDetay(s.widgetListe[index]),
+                            ),
+                          );
+                        },
+                        title: Center(
+                          child: Text(
+                            s.widgetListe[index].adi,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                        subtitle: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: Text(s.widgetListe[index].kisaAciklama),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+          );
+        },
+      ),
+    );
+  }*/
 
   Widget _arama() {
     return Card(
@@ -119,95 +234,95 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
   Widget _listView() {
     return modelListe != null
         ? Expanded(
-            child: ListView.builder(
-                itemCount: modelListe.length,
-                itemBuilder: (context, int index) {
-                  String messageBanner;
-                  Color bannerColor;
-                  Color bannerTextColor;
-                  Widget cesit;
+      child: ListView.builder(
+          itemCount: modelListe.length,
+          itemBuilder: (context, int index) {
+            String messageBanner;
+            Color bannerColor;
+            Color bannerTextColor;
+            Widget cesit;
 
-                  switch (modelListe[index].kodTuru) {
-                    case 'basit':
-                      messageBanner = "Basit";
-                      bannerColor = Colors.green;
-                      bannerTextColor = Colors.white;
-                      break;
-                    case 'orta':
-                      messageBanner = "Orta";
-                      bannerColor = Colors.yellow;
-                      bannerTextColor = Colors.black;
-                      break;
-                    case 'zor':
-                      messageBanner = "Zor";
-                      bannerColor = Colors.red;
-                      bannerTextColor = Colors.white;
-                      break;
-                  }
+            switch (modelListe[index].kodTuru) {
+              case 'basit':
+                messageBanner = "Basit";
+                bannerColor = Colors.green;
+                bannerTextColor = Colors.white;
+                break;
+              case 'orta':
+                messageBanner = "Orta";
+                bannerColor = Colors.yellow;
+                bannerTextColor = Colors.black;
+                break;
+              case 'zor':
+                messageBanner = "Zor";
+                bannerColor = Colors.red;
+                bannerTextColor = Colors.white;
+                break;
+            }
 
-                  switch (modelListe[index].cesit) {
-                    case 'Layout':
-                      cesit = Text(
-                        modelListe[index].cesit,
-                        style: TextStyle(color: Colors.yellow[900]),
-                      );
-                      break;
-                    case 'Widget':
-                      cesit = Text(
-                        modelListe[index].cesit,
-                        style: TextStyle(color: Colors.blue),
-                      );
-                      break;
-                    default:
-                      cesit = Text(
-                        modelListe[index].cesit,
-                        style: TextStyle(
-                            color: Color(
-                                    (Random().nextDouble() * 0xFFFFFF).toInt())
-                                .withOpacity(1.0)),
-                      );
-                  }
+            switch (modelListe[index].cesit) {
+              case 'Layout':
+                cesit = Text(
+                  modelListe[index].cesit,
+                  style: TextStyle(color: Colors.yellow[900]),
+                );
+                break;
+              case 'Widget':
+                cesit = Text(
+                  modelListe[index].cesit,
+                  style: TextStyle(color: Colors.blue),
+                );
+                break;
+              default:
+                cesit = Text(
+                  modelListe[index].cesit,
+                  style: TextStyle(
+                      color: Color(
+                          (Random().nextDouble() * 0xFFFFFF).toInt())
+                          .withOpacity(1.0)),
+                );
+            }
 
-                  return Banner(
-                    message: messageBanner,
-                    location: BannerLocation.topStart,
-                    color: bannerColor,
-                    textStyle: TextStyle(color: bannerTextColor),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(width: 3, color: Colors.lightBlue),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(14),
-                          topRight: Radius.circular(14),
-                        ),
+            return Banner(
+              message: messageBanner,
+              location: BannerLocation.topStart,
+              color: bannerColor,
+              textStyle: TextStyle(color: bannerTextColor),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 3, color: Colors.lightBlue),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(14),
+                    topRight: Radius.circular(14),
+                  ),
+                ),
+                child: ListTile(
+                  trailing: cesit,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => KodDetay(modelListe[index]),
                       ),
-                      child: ListTile(
-                        trailing: cesit,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => KodDetay(modelListe[index]),
-                            ),
-                          );
-                        },
-                        title: Center(
-                          child: Text(
-                            modelListe[index].adi,
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: Text(modelListe[index].kisaAciklama),
-                          ),
-                        ),
-                      ),
+                    );
+                  },
+                  title: Center(
+                    child: Text(
+                      modelListe[index].adi,
+                      style: TextStyle(fontSize: 20),
                     ),
-                  );
-                }),
-          )
+                  ),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Text(modelListe[index].kisaAciklama),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }),
+    )
         : CircularProgressIndicator();
   }
 
@@ -290,8 +405,10 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => KodDetay(
-                            modelListe[_liste.indexOf(_arananliste[index])]),
+                        builder: (context) =>
+                            KodDetay(
+                                modelListe[_liste.indexOf(
+                                    _arananliste[index])]),
                       ),
                     );
                   },
@@ -317,12 +434,11 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
     );
   }
 
-
   static onlineWidgetGetir() async {
     List<WidgetModel> liste = List<WidgetModel>();
     final Firestore _firestore = Firestore.instance;
     QuerySnapshot querySnapshot =
-        await _firestore.collection("widgetler").getDocuments();
+    await _firestore.collection("widgetler").getDocuments();
 
     for (int k = 0; k < querySnapshot.documents.length; k++) {
       liste.add(WidgetModel.fromJson(querySnapshot.documents[k].data));
