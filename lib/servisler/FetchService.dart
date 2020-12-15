@@ -28,6 +28,7 @@ class FetchService extends GetxController {
     for (int i = 0; i < querySnapshot.documents.length; i++) {
       soruListe.add(Soru.fromJson(querySnapshot.documents[i].data));
     }
+    soruListe.shuffle();
     update();
   }
 
