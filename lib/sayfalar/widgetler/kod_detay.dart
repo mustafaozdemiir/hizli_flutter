@@ -53,12 +53,17 @@ class KodDetay extends StatelessWidget {
         length: sayfaSayisi,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.lightBlue,
+            backgroundColor: Colors.white,
             bottom: TabBar(
+              indicatorColor: Colors.black,
+              labelColor: Colors.black,
               tabs: tabKontrol,
             ),
             title: Center(
-              child: Text(model.adi),
+              child: Text(
+                model.adi,
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           ),
           body: TabBarView(

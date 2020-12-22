@@ -38,10 +38,15 @@ class _OrnekDetayState extends State<OrnekDetay> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.lightBlue,
-            title: Text(ornek.adi),
+            backgroundColor: Colors.white,
+            title: Text(
+              ornek.adi,
+              style: TextStyle(color: Colors.black),
+            ),
             centerTitle: true,
             bottom: TabBar(
+              indicatorColor: Colors.black,
+              labelColor: Colors.black,
               tabs: tabKontrol,
             ),
           ),

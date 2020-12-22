@@ -1,8 +1,7 @@
 import 'dart:io';
-
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'sayfalar/haber/flutter_haber.dart';
 import 'sayfalar/ornekler/ornekler.dart';
 import 'sayfalar/sorular/flutter_soru.dart';
@@ -33,9 +32,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final FirebaseMessaging _fcm = FirebaseMessaging();
-
   int _page = 0;
-  GlobalKey _bottomNavigationKey = GlobalKey();
   List<Widget> _sayfalar = [
     WidgetListeleme(),
     FlutterHaber(),
@@ -63,10 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (!kisweb) {
       _fcm.requestNotificationPermissions(IosNotificationSettings());
-
       _fcm.configure(
         onMessage: (Map<String, dynamic> message) async {
-          print("onMessage: $message");
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -85,12 +80,9 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         },
         onLaunch: (Map<String, dynamic> message) async {
-          print("onLaunch: $message");
-          // TODO optional
         },
         onResume: (Map<String, dynamic> message) async {
-          print("onResume: $message");
-          // TODO optional
+
         },
       );
     }
@@ -98,45 +90,50 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+     return Scaffold(
         backgroundColor: Colors.white,
-        bottomNavigationBar: CurvedNavigationBar(
-          key: _bottomNavigationKey,
-          index: 0,
-          height: 60.0,
-          items: <Widget>[
-            Icon(
-              Icons.widgets,
-              size: 35,
-              color: Colors.white,
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(color: Colors.white, boxShadow: [
+            BoxShadow(blurRadius: 20, color: Colors.white.withOpacity(.1))
+          ]),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+              child: GNav(
+                  gap: 8,
+                  activeColor: Colors.white,
+                  iconSize: 24,
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  duration: Duration(milliseconds: 800),
+                  tabBackgroundColor: Colors.black,
+                  tabs: [
+                    GButton(
+                      icon: Icons.apps,
+                      text: 'Widget',
+                    ),
+                    GButton(
+                      icon: Icons.library_books,
+                      text: 'Haberler',
+                    ),
+                    GButton(
+                      icon: Icons.question_answer,
+                      text: 'Soru',
+                    ),
+                    GButton(
+                      icon: Icons.app_registration,
+                      text: 'Örnekler',
+                    ),
+                  ],
+                  selectedIndex: _page,
+                  onTabChange: (index) {
+                    setState(() {
+                      _page = index;
+                    });
+                  }),
             ),
-            Icon(
-              Icons.assignment,
-              size: 35,
-              color: Colors.white,
-            ),
-            Icon(
-              Icons.assignment_turned_in,
-              size: 35,
-              color: Colors.white,
-            ),
-            Icon(
-              Icons.phone_android,
-              size: 35,
-              color: Colors.white,
-            ),
-          ],
-          color: Colors.lightBlue,
-          buttonBackgroundColor: Colors.lightBlue,
-          backgroundColor: Colors.white,
-          animationCurve: Curves.fastOutSlowIn,
-          animationDuration: Duration(milliseconds: 300),
-          onTap: (index) {
-            setState(() {
-              _page = index;
-            });
-          },
+          ),
         ),
         body: _sayfalar[_page]);
   }
 }
+

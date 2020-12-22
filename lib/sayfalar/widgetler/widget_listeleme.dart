@@ -51,9 +51,9 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text("Widgetler"),
+        title: Text("Widget"),
       ),
       backgroundColor: Colors.white,
       body: GetBuilder<FetchService>(
@@ -113,17 +113,17 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
             switch (s.widgetListe[index].kodTuru) {
               case 'basit':
                 messageBanner = "Basit";
-                bannerColor = Colors.green;
+                bannerColor = Colors.green.withOpacity(.4);
                 bannerTextColor = Colors.white;
                 break;
               case 'orta':
                 messageBanner = "Orta";
-                bannerColor = Colors.yellow;
+                bannerColor = Colors.yellow.withOpacity(.7);
                 bannerTextColor = Colors.black;
                 break;
               case 'zor':
                 messageBanner = "Zor";
-                bannerColor = Colors.red;
+                bannerColor = Colors.red.withOpacity(.5);
                 bannerTextColor = Colors.white;
                 break;
             }
@@ -132,13 +132,13 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
               case 'Layout':
                 cesit = Text(
                   s.widgetListe[index].cesit,
-                  style: TextStyle(color: Colors.yellow[900]),
+                  style: TextStyle(color: Colors.yellow[900].withOpacity(.7)),
                 );
                 break;
               case 'Widget':
                 cesit = Text(
                   s.widgetListe[index].cesit,
-                  style: TextStyle(color: Colors.blue),
+                  style: TextStyle(color: Colors.blue.withOpacity(.7)),
                 );
                 break;
               default:
@@ -157,7 +157,7 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
               textStyle: TextStyle(color: bannerTextColor),
               child: Card(
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 3, color: Colors.lightBlue),
+                  side: BorderSide(width: 3, color: Colors.black),
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(14),
                     topRight: Radius.circular(14),
@@ -222,17 +222,17 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
             switch (s.widgetListe[index].kodTuru) {
               case 'basit':
                 messageBanner = "Basit";
-                bannerColor = Colors.green;
+                bannerColor = Colors.green.withOpacity(.4);
                 bannerTextColor = Colors.white;
                 break;
               case 'orta':
                 messageBanner = "Orta";
-                bannerColor = Colors.yellow;
+                bannerColor = Colors.yellow.withOpacity(.7);
                 bannerTextColor = Colors.black;
                 break;
               case 'zor':
                 messageBanner = "Zor";
-                bannerColor = Colors.red;
+                bannerColor = Colors.red.withOpacity(.5);
                 bannerTextColor = Colors.white;
                 break;
             }
@@ -264,7 +264,7 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
               textStyle: TextStyle(color: bannerTextColor),
               child: Card(
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 6, color: Colors.lightBlue),
+                  side: BorderSide(width: 6, color: Colors.black),
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(28),
                     topRight: Radius.circular(28),

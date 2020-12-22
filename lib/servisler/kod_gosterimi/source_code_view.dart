@@ -109,8 +109,8 @@ class _SourceCodeViewState extends State<SourceCodeView> {
             ),
             floatingActionButton: AnimatedFloatingActionButton(
               fabButtons: _buildFloatingButtons(),
-              colorStartAnimation: Colors.blue,
-              colorEndAnimation: Colors.red,
+              colorStartAnimation: Colors.black,
+              colorEndAnimation: Colors.grey,
               animatedIconData: AnimatedIcons.menu_close,
             ),
           );

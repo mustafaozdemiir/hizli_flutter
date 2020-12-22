@@ -100,7 +100,7 @@ class _MethodListelemeState extends State<MethodListeleme> {
           itemBuilder: (context, int index) {
             return Card(
               shape: RoundedRectangleBorder(
-                side: BorderSide(width: 3, color: Colors.lightBlue),
+                side: BorderSide(width: 3, color: Colors.black),
                 borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(14),
                   topLeft: Radius.circular(14),
@@ -156,7 +156,7 @@ class _MethodListelemeState extends State<MethodListeleme> {
           itemBuilder: (context, int index) {
             return Card(
               shape: RoundedRectangleBorder(
-                side: BorderSide(width: 6, color: Colors.lightBlue),
+                side: BorderSide(width: 6, color: Colors.black),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(28),
                   topRight: Radius.circular(28),

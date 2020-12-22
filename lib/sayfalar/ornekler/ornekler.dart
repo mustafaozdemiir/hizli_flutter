@@ -61,8 +61,8 @@ class _OrneklerState extends State<Ornekler> {
     Color bannerTextColor;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Örnek Uygulamalar'),
-        backgroundColor: Colors.lightBlue,
+        title: Text('Örnekler'),
+        backgroundColor: Colors.white,
         centerTitle: true,
       ),
       body: ListView.builder(
@@ -71,17 +71,17 @@ class _OrneklerState extends State<Ornekler> {
             switch (ornekler[index].zorluk) {
               case 'basit':
                 bannerMessage = "Basit";
-                bannerColor = Colors.green;
+                bannerColor = Colors.green.withOpacity(.4);
                 bannerTextColor = Colors.white;
                 break;
               case 'orta':
                 bannerMessage = "Orta";
-                bannerColor = Colors.yellow;
+                bannerColor = Colors.yellow.withOpacity(.7);
                 bannerTextColor = Colors.black;
                 break;
               case 'zor':
                 bannerMessage = "Zor";
-                bannerColor = Colors.red;
+                bannerColor = Colors.red.withOpacity(.5);
                 bannerTextColor = Colors.white;
                 break;
             }
@@ -92,7 +92,7 @@ class _OrneklerState extends State<Ornekler> {
               textStyle: TextStyle(color: bannerTextColor),
               child: Card(
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 3, color: Colors.lightBlue),
+                  side: BorderSide(width: 3, color: Colors.black),
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(14),
                     topRight: Radius.circular(14),

@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hizliflutter/modeller/soru.dart';
@@ -52,14 +49,14 @@ class _FlutterSoruState extends State<FlutterSoru> {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.lightBlue,
+          backgroundColor: Colors.white,
           centerTitle: true,
-          title: Text("Hızlı Soru"),
+          title: Text("Soru"),
         ),
         body: GetBuilder<FetchService>(
             initState: (_) => Get.find<FetchService>().getQuestion(),
             builder: (s) {
-              if (s.soruListe.length > 1&&soruNo < s.soruListe.length) {
+              if (s.soruListe.length > 1 && soruNo < s.soruListe.length) {
                 QuestionBanner q =
                     QuestionBanner(zorluk: s.soruListe[soruNo].zorluk);
                 bannerMessage = q.bannerMessage;
@@ -300,9 +297,21 @@ class _FlutterSoruState extends State<FlutterSoru> {
                                     trailing: Padding(
                                       padding: const EdgeInsets.only(
                                           left: 60, right: 60.0),
-                                      child: Text(
-                                        toplamPuan.toStringAsFixed(0),
-                                        style: TextStyle(fontSize: 30),
+                                      child: Wrap(
+                                        children: [
+                                          Icon(
+                                            Icons.leaderboard_outlined,
+                                            size: 32,
+                                            color: Colors.indigo,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            toplamPuan.toStringAsFixed(0),
+                                            style: TextStyle(fontSize: 30),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -334,21 +343,21 @@ class QuestionBanner {
     switch (zorluk) {
       case "kolay":
         this.bannerMessage = "Kolay";
-        this.bannerColor = Colors.green;
+        this.bannerColor = Colors.green.withOpacity(.4);
         this.bannerTextColor = Colors.white;
         this.zorlukRenk = Colors.blue;
         break;
 
       case "orta":
         this.bannerMessage = "Orta";
-        this.bannerColor = Colors.yellow;
+        this.bannerColor = Colors.yellow.withOpacity(.7);
         this.bannerTextColor = Colors.black;
         this.zorlukRenk = Colors.yellow;
         break;
 
       case "zor":
         this.bannerMessage = "Zor";
-        this.bannerColor = Colors.red;
+        this.bannerColor = Colors.red.withOpacity(.5);
         this.bannerTextColor = Colors.white;
         this.zorlukRenk = Colors.deepOrange;
         break;

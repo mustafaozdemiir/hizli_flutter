@@ -52,13 +52,18 @@ class _HaberDetayState extends State<HaberDetay> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Colors.grey.shade200,
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
+              backgroundColor: Colors.white,
               snap: false,
               pinned: true,
               floating: true,
-              title: Text(model.baslik),
+              title: Text(
+                model.baslik,
+                style: TextStyle(color: Colors.black),
+              ),
               centerTitle: true,
               flexibleSpace: FlexibleSpaceBar(
                 background: CachedNetworkImage(
