@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hizliflutter/servisler/FetchService.dart';
+import 'package:hizliflutter/controllers/fetch_controller.dart';
 import 'kod_detay.dart';
 import 'dart:math';
 
@@ -10,7 +10,7 @@ class WidgetListeleme extends StatefulWidget {
 }
 
 class _WidgetListelemeState extends State<WidgetListeleme> {
-  final FetchService fetchServiceController = Get.put(FetchService());
+  final FetchController fetchController = Get.put(FetchController());
 
   TextEditingController _searchEdit = TextEditingController();
 
@@ -56,8 +56,8 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
         title: Text("Widget"),
       ),
       backgroundColor: Colors.white,
-      body: GetBuilder<FetchService>(
-        initState: (_) => Get.find<FetchService>().getWidgets(),
+      body: GetBuilder<FetchController>(
+        initState: (_) => Get.find<FetchController>().getWidgets(),
         builder: (s) {
           return s.widgetListe.length < 1
               ? Center(
@@ -100,7 +100,7 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
     );
   }
 
-  Widget _listView(FetchService s) {
+  Widget _listView(FetchController s) {
     return Expanded(
       child: ListView.builder(
           itemCount: s.widgetListe.length,
@@ -192,7 +192,7 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
     );
   }
 
-  Widget _searchListView(FetchService s) {
+  Widget _searchListView(FetchController s) {
     _liste = List<String>();
     for (int i = 0; i < s.widgetListe.length; i++) {
       _liste.add(s.widgetListe[i].adi);
@@ -209,7 +209,7 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
     return _searchAddList(s);
   }
 
-  Widget _searchAddList(FetchService s) {
+  Widget _searchAddList(FetchController s) {
     return Flexible(
       child: ListView.builder(
           itemCount: _arananliste.length,

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hizliflutter/servisler/FetchService.dart';
+import 'package:hizliflutter/controllers/fetch_controller.dart';
 import 'haber_detay.dart';
 
 class FlutterHaber extends StatelessWidget {
@@ -16,8 +16,8 @@ class FlutterHaber extends StatelessWidget {
         title: Text("Haber"),
       ),
       backgroundColor: Colors.white,
-      body: GetBuilder<FetchService>(
-        initState: (_) => Get.find<FetchService>().getNews(),
+      body: GetBuilder<FetchController>(
+        initState: (_) => Get.find<FetchController>().getNews(),
         builder: (s) {
           return s.haberListe.length < 1
               ? Center(
@@ -36,7 +36,7 @@ class FlutterHaber extends StatelessWidget {
     );
   }
 
-  Widget _listView(FetchService s) {
+  Widget _listView(FetchController s) {
     String bannerMessage;
     Color bannerColor;
     Color bannerTextColor;

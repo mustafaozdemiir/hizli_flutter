@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'sayfalar/haber/flutter_haber.dart';
 import 'sayfalar/ornekler/ornekler.dart';
@@ -14,7 +15,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Hızlı Flutter',
       theme: ThemeData(primarySwatch: Colors.lightBlue),
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
+  static int page = 0;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -32,7 +34,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final FirebaseMessaging _fcm = FirebaseMessaging();
-  int _page = 0;
   List<Widget> _sayfalar = [
     WidgetListeleme(),
     FlutterHaber(),
@@ -124,16 +125,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       text: 'Örnekler',
                     ),
                   ],
-                  selectedIndex: _page,
+                  selectedIndex: MyHomePage.page,
                   onTabChange: (index) {
                     setState(() {
-                      _page = index;
+                      MyHomePage.page = index;
                     });
                   }),
             ),
           ),
         ),
-        body: _sayfalar[_page]);
+        body: _sayfalar[MyHomePage.page]);
   }
 }
 

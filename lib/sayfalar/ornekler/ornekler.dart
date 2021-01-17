@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hizliflutter/kodlar/ornek_alt_yonlerdirme_cubuk.dart';
 import 'package:hizliflutter/kodlar/ornek_appbar.dart';
+import 'package:hizliflutter/kodlar/ornek_avatar_glow.dart';
 import 'package:hizliflutter/kodlar/ornek_giris_ekrani.dart';
 import 'package:hizliflutter/kodlar/ornek_hesap_makinesi.dart';
 import 'package:hizliflutter/kodlar/ornek_sayfa_gecis.dart';
+import 'package:hizliflutter/kodlar/ornek_slidable_list.dart';
+import 'package:hizliflutter/kodlar/ornek_slider_button.dart';
 import 'package:hizliflutter/kodlar/ornek_ust_yonlendirme_cubuk.dart';
 import 'package:hizliflutter/modeller/ornek.dart';
 import 'ornek_detay.dart';
@@ -50,6 +53,24 @@ class _OrneklerState extends State<Ornekler> {
         adi: 'Üst Yönlendirme Çubuğu',
         ornek: UstYonlendirmeCubugu(),
         kod: 'lib/kodlar/ornek_ust_yonlendirme_cubuk.dart',
+        kaynak: 'https://www.yazilimmotoru.com/',
+        zorluk: 'basit'),
+    Ornek(
+        adi: 'Slider Button',
+        ornek: SliderButtonOrnek(),
+        kod: 'lib/kodlar/ornek_slider_button.dart',
+        kaynak: 'https://www.yazilimmotoru.com/',
+        zorluk: 'basit'),
+    Ornek(
+        adi: 'Slidable List Item',
+        ornek: SlidableList(),
+        kod: 'lib/kodlar/ornek_slidable_list.dart',
+        kaynak: 'https://www.yazilimmotoru.com/',
+        zorluk: 'orta'),
+    Ornek(
+        adi: 'Avatar Glow',
+        ornek: AvatarGlowOrnek(),
+        kod: 'lib/kodlar/ornek_avatar_glow.dart',
         kaynak: 'https://www.yazilimmotoru.com/',
         zorluk: 'basit'),
   ];
