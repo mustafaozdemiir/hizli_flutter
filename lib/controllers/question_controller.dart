@@ -39,17 +39,10 @@ class QuestionController extends GetxController {
         time.value--;
       } else if (time.value == 0) {
         if (soruNo.value == soruListe.length - 1) {
-          Get.snackbar("Zaman Doldu", "Zaman doldu! Yeni soru geliyor...",
-              backgroundColor: Colors.blue,
-              colorText: Colors.white,
-              snackPosition: SnackPosition.BOTTOM);
-          sonCevap.value = false;
-          toplamPuan.value -= soruListe[soruNo.value].puan % 2 == 0
-              ? soruListe[soruNo.value].puan / 2
-              : 3;
-          yanlisSayisi.value++;
-          nextQuestion();
-        } else {}
+          soruBitis();
+        } else {
+          bos_cevap();
+        }
       }
     });
   }
@@ -78,16 +71,32 @@ class QuestionController extends GetxController {
     }
   }
 
+  void bos_cevap() {
+    Get.snackbar("Zaman Doldu", "Zaman doldu! Yeni soru geliyor...",
+        backgroundColor: Colors.blue,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM);
+    sonCevap.value = false;
+    toplamPuan.value -= soruListe[soruNo.value].puan % 2 == 0
+        ? soruListe[soruNo.value].puan / 2
+        : 3;
+    yanlisSayisi.value++;
+    if (soruNo.value < soruListe.length) {
+      nextQuestion();
+    }
+  }
+
   void yanlis_cevap() {
     sonCevap.value = false;
     toplamPuan.value -= soruListe[soruNo.value].puan % 2 == 0
         ? soruListe[soruNo.value].puan / 2
         : 3;
     yanlisSayisi.value++;
-    Get.snackbar("Doğru", "Tebrikler doğru cevap!",
-        backgroundColor: Colors.green,
+    Get.snackbar("Yanlış", "Malesef yanlış cevap!",
+        backgroundColor: Colors.red,
         colorText: Colors.white,
         snackPosition: SnackPosition.TOP);
+
     nextQuestion();
   }
 
@@ -95,11 +104,41 @@ class QuestionController extends GetxController {
     toplamPuan.value += soruListe[soruNo.value].puan;
     sonCevap.value = true;
     dogruSayisi.value++;
-    Get.snackbar("Yanlış", "Malesef yanlış cevap!",
-        backgroundColor: Colors.red,
+    Get.snackbar("Doğru", "Tebrikler doğru cevap!",
+        backgroundColor: Colors.green,
         colorText: Colors.white,
         snackPosition: SnackPosition.TOP);
     nextQuestion();
+  }
+
+  void soruBitis() {
+    Get.dialog(
+        AlertDialog(
+          title: Text("Sorular Bitti 1"),
+          content: Text("Toplam Puanınız: " + toplamPuan.toStringAsFixed(0)),
+          actions: [
+            FlatButton(
+                onPressed: () {
+                  soruNo.value = 0;
+                  soruNo.refresh();
+                  dogruSayisi.value = 0;
+                  yanlisSayisi.value = 0;
+                  toplamPuan.value = 0;
+                  dogruSayisi.refresh();
+                  yanlisSayisi.refresh();
+                  toplamPuan.refresh();
+                  Get.back();
+                  nextQuestion();
+                },
+                child: Text("Tamam"))
+          ],
+        ),
+        barrierDismissible: false,
+        transitionCurve: Curves.easeOutSine,
+        transitionDuration: Duration(seconds: 1),
+        barrierColor: Colors.blue);
+    soruNo.value = 0;
+    soruNo.refresh();
   }
 
   void nextQuestion() {
@@ -110,32 +149,8 @@ class QuestionController extends GetxController {
       soruNo.value++;
       soruNo.refresh();
       startTimer(soruListe[soruNo.value].zaman);
-    } else {
-      Get.dialog(
-          AlertDialog(
-            title: Text("Sorular Bitti"),
-            content: Text("Toplam Puanınız: " + toplamPuan.toStringAsFixed(0)),
-            actions: [
-              FlatButton(
-                  onPressed: () {
-                    soruNo.value = 0;
-                    soruNo.refresh();
-                    dogruSayisi.value = 0;
-                    yanlisSayisi.value = 0;
-                    toplamPuan.value = 0;
-                    dogruSayisi.refresh();
-                    yanlisSayisi.refresh();
-                    toplamPuan.refresh();
-                    Get.back();
-                    nextQuestion();
-                  },
-                  child: Text("Tamam"))
-            ],
-          ),
-          barrierDismissible: false,
-          transitionCurve: Curves.easeOutSine,
-          transitionDuration: Duration(seconds: 1),
-          barrierColor: Colors.blue);
+    } else if (soruNo.value < soruListe.length) {
+      soruBitis();
     }
   }
 }
