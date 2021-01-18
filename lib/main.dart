@@ -80,18 +80,15 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           );
         },
-        onLaunch: (Map<String, dynamic> message) async {
-        },
-        onResume: (Map<String, dynamic> message) async {
-
-        },
+        onLaunch: (Map<String, dynamic> message) async {},
+        onResume: (Map<String, dynamic> message) async {},
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
+    return Scaffold(
         backgroundColor: Colors.white,
         bottomNavigationBar: Container(
           decoration: BoxDecoration(color: Colors.white, boxShadow: [
@@ -99,7 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ]),
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
               child: GNav(
                   gap: 8,
                   activeColor: Colors.white,
@@ -137,4 +135,3 @@ class _MyHomePageState extends State<MyHomePage> {
         body: _sayfalar[MyHomePage.page]);
   }
 }
-

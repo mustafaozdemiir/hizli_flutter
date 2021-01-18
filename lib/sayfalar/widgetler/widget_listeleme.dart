@@ -179,10 +179,17 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
-                  subtitle: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: Text(s.widgetListe[index].kisaAciklama),
+                  subtitle: Center(
+                    child: Container(
+                      width: Get.width * 0.65,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          s.widgetListe[index].kisaAciklama,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ),
                     ),
                   ),
                 ),

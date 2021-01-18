@@ -114,7 +114,7 @@ class QuestionController extends GetxController {
   void soruBitis() {
     Get.dialog(
         AlertDialog(
-          title: Text("Sorular Bitti 1"),
+          title: Text("Sorular Bitti"),
           content: Text("Toplam Puanınız: " + toplamPuan.toStringAsFixed(0)),
           actions: [
             FlatButton(

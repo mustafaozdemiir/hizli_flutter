@@ -105,6 +105,8 @@ class FlutterHaber extends StatelessWidget {
                       child: ListTile(
                         trailing: zaman,
                         leading: CachedNetworkImage(
+                          width: Get.width * 0.2,
+                          height: Get.height * 0.2,
                           imageUrl: s.haberListe[index].baslikResim,
                           placeholder: (context, url) =>
                               Image.asset('res/loading.gif'),
@@ -123,16 +125,26 @@ class FlutterHaber extends StatelessWidget {
                             ),
                           );
                         },
-                        title: Center(
-                          child: Text(
-                            s.haberListe[index].baslik,
-                            style: TextStyle(fontSize: 20),
+                        title: Container(
+                          width: Get.width * 0.5,
+                          height: Get.height * 0.05,
+                          child: Center(
+                            child: Text(
+                              s.haberListe[index].baslik,
+                              style: TextStyle(fontSize: 20),
+                              overflow: TextOverflow.clip,
+                              maxLines: 1,
+                            ),
                           ),
                         ),
                         subtitle: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
-                            child: Text(s.haberListe[index].kisaAciklama),
+                            child: Text(
+                              s.haberListe[index].kisaAciklama,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
                           ),
                         ),
                       ),

@@ -18,6 +18,7 @@ class _FlutterSoruState extends State<FlutterSoru> {
   @override
   void dispose() {
     super.dispose();
+    questionController.stopTimer();
   }
 
   @override
