@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import '../modeller/haber.dart';
+import '../models/news.dart';
 
 class YoutubeFullScreen extends StatefulWidget {
-  Haber model;
+  News model;
 
   YoutubeFullScreen(this.model);
 

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:hizliflutter/modeller/ornek.dart';
-import 'package:hizliflutter/servisler/kod_gosterimi/source_code_view.dart';
+import 'package:hizliflutter/models/sample.dart';
+import 'package:hizliflutter/services/show_code_service/source_code_view.dart';
 
-class OrnekDetay extends StatefulWidget {
-  Ornek ornek;
+class SampleDetailPage extends StatefulWidget {
+  Sample ornek;
 
-  OrnekDetay(this.ornek);
+  SampleDetailPage(this.ornek);
 
   @override
-  _OrnekDetayState createState() => _OrnekDetayState(ornek);
+  _SampleDetailPageState createState() => _SampleDetailPageState(ornek);
 }
 
-class _OrnekDetayState extends State<OrnekDetay> {
-  Ornek ornek;
+class _SampleDetailPageState extends State<SampleDetailPage> {
+  Sample ornek;
 
-  _OrnekDetayState(this.ornek);
+  _SampleDetailPageState(this.ornek);
 
   @override
   Widget build(BuildContext context) {

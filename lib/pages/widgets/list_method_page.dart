@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:hizliflutter/modeller/widget_model.dart';
+import 'package:hizliflutter/models/widget_model.dart';
 
-class MethodListeleme extends StatefulWidget {
+class ListMethodPage extends StatefulWidget {
   List<WidgetMetod> metodlistem;
 
-  MethodListeleme(List<WidgetMetod> liste) {
+  ListMethodPage(List<WidgetMetod> liste) {
     this.metodlistem = liste;
   }
 
   @override
-  _MethodListelemeState createState() => _MethodListelemeState(metodlistem);
+  _ListMethodPageState createState() => _ListMethodPageState(metodlistem);
 }
 
-class _MethodListelemeState extends State<MethodListeleme> {
+class _ListMethodPageState extends State<ListMethodPage> {
   List<WidgetMetod> metodListe;
 
   TextEditingController _searchEdit = TextEditingController();
@@ -23,7 +23,7 @@ class _MethodListelemeState extends State<MethodListeleme> {
   List<String> _liste;
   List<String> _arananliste;
 
-  _MethodListelemeState(List<WidgetMetod> liste) {
+  _ListMethodPageState(List<WidgetMetod> liste) {
     this.metodListe = liste;
 
     _searchEdit.addListener(() {

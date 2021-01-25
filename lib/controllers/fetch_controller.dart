@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:hizliflutter/modeller/haber.dart';
-import 'package:hizliflutter/modeller/widget_model.dart';
+import 'package:hizliflutter/models/news.dart';
+import 'package:hizliflutter/models/widget_model.dart';
 
 class FetchController extends GetxController {
   List<WidgetModel> widgetListe = List<WidgetModel>().obs;
-  List<Haber> haberListe = List<Haber>();
+  List<News> haberListe = List<News>();
 
   Future<void> getWidgets() async {
     widgetListe.clear();
@@ -26,7 +26,7 @@ class FetchController extends GetxController {
     QuerySnapshot querySnapshot =
         await _firestore.collection("haberler").getDocuments();
     for (int i = 0; i < querySnapshot.documents.length; i++) {
-      haberListe.add(Haber.fromJson(querySnapshot.documents[i].data));
+      haberListe.add(News.fromJson(querySnapshot.documents[i].data));
     }
     for (int i = 0; i < haberListe.length; i++) {
       haberListe.sort((a, b) {

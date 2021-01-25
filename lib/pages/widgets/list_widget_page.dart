@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hizliflutter/controllers/fetch_controller.dart';
-import 'kod_detay.dart';
+import 'widget_code_detail_page.dart';
 import 'dart:math';
 
-class WidgetListeleme extends StatefulWidget {
+class ListWidgetPage extends StatefulWidget {
   @override
-  _WidgetListelemeState createState() => _WidgetListelemeState();
+  _ListWidgetPageState createState() => _ListWidgetPageState();
 }
 
-class _WidgetListelemeState extends State<WidgetListeleme> {
+class _ListWidgetPageState extends State<ListWidgetPage> {
   final FetchController fetchController = Get.put(FetchController());
 
   TextEditingController _searchEdit = TextEditingController();
@@ -20,7 +20,7 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
   List<String> _liste;
   List<String> _arananliste;
 
-  _WidgetListelemeState() {
+  _ListWidgetPageState() {
     _searchEdit.addListener(() {
       if (_searchEdit.text.isEmpty) {
         setState(() {
@@ -169,7 +169,7 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => KodDetay(s.widgetListe[index]),
+                        builder: (context) => WidgetCodeDetailPage(s.widgetListe[index]),
                       ),
                     );
                   },
@@ -283,7 +283,7 @@ class _WidgetListelemeState extends State<WidgetListeleme> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => KodDetay(
+                        builder: (context) => WidgetCodeDetailPage(
                             s.widgetListe[_liste.indexOf(_arananliste[index])]),
                       ),
                     );

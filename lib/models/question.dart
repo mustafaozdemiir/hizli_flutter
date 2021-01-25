@@ -1,4 +1,4 @@
-class Soru {
+class Question {
   String _baslik;
   String _zorluk;
   String _cevap;
@@ -6,7 +6,7 @@ class Soru {
   int _puan;
   int _zaman;
 
-  Soru(
+  Question(
       {String baslik,
       String zorluk,
       String cevap,
@@ -57,10 +57,10 @@ class Soru {
     _baslik = value;
   }
 
-  factory Soru.fromJson(Map<String, dynamic> json) {
+  factory Question.fromJson(Map<String, dynamic> json) {
     var cevaplarList = List<String>.from(json['cevaplar']);
     cevaplarList.shuffle();
-    return Soru(
+    return Question(
       baslik: json['baslik'].toString().replaceAll("/n", "\n"),
       zorluk: json['zorluk'],
       cevap: json['cevap'],

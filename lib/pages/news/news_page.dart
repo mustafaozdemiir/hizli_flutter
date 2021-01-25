@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hizliflutter/controllers/fetch_controller.dart';
-import 'haber_detay.dart';
+import 'news_detail_page.dart';
 
-class FlutterHaber extends StatelessWidget {
+class NewsPage extends StatelessWidget {
   Widget zaman;
 
   @override
@@ -121,7 +121,7 @@ class FlutterHaber extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  HaberDetay(s.haberListe[index]),
+                                  NewsDetailPage(s.haberListe[index]),
                             ),
                           );
                         },

@@ -1,73 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:hizliflutter/kodlar/ornek_alt_yonlerdirme_cubuk.dart';
+import 'package:hizliflutter/kodlar//ornek_alt_yonlerdirme_cubuk.dart';
 import 'package:hizliflutter/kodlar/ornek_appbar.dart';
 import 'package:hizliflutter/kodlar/ornek_avatar_glow.dart';
 import 'package:hizliflutter/kodlar/ornek_giris_ekrani.dart';
 import 'package:hizliflutter/kodlar/ornek_hesap_makinesi.dart';
 import 'package:hizliflutter/kodlar/ornek_sayfa_gecis.dart';
-import 'package:hizliflutter/kodlar/ornek_slidable_list.dart';
+import 'package:hizliflutter/kodlar//ornek_slidable_list.dart';
 import 'package:hizliflutter/kodlar/ornek_slider_button.dart';
 import 'package:hizliflutter/kodlar/ornek_ust_yonlendirme_cubuk.dart';
-import 'package:hizliflutter/modeller/ornek.dart';
-import 'ornek_detay.dart';
+import 'package:hizliflutter/models/sample.dart';
+import 'sample_detail_page.dart';
 
-class Ornekler extends StatefulWidget {
+class Samples extends StatefulWidget {
   @override
-  _OrneklerState createState() => _OrneklerState();
+  _SamplesState createState() => _SamplesState();
 }
 
-class _OrneklerState extends State<Ornekler> {
-  List<Ornek> ornekler = [
-    Ornek(
+class _SamplesState extends State<Samples> {
+  List<Sample> ornekler = [
+    Sample(
         adi: 'Giriş Ekranı',
         ornek: GirisEkrani(),
         kod: 'lib/kodlar/ornek_giris_ekrani.dart',
         kaynak: 'https://github.com/ahmed-alzahrani/Flutter_Simple_Login',
         zorluk: 'basit'),
-    Ornek(
+    Sample(
         adi: 'Hesap Makinesi',
         ornek: HesapMakinesi(),
         kod: 'lib/kodlar/ornek_hesap_makinesi.dart',
         kaynak: 'https://github.com/emilsharier/Calculator',
         zorluk: 'orta'),
-    Ornek(
+    Sample(
         adi: 'Sayfalar Arası Geçiş',
         ornek: SayfaGecis(),
         kod: 'lib/kodlar/ornek_sayfa_gecis.dart',
         kaynak:
             'https://flutter.dev/docs/cookbook/navigation/navigation-basics',
         zorluk: 'basit'),
-    Ornek(
+    Sample(
         adi: 'Alt Yönlendirme Çubuğu',
         ornek: AltYonlendirmeCubugu(),
         kod: 'lib/kodlar/ornek_alt_yonlerdirme_cubuk.dart',
         kaynak: 'https://codesundar.com/flutter-bottom-navigation-tutorial/',
         zorluk: 'basit'),
-    Ornek(
+    Sample(
         adi: 'Üst Çubuk',
         ornek: AppBarOrnek(),
         kod: 'lib/kodlar/ornek_appbar.dart',
         kaynak: 'https://www.yazilimmotoru.com/',
         zorluk: 'basit'),
-    Ornek(
+    Sample(
         adi: 'Üst Yönlendirme Çubuğu',
         ornek: UstYonlendirmeCubugu(),
         kod: 'lib/kodlar/ornek_ust_yonlendirme_cubuk.dart',
         kaynak: 'https://www.yazilimmotoru.com/',
         zorluk: 'basit'),
-    Ornek(
+    Sample(
         adi: 'Slider Button',
         ornek: SliderButtonOrnek(),
         kod: 'lib/kodlar/ornek_slider_button.dart',
         kaynak: 'https://www.yazilimmotoru.com/',
         zorluk: 'basit'),
-    Ornek(
+    Sample(
         adi: 'Slidable List Item',
         ornek: SlidableList(),
         kod: 'lib/kodlar/ornek_slidable_list.dart',
         kaynak: 'https://www.yazilimmotoru.com/',
         zorluk: 'orta'),
-    Ornek(
+    Sample(
         adi: 'Avatar Glow',
         ornek: AvatarGlowOrnek(),
         kod: 'lib/kodlar/ornek_avatar_glow.dart',
@@ -126,7 +126,7 @@ class _OrneklerState extends State<Ornekler> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => OrnekDetay(ornekler[index]),
+                        builder: (context) => SampleDetailPage(ornekler[index]),
                       ),
                     );
                   },

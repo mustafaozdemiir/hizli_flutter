@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Ornek {
+class Sample {
   String _adi;
   String _zorluk;
   String _kod;
   Widget _ornek;
   String _kaynak;
 
-  Ornek({String adi, String zorluk, String kod, Widget ornek,String kaynak}) {
+  Sample({String adi, String zorluk, String kod, Widget ornek,String kaynak}) {
     this._adi = adi;
     this._zorluk=zorluk;
     this._kod=kod;

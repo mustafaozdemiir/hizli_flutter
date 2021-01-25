@@ -3,10 +3,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'sayfalar/haber/flutter_haber.dart';
-import 'sayfalar/ornekler/ornekler.dart';
-import 'sayfalar/sorular/flutter_soru.dart';
-import 'sayfalar/widgetler/widget_listeleme.dart';
+import 'pages/news//news_page.dart';
+import 'pages/sample//samples.dart';
+import 'pages/question//questions_page.dart';
+import 'pages/widgets//list_widget_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,11 +34,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final FirebaseMessaging _fcm = FirebaseMessaging();
-  List<Widget> _sayfalar = [
-    WidgetListeleme(),
-    FlutterHaber(),
-    FlutterSoru(),
-    Ornekler(),
+  List<Widget> _pages = [
+    ListWidgetPage(),
+    NewsPage(),
+    QuestionsPage(),
+    Samples(),
   ];
 
   @override
@@ -132,6 +132,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        body: _sayfalar[MyHomePage.page]);
+        body: _pages[MyHomePage.page]);
   }
 }

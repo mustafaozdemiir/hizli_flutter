@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Haber {
+class News {
   String _baslik;
   String _kisaAciklama;
   String _uzunAciklama;
@@ -12,7 +12,7 @@ class Haber {
   List<String> _resimler;
   String _baslikResim;
 
-  Haber(
+  News(
       {String baslik,
       String kisaAciklama,
       String uzunAciklama,
@@ -95,8 +95,8 @@ class Haber {
     _baslikResim = value;
   }
 
-  factory Haber.fromJson(Map<String, dynamic> json) {
-    return Haber(
+  factory News.fromJson(Map<String, dynamic> json) {
+    return News(
         baslik: json['baslik'].toString().replaceAll("/n", "\n"),
         kisaAciklama: json['kisaAciklama'],
         uzunAciklama: json['uzunAciklama'],

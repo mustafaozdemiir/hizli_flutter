@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hizliflutter/modeller/soru.dart';
+import 'package:hizliflutter/models/question.dart';
 
 class QuestionController extends GetxController {
-  List<Soru> soruListe;
+  List<Question> soruListe;
   var soruNo = 0.obs;
   var time = 10.obs;
   Timer _timer;
@@ -18,12 +18,12 @@ class QuestionController extends GetxController {
   var yanlisSayisi = 0.obs;
 
   Future<void> getQuestion() async {
-    soruListe = List<Soru>();
+    soruListe = List<Question>();
     final Firestore _firestore = Firestore.instance;
     QuerySnapshot querySnapshot =
         await _firestore.collection("sorular").getDocuments();
     for (int i = 0; i < querySnapshot.documents.length; i++) {
-      soruListe.add(Soru.fromJson(querySnapshot.documents[i].data));
+      soruListe.add(Question.fromJson(querySnapshot.documents[i].data));
     }
     soruListe.shuffle();
     update();
@@ -63,7 +63,7 @@ class QuestionController extends GetxController {
     super.onInit();
   }
 
-  void cevapKontrol(Soru gelenSoru, String gelenCevap) {
+  void cevapKontrol(Question gelenSoru, String gelenCevap) {
     if (gelenSoru.cevap.compareTo(gelenCevap) == 0) {
       dogru_cevap();
     } else {

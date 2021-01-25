@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hizliflutter/controllers/question_controller.dart';
 
-class FlutterSoru extends StatefulWidget {
+class QuestionsPage extends StatefulWidget {
   @override
-  _FlutterSoruState createState() => _FlutterSoruState();
+  _QuestionsPageState createState() => _QuestionsPageState();
 }
 
-class _FlutterSoruState extends State<FlutterSoru> {
+class _QuestionsPageState extends State<QuestionsPage> {
   final QuestionController questionController = Get.put(QuestionController());
 
   @override

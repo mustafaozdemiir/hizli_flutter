@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hizliflutter/kodlar/widget_ornekler.dart';
-import 'package:hizliflutter/modeller/widget_model.dart';
-import 'package:hizliflutter/servisler/kod_gosterimi/source_code_view.dart';
+import 'package:hizliflutter/models/widget_model.dart';
+import 'package:hizliflutter/services/show_code_service//source_code_view.dart';
 
-import 'method_listeleme.dart';
+import 'list_method_page.dart';
 
-class KodDetay extends StatelessWidget {
+class WidgetCodeDetailPage extends StatelessWidget {
   WidgetModel model;
 
-  KodDetay(this.model);
+  WidgetCodeDetailPage(this.model);
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +84,7 @@ class MetodSayfasi extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: MethodListeleme(model.metodlar),
+      child: ListMethodPage(model.metodlar),
     );
   }
 }

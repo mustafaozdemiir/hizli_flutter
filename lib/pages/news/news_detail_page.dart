@@ -1,24 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hizliflutter/modeller/haber.dart';
+import 'package:hizliflutter/models/news.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../servisler/youtube_full_screen.dart';
+import 'package:hizliflutter/services/youtube_full_screen.dart';
 
-class HaberDetay extends StatefulWidget {
-  Haber model;
+class NewsDetailPage extends StatefulWidget {
+  News model;
 
-  HaberDetay(this.model);
+  NewsDetailPage(this.model);
 
   @override
-  _HaberDetayState createState() => _HaberDetayState(model);
+  _NewsDetailPageState createState() => _NewsDetailPageState(model);
 }
 
-class _HaberDetayState extends State<HaberDetay> {
-  Haber model;
+class _NewsDetailPageState extends State<NewsDetailPage> {
+  News model;
 
-  _HaberDetayState(this.model);
+  _NewsDetailPageState(this.model);
 
   YoutubePlayerController _controller;
   PlayerState _playerState;
