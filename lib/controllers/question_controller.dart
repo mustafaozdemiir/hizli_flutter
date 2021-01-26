@@ -137,8 +137,7 @@ class QuestionController extends GetxController {
         transitionCurve: Curves.easeOutSine,
         transitionDuration: Duration(seconds: 1),
         barrierColor: Colors.blue);
-    soruNo.value = 0;
-    soruNo.refresh();
+    stopTimer();
   }
 
   void nextQuestion() {

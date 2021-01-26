@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hizliflutter/kodlar//ornek_alt_yonlerdirme_cubuk.dart';
+import 'package:hizliflutter/kodlar/ornek_animated_text.dart';
 import 'package:hizliflutter/kodlar/ornek_appbar.dart';
 import 'package:hizliflutter/kodlar/ornek_avatar_glow.dart';
 import 'package:hizliflutter/kodlar/ornek_giris_ekrani.dart';
@@ -7,6 +8,7 @@ import 'package:hizliflutter/kodlar/ornek_hesap_makinesi.dart';
 import 'package:hizliflutter/kodlar/ornek_sayfa_gecis.dart';
 import 'package:hizliflutter/kodlar//ornek_slidable_list.dart';
 import 'package:hizliflutter/kodlar/ornek_slider_button.dart';
+import 'package:hizliflutter/kodlar/ornek_swiper.dart';
 import 'package:hizliflutter/kodlar/ornek_ust_yonlendirme_cubuk.dart';
 import 'package:hizliflutter/models/sample.dart';
 import 'sample_detail_page.dart';
@@ -73,6 +75,18 @@ class _SamplesState extends State<Samples> {
         kod: 'lib/kodlar/ornek_avatar_glow.dart',
         kaynak: 'https://www.yazilimmotoru.com/',
         zorluk: 'basit'),
+    Sample(
+        adi: 'Swiper',
+        ornek: SwiperOrnek(),
+        kod: 'lib/kodlar/ornek_swiper.dart',
+        kaynak: 'https://www.yazilimmotoru.com/',
+        zorluk: 'orta'),
+    Sample(
+        adi: 'Text Animation Kit',
+        ornek: OrnekAnimatedTextKit(),
+        kod: 'lib/kodlar/ornek_animated_text.dart',
+        kaynak: 'https://www.yazilimmotoru.com/',
+        zorluk: 'orta'),
   ];
 
   @override
