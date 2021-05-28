@@ -5,6 +5,7 @@ import 'package:hizliflutter/controllers/fetch_controller.dart';
 import 'news_detail_page.dart';
 
 class NewsPage extends StatelessWidget {
+  final FetchController fetchController = Get.put(FetchController());
   Widget zaman;
 
   @override
@@ -17,7 +18,7 @@ class NewsPage extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       body: GetBuilder<FetchController>(
-        initState: (_) => Get.find<FetchController>().getNews(),
+        initState: (_) => Get.find<FetchController>().getNewsApi(),
         builder: (s) {
           return s.haberListe.length < 1
               ? Center(
@@ -46,7 +47,7 @@ class NewsPage extends StatelessWidget {
                 itemCount: s.haberListe.length,
                 itemBuilder: (context, int index) {
                   if (DateTime.now()
-                          .difference(s.haberListe[index].yayinTarihi.toDate())
+                          .difference(s.haberListe[index].releaseDate)
                           .inDays ==
                       0) {
                     bannerMessage = "Yeni";
@@ -54,13 +55,11 @@ class NewsPage extends StatelessWidget {
                     bannerTextColor = Colors.black;
                   } else {
                     if (DateTime.now()
-                            .difference(
-                                s.haberListe[index].yayinTarihi.toDate())
+                            .difference(s.haberListe[index].releaseDate)
                             .inDays <
                         365) {
                       bannerMessage = DateTime.now()
-                              .difference(
-                                  s.haberListe[index].yayinTarihi.toDate())
+                              .difference(s.haberListe[index].releaseDate)
                               .inDays
                               .toString() +
                           " Gün Önce";
@@ -68,20 +67,17 @@ class NewsPage extends StatelessWidget {
                       bannerTextColor = Colors.white;
                     } else if (365 <=
                             DateTime.now()
-                                .difference(
-                                    s.haberListe[index].yayinTarihi.toDate())
+                                .difference(s.haberListe[index].releaseDate)
                                 .inDays &&
                         DateTime.now()
-                                .difference(
-                                    s.haberListe[index].yayinTarihi.toDate())
+                                .difference(s.haberListe[index].releaseDate)
                                 .inDays <=
                             730) {
                       bannerMessage = "1 Yıl Önce";
                       bannerColor = Colors.purple;
                       bannerTextColor = Colors.white;
                     } else if (DateTime.now()
-                            .difference(
-                                s.haberListe[index].yayinTarihi.toDate())
+                            .difference(s.haberListe[index].releaseDate)
                             .inDays >
                         365) {
                       bannerMessage = "2 Yıl Önce";
@@ -107,7 +103,7 @@ class NewsPage extends StatelessWidget {
                         leading: CachedNetworkImage(
                           width: Get.width * 0.2,
                           height: Get.height * 0.2,
-                          imageUrl: s.haberListe[index].baslikResim,
+                          imageUrl: s.haberListe[index].titlePicture,
                           placeholder: (context, url) =>
                               Image.asset('res/loading.gif'),
                           errorWidget: (context, url, error) => Icon(
@@ -141,7 +137,7 @@ class NewsPage extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
                             child: Text(
-                              s.haberListe[index].kisaAciklama,
+                              s.haberListe[index].subTitle,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                             ),

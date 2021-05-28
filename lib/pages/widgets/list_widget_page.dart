@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hizliflutter/controllers/fetch_controller.dart';
@@ -57,7 +59,7 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
       ),
       backgroundColor: Colors.white,
       body: GetBuilder<FetchController>(
-        initState: (_) => Get.find<FetchController>().getWidgets(),
+        initState: (_) => Get.find<FetchController>().getWidgetsApi(),
         builder: (s) {
           return s.widgetListe.length < 1
               ? Center(
@@ -110,7 +112,7 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
             Color bannerTextColor;
             Widget cesit;
 
-            switch (s.widgetListe[index].kodTuru) {
+            switch (s.widgetListe[index].type) {
               case 'basit':
                 messageBanner = "Basit";
                 bannerColor = Colors.green.withOpacity(.4);
@@ -128,22 +130,22 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                 break;
             }
 
-            switch (s.widgetListe[index].cesit) {
+            switch (s.widgetListe[index].kind) {
               case 'Layout':
                 cesit = Text(
-                  s.widgetListe[index].cesit,
+                  s.widgetListe[index].kind,
                   style: TextStyle(color: Colors.yellow[900].withOpacity(.7)),
                 );
                 break;
               case 'Widget':
                 cesit = Text(
-                  s.widgetListe[index].cesit,
+                  s.widgetListe[index].kind,
                   style: TextStyle(color: Colors.blue.withOpacity(.7)),
                 );
                 break;
               default:
                 cesit = Text(
-                  s.widgetListe[index].cesit,
+                  s.widgetListe[index].kind,
                   style: TextStyle(
                       color: Color((Random().nextDouble() * 0xFFFFFF).toInt())
                           .withOpacity(1.0)),
@@ -169,13 +171,14 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => WidgetCodeDetailPage(s.widgetListe[index]),
+                        builder: (context) =>
+                            WidgetCodeDetailPage(s.widgetListe[index]),
                       ),
                     );
                   },
                   title: Center(
                     child: Text(
-                      s.widgetListe[index].adi,
+                      s.widgetListe[index].name,
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
@@ -185,9 +188,10 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          s.widgetListe[index].kisaAciklama,
+                          s.widgetListe[index].subTitle,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
@@ -202,7 +206,7 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
   Widget _searchListView(FetchController s) {
     _liste = List<String>();
     for (int i = 0; i < s.widgetListe.length; i++) {
-      _liste.add(s.widgetListe[i].adi);
+      _liste.add(s.widgetListe[i].name);
     }
 
     _arananliste = List<String>();
@@ -226,7 +230,7 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
             Color bannerTextColor;
             Widget cesit;
 
-            switch (s.widgetListe[index].kodTuru) {
+            switch (s.widgetListe[index].type) {
               case 'basit':
                 messageBanner = "Basit";
                 bannerColor = Colors.green.withOpacity(.4);
@@ -243,22 +247,22 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                 bannerTextColor = Colors.white;
                 break;
             }
-            switch (s.widgetListe[index].cesit) {
+            switch (s.widgetListe[index].kind) {
               case 'Layout':
                 cesit = Text(
-                  s.widgetListe[index].cesit,
+                  s.widgetListe[index].kind,
                   style: TextStyle(color: Colors.yellow[900]),
                 );
                 break;
               case 'Widget':
                 cesit = Text(
-                  s.widgetListe[index].cesit,
+                  s.widgetListe[index].kind,
                   style: TextStyle(color: Colors.blue),
                 );
                 break;
               default:
                 cesit = Text(
-                  s.widgetListe[index].cesit,
+                  s.widgetListe[index].kind,
                   style: TextStyle(
                       color: Color((Random().nextDouble() * 0xFFFFFF).toInt())
                           .withOpacity(1.0)),
@@ -293,7 +297,7 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                     child: Center(
                       child: Text(s
                           .widgetListe[_liste.indexOf(_arananliste[index])]
-                          .adi),
+                          .name),
                     ),
                   ),
                   subtitle: Padding(
@@ -301,7 +305,7 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                     child: Center(
                       child: Text(s
                           .widgetListe[_liste.indexOf(_arananliste[index])]
-                          .kisaAciklama),
+                          .subTitle),
                     ),
                   ),
                 ),

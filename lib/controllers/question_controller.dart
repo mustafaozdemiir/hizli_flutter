@@ -1,13 +1,14 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hizliflutter/models/question.dart';
+import 'package:http/http.dart' as http;
 
 class QuestionController extends GetxController {
   List<Question> soruListe;
   var soruNo = 0.obs;
-  var time = 10.obs;
+  var timerTime = 10.obs;
   Timer _timer;
 
   var toplamPuan = 0.0.obs;
@@ -17,7 +18,7 @@ class QuestionController extends GetxController {
   var dogruSayisi = 0.obs;
   var yanlisSayisi = 0.obs;
 
-  Future<void> getQuestion() async {
+  /* Future<void> getQuestion() async {
     soruListe = List<Question>();
     final Firestore _firestore = Firestore.instance;
     QuerySnapshot querySnapshot =
@@ -27,17 +28,35 @@ class QuestionController extends GetxController {
     }
     soruListe.shuffle();
     update();
+  }*/
+
+  Future<void> getQuestionApi() async {
+    soruListe = List<Question>();
+
+    final http.Response response = await http
+        .get('http://webservice.yazilimmotoru.com/api.php/records/answers');
+
+    if (response.statusCode == 200) {
+      var parsedJson = jsonDecode(response.body)['records'];
+      for (var model in parsedJson) {
+        soruListe.add(Question.fromJson(model));
+      }
+      soruListe.shuffle();
+    } else {
+      print('Hata var');
+    }
+    update();
   }
 
   void startTimer(int zaman) {
     if (_timer != null) {
       _timer.cancel();
     }
-    time.value = zaman;
+    timerTime.value = zaman;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (time.value != 0) {
-        time.value--;
-      } else if (time.value == 0) {
+      if (timerTime.value != 0) {
+        timerTime.value--;
+      } else if (timerTime.value == 0) {
         if (soruNo.value == soruListe.length - 1) {
           soruBitis();
         } else {
@@ -59,12 +78,12 @@ class QuestionController extends GetxController {
 
   @override
   void onInit() {
-    getQuestion();
+    getQuestionApi();
     super.onInit();
   }
 
   void cevapKontrol(Question gelenSoru, String gelenCevap) {
-    if (gelenSoru.cevap.compareTo(gelenCevap) == 0) {
+    if (gelenSoru.answer.compareTo(gelenCevap) == 0) {
       dogru_cevap();
     } else {
       yanlis_cevap();
@@ -77,19 +96,23 @@ class QuestionController extends GetxController {
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM);
     sonCevap.value = false;
-    toplamPuan.value -= soruListe[soruNo.value].puan % 2 == 0
-        ? soruListe[soruNo.value].puan / 2
+    toplamPuan.value -= soruListe[soruNo.value].point % 2 == 0
+        ? soruListe[soruNo.value].point / 2
         : 3;
     yanlisSayisi.value++;
     if (soruNo.value < soruListe.length) {
       nextQuestion();
+    } else {
+      soruNo.value = 0;
+      soruNo.refresh();
     }
+    update();
   }
 
   void yanlis_cevap() {
     sonCevap.value = false;
-    toplamPuan.value -= soruListe[soruNo.value].puan % 2 == 0
-        ? soruListe[soruNo.value].puan / 2
+    toplamPuan.value -= soruListe[soruNo.value].point % 2 == 0
+        ? soruListe[soruNo.value].point / 2
         : 3;
     yanlisSayisi.value++;
     Get.snackbar("Yanlış", "Malesef yanlış cevap!",
@@ -101,7 +124,7 @@ class QuestionController extends GetxController {
   }
 
   void dogru_cevap() {
-    toplamPuan.value += soruListe[soruNo.value].puan;
+    toplamPuan.value += soruListe[soruNo.value].point;
     sonCevap.value = true;
     dogruSayisi.value++;
     Get.snackbar("Doğru", "Tebrikler doğru cevap!",
@@ -111,26 +134,46 @@ class QuestionController extends GetxController {
     nextQuestion();
   }
 
+  void nextQuestion() {
+    if (soruNo.value < soruListe.length - 1) {
+      if (_timer.isActive) {
+        stopTimer();
+      }
+      soruNo.value++;
+      soruNo.refresh();
+      startTimer(soruListe[soruNo.value].time);
+    } else {
+      soruBitis();
+    }
+  }
+
   void soruBitis() {
     Get.dialog(
         AlertDialog(
-          title: Text("Sorular Bitti"),
-          content: Text("Toplam Puanınız: " + toplamPuan.toStringAsFixed(0)),
+          title: Text('Sorular Bitti'),
+          content: Text(
+            'Doğru Sayısı: ' +
+                dogruSayisi.value.toString() +
+                '\nYanlış Sayısı: ' +
+                yanlisSayisi.value.toString() +
+                '\nToplam Puanınız: ' +
+                toplamPuan.toStringAsFixed(0),
+          ),
           actions: [
             FlatButton(
-                onPressed: () {
-                  soruNo.value = 0;
-                  soruNo.refresh();
-                  dogruSayisi.value = 0;
-                  yanlisSayisi.value = 0;
-                  toplamPuan.value = 0;
-                  dogruSayisi.refresh();
-                  yanlisSayisi.refresh();
-                  toplamPuan.refresh();
-                  Get.back();
-                  nextQuestion();
-                },
-                child: Text("Tamam"))
+              onPressed: () {
+                soruNo.value = 0;
+                dogruSayisi.value = 0;
+                yanlisSayisi.value = 0;
+                toplamPuan.value = 0;
+                dogruSayisi.refresh();
+                yanlisSayisi.refresh();
+                toplamPuan.refresh();
+                Get.back();
+                startTimer(soruListe[soruNo.value].time);
+              },
+              child: Text("Tamam"),
+            ),
           ],
         ),
         barrierDismissible: false,
@@ -138,19 +181,6 @@ class QuestionController extends GetxController {
         transitionDuration: Duration(seconds: 1),
         barrierColor: Colors.blue);
     stopTimer();
-  }
-
-  void nextQuestion() {
-    if (soruNo.value != soruListe.length - 1) {
-      if (_timer.isActive) {
-        stopTimer();
-      }
-      soruNo.value++;
-      soruNo.refresh();
-      startTimer(soruListe[soruNo.value].zaman);
-    } else if (soruNo.value < soruListe.length) {
-      soruBitis();
-    }
   }
 }
 

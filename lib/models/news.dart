@@ -1,58 +1,56 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class News {
-  String _baslik;
-  String _kisaAciklama;
-  String _uzunAciklama;
-  String _turu;
-  String _cesidi;
+  String _heading;
+  String _subTitle;
+  String _title;
+  String _type;
+  String _kind;
   String _youtubeVideoUrl;
-  String _kaynakLink;
-  Timestamp _yayinTarihi;
-  List<String> _resimler;
-  String _baslikResim;
+  String _sourceLink;
+  DateTime _releaseDate;
+  List<String> _pictures;
+  String _titlePicture;
 
   News(
-      {String baslik,
-      String kisaAciklama,
-      String uzunAciklama,
-      String turu,
-      String cesidi,
+      {String heading,
+      String subTitle,
+      String title,
+      String type,
+      String kind,
       String youtubeVideoUrl,
-      String kaynakLink,
-      List<String> resimler,
-      Timestamp yayinTarihi,
-      String baslikResim}) {
-    this._baslik = baslik;
-    this._kisaAciklama = kisaAciklama;
-    this._uzunAciklama = uzunAciklama;
-    this._turu = turu;
-    this._cesidi = cesidi;
+      String sourceLink,
+      List<String> pictures,
+      DateTime releaseDate,
+      String titlePicture}) {
+    this._heading = heading;
+    this._subTitle = subTitle;
+    this._title = title;
+    this._type = type;
+    this._kind = kind;
     this._youtubeVideoUrl = youtubeVideoUrl;
-    this._kaynakLink = kaynakLink;
-    this._resimler = resimler;
-    this._yayinTarihi = yayinTarihi;
-    this._baslikResim = baslikResim;
+    this._sourceLink = sourceLink;
+    this._pictures = pictures;
+    this._releaseDate = releaseDate;
+    this._titlePicture = titlePicture;
   }
 
-  String get baslik => _baslik;
+  String get baslik => _heading;
 
   set baslik(String value) {
-    _baslik = value;
+    _heading = value;
   }
 
-  String get kisaAciklama => _kisaAciklama;
+  String get subTitle => _subTitle;
 
-  List<String> get resimler => _resimler;
+  List<String> get pictures => _pictures;
 
-  set resimler(List<String> value) {
-    _resimler = value;
+  set pictures(List<String> value) {
+    _pictures = value;
   }
 
-  String get kaynakLink => _kaynakLink;
+  String get sourceLink => _sourceLink;
 
-  set kaynakLink(String value) {
-    _kaynakLink = value;
+  set sourceLink(String value) {
+    _sourceLink = value;
   }
 
   String get youtubeVideoUrl => _youtubeVideoUrl;
@@ -61,51 +59,58 @@ class News {
     _youtubeVideoUrl = value;
   }
 
-  String get uzunAciklama => _uzunAciklama;
+  String get title => _title;
 
-  set uzunAciklama(String value) {
-    _uzunAciklama = value;
+  set title(String value) {
+    _title = value;
   }
 
-  set kisaAciklama(String value) {
-    _kisaAciklama = value;
+  set subTitle(String value) {
+    _subTitle = value;
   }
 
-  String get cesidi => _cesidi;
+  String get kink => _kind;
 
-  set cesidi(String value) {
-    _cesidi = value;
+  set kink(String value) {
+    _kind = value;
   }
 
-  String get turu => _turu;
+  String get type => _type;
 
-  set turu(String value) {
-    _turu = value;
+  set type(String value) {
+    _type = value;
   }
 
-  Timestamp get yayinTarihi => _yayinTarihi;
+  DateTime get releaseDate => _releaseDate;
 
-  set yayinTarihi(Timestamp value) {
-    _yayinTarihi = value;
+  set releaseDate(DateTime value) {
+    _releaseDate = value;
   }
 
-  String get baslikResim => _baslikResim;
+  String get titlePicture => _titlePicture;
 
-  set baslikResim(String value) {
-    _baslikResim = value;
+  set titlePicture(String value) {
+    _titlePicture = value;
   }
 
   factory News.fromJson(Map<String, dynamic> json) {
+    List<String> picturess = [];
+    var photos = json['pictures'].toString().split(',');
+    for (var photo in photos) {
+      if (photo.isNotEmpty && photo != null) {
+        picturess.add(photo);
+      }
+    }
     return News(
-        baslik: json['baslik'].toString().replaceAll("/n", "\n"),
-        kisaAciklama: json['kisaAciklama'],
-        uzunAciklama: json['uzunAciklama'],
-        turu: json['turu'],
-        cesidi: json['cesidi'],
+        heading: json['heading'].toString().replaceAll("/n", "\n"),
+        subTitle: json['subTitle'],
+        title: json['title'],
+        type: json['type'],
+        kind: json['kind'],
         youtubeVideoUrl: json['youtubeVideoUrl'],
-        kaynakLink: json['kaynakLink'],
-        yayinTarihi: json['yayinTarihi'],
-        baslikResim: json['baslikResim'],
-        resimler: List<String>.from(json['resimler']));
+        sourceLink: json['sourceLink'],
+        releaseDate: DateTime.parse(json['releaseDate']),
+        titlePicture: json['titlePicture'],
+        pictures: picturess);
   }
 }

@@ -36,7 +36,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                 s.soruListe.isNotEmpty &&
                 s.soruListe != null &&
                 s.soruNo.value < s.soruListe.length) {
-              s.startTimer(s.soruListe[s.soruNo.value].zaman);
+              s.startTimer(s.soruListe[s.soruNo.value].time);
             }
             QuestionBanner questionBanner = QuestionBanner();
             return s.soruListe.length > 1 &&
@@ -48,7 +48,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         s.soruListe.isNotEmpty &&
                         s.soruListe != null &&
                         s.soruNo.value < s.soruListe.length) {
-                      switch (s.soruListe[s.soruNo.value].zorluk) {
+                      switch (s.soruListe[s.soruNo.value].difficulty) {
                         case "kolay":
                           questionBanner.bannerMessage = "Kolay";
                           questionBanner.bannerColor =
@@ -94,7 +94,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                             color: Colors.grey.shade300,
                             child: ListTile(
                               title: Text(
-                                s.soruListe[s.soruNo.value].baslik,
+                                s.soruListe[s.soruNo.value].heading,
                                 style: TextStyle(color: Colors.black),
                               ),
                               leading: Text(
@@ -130,13 +130,13 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                       tileColor: Colors.grey.shade300,
                                       leading: Text(secenek),
                                       title: Text(s.soruListe[s.soruNo.value]
-                                          .cevaplar[index]),
+                                          .answers[index]),
                                       onTap: () {
                                         s.stopTimer();
                                         s.cevapKontrol(
                                             s.soruListe[s.soruNo.value],
                                             s.soruListe[s.soruNo.value]
-                                                .cevaplar[index]);
+                                                .answers[index]);
                                       },
                                     ),
                                   ),
@@ -145,7 +145,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         ),
                         Center(
                           child: Text(
-                            s.time.toString(),
+                            s.timerTime.toString(),
                             style: TextStyle(fontSize: 30),
                           ),
                         ),
@@ -210,7 +210,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                     children: [
                                       Icon(
                                         Icons.leaderboard_outlined,
-                                        size:25,
+                                        size: 25,
                                         color: Colors.indigo,
                                       ),
                                       SizedBox(
@@ -236,7 +236,4 @@ class _QuestionsPageState extends State<QuestionsPage> {
           }),
     );
   }
-
-
-
 }

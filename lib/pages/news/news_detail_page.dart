@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:hizliflutter/models/news.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:hizliflutter/services/youtube_full_screen.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class NewsDetailPage extends StatefulWidget {
   News model;
@@ -17,34 +16,22 @@ class NewsDetailPage extends StatefulWidget {
 
 class _NewsDetailPageState extends State<NewsDetailPage> {
   News model;
+  YoutubePlayerController _controller;
 
   _NewsDetailPageState(this.model);
-
-  YoutubePlayerController _controller;
-  PlayerState _playerState;
-  YoutubeMetaData _videoMetaData;
 
   @override
   void initState() {
     if (model.youtubeVideoUrl != "yok") {
       _controller = YoutubePlayerController(
-        initialVideoId: YoutubePlayer.convertUrlToId(model.youtubeVideoUrl),
-        flags: const YoutubePlayerFlags(
-          mute: false,
-          autoPlay: false,
+        initialVideoId: model.youtubeVideoUrl,
+        params: YoutubePlayerParams(
+          showControls: true,
+          showFullscreenButton: true,
         ),
-      )..addListener(listener);
+      );
     }
     super.initState();
-  }
-
-  void listener() {
-    if (!_controller.value.isFullScreen) {
-      setState(() {
-        _playerState = _controller.value.playerState;
-        _videoMetaData = _controller.metadata;
-      });
-    }
   }
 
   @override
@@ -60,6 +47,15 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
               snap: false,
               pinned: true,
               floating: true,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Get.back();
+                },
+              ),
               title: Text(
                 model.baslik,
                 style: TextStyle(color: Colors.black),
@@ -67,7 +63,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
               centerTitle: true,
               flexibleSpace: FlexibleSpaceBar(
                 background: CachedNetworkImage(
-                  imageUrl: model.resimler[0],
+                  imageUrl: model.pictures[0],
                   placeholder: (context, url) => Image.asset('res/loading.gif'),
                   errorWidget: (context, url, error) => Icon(
                     Icons.error,
@@ -87,41 +83,13 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                     delegate: SliverChildListDelegate([
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(model.uzunAciklama),
+                        child: Text(model.title),
                       ),
                       SizedBox(height: 5),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: YoutubePlayerBuilder(
-                          onEnterFullScreen: () =>
-                              SystemChrome.setPreferredOrientations([
-                            DeviceOrientation.landscapeRight,
-                            DeviceOrientation.landscapeLeft
-                          ]).whenComplete(
-                            () => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => YoutubeFullScreen(model),
-                              ),
-                            ),
-                          ),
-                          builder: (context, player) {
-                            return Column(
-                              children: <Widget>[
-                                player,
-                              ],
-                            );
-                          },
-                          player: YoutubePlayer(
-                            controller: _controller,
-                            showVideoProgressIndicator: true,
-                            progressIndicatorColor: Colors.amber,
-                            progressColors: ProgressBarColors(
-                                playedColor: Colors.amber,
-                                handleColor: Colors.amberAccent),
-                          ),
-                        ),
-                      ),
+                      YoutubePlayerIFrame(
+                        controller: _controller,
+                        aspectRatio: 16 / 9,
+                      )
                     ]),
                   ),
             SliverList(
@@ -131,7 +99,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CachedNetworkImage(
-                        imageUrl: model.resimler[index],
+                        imageUrl: model.pictures[index],
                         placeholder: (context, url) =>
                             Image.asset('res/loading.gif'),
                         errorWidget: (context, url, error) => Icon(
@@ -146,7 +114,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                     ),
                   ],
                 ),
-                childCount: model.resimler.length,
+                childCount: model.pictures.length,
               ),
             ),
             SliverToBoxAdapter(
@@ -154,7 +122,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                 color: Colors.white,
                 child: Text("KAYNAK"),
                 onPressed: () {
-                  launch(model.kaynakLink);
+                  launch(model.sourceLink);
                 },
               ),
             ),
@@ -167,9 +135,5 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
   }
 }

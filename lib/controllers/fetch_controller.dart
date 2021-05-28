@@ -1,12 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:hizliflutter/models/news.dart';
 import 'package:hizliflutter/models/widget_model.dart';
+import 'package:http/http.dart' as http;
 
 class FetchController extends GetxController {
   List<WidgetModel> widgetListe = List<WidgetModel>().obs;
-  List<News> haberListe = List<News>();
-
+  List<News> haberListe = List<News>().obs;
+/*
   Future<void> getWidgets() async {
     widgetListe.clear();
     final Firestore _firestore = Firestore.instance;
@@ -16,10 +18,9 @@ class FetchController extends GetxController {
       widgetListe.add(WidgetModel.fromJson(querySnapshot.documents[i].data));
     }
     update();
-  }
+  }*/
 
-
-
+/*
   Future<void> getNews() async {
     haberListe.clear();
     final Firestore _firestore = Firestore.instance;
@@ -30,12 +31,42 @@ class FetchController extends GetxController {
     }
     for (int i = 0; i < haberListe.length; i++) {
       haberListe.sort((a, b) {
-        return a.yayinTarihi.compareTo(b.yayinTarihi);
+        return a.releaseDate.compareTo(b.releaseDate);
       });
     }
-    haberListe=haberListe.reversed.toList();
+    haberListe = haberListe.reversed.toList();
+    update();
+  }*/
+
+  Future<void> getNewsApi() async {
+    haberListe.clear();
+    final http.Response response = await http
+        .get('http://webservice.yazilimmotoru.com/api.php/records/news');
+
+    if (response.statusCode == 200) {
+      var parsedJson = jsonDecode(response.body)['records'];
+      for (var model in parsedJson) {
+        haberListe.add(News.fromJson(model));
+      }
+    } else {
+      print('Hata var');
+    }
+    update();
+  }
+
+  Future<void> getWidgetsApi() async {
+    widgetListe.clear();
+    final http.Response response = await http.get(
+        'http://webservice.yazilimmotoru.com/api.php/records/widgets?join=methods');
+
+    if (response.statusCode == 200) {
+      var parsedJson = jsonDecode(response.body)['records'];
+      for (var model in parsedJson) {
+        widgetListe.add(WidgetModel.fromJson(model));
+      }
+    } else {
+      print('Hata var');
+    }
     update();
   }
 }
-
-

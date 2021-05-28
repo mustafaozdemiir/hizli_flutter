@@ -1,72 +1,88 @@
 class Question {
-  String _baslik;
-  String _zorluk;
-  String _cevap;
-  List<String> _cevaplar;
-  int _puan;
-  int _zaman;
+  int _id;
+  String _heading;
+  String _difficulty;
+  String _answer;
+  List<String> _answers;
+  int _point;
+  int _time;
 
   Question(
-      {String baslik,
-      String zorluk,
-      String cevap,
-      List<String> cevaplar,
-      int puan,
-      int zaman}) {
-    this._baslik = baslik;
-    this.zorluk = zorluk;
-    this._cevap = cevap;
-    this._cevaplar = cevaplar;
-    this._puan = puan;
-    this._zaman = zaman;
+      {int id,
+      String heading,
+      String difficulty,
+      String answer,
+      List<String> answers,
+      int point,
+      int time}) {
+    this._id = id;
+    this._heading = heading;
+    this.difficulty = difficulty;
+    this._answer = answer;
+    this._answers = answers;
+    this._point = point;
+    this._time = time;
   }
 
-  int get zaman => _zaman;
+  int get id => _id;
 
-  set zaman(int value) {
-    _zaman = value;
+  set id(int value) {
+    _id = value;
   }
 
-  int get puan => _puan;
+  int get time => _time;
 
-  set puan(int value) {
-    _puan = value;
+  set time(int value) {
+    _time = value;
   }
 
-  List<String> get cevaplar => _cevaplar;
+  int get point => _point;
 
-  set cevaplar(List<String> value) {
-    _cevaplar = value;
+  set point(int value) {
+    _point = value;
   }
 
-  String get cevap => _cevap;
+  List<String> get answers => _answers;
 
-  set cevap(String value) {
-    _cevap = value;
+  set answers(List<String> value) {
+    _answers = value;
   }
 
-  String get zorluk => _zorluk;
+  String get answer => _answer;
 
-  set zorluk(String value) {
-    _zorluk = value;
+  set answer(String value) {
+    _answer = value;
   }
 
-  String get baslik => _baslik;
+  String get difficulty => _difficulty;
 
-  set baslik(String value) {
-    _baslik = value;
+  set difficulty(String value) {
+    _difficulty = value;
+  }
+
+  String get heading => _heading;
+
+  set heading(String value) {
+    _heading = value;
   }
 
   factory Question.fromJson(Map<String, dynamic> json) {
-    var cevaplarList = List<String>.from(json['cevaplar']);
-    cevaplarList.shuffle();
+    List<String> answerss = [];
+    var answersss = json['answers'].toString().split('*');
+    for (int i = 0; i < 4; i++) {
+      if (answersss[i].isNotEmpty && answersss[i] != null) {
+        answerss.add(answersss[i]);
+      }
+    }
+    answerss.shuffle();
     return Question(
-      baslik: json['baslik'].toString().replaceAll("/n", "\n"),
-      zorluk: json['zorluk'],
-      cevap: json['cevap'],
-      puan: json['puan'],
-      zaman: json['zaman'],
-      cevaplar: cevaplarList,
+      id: json['id'],
+      heading: json['heading'].toString().replaceAll("/n", "\n"),
+      difficulty: json['difficulty'],
+      answer: json['answer'],
+      point: json['point'],
+      time: json['time'],
+      answers: answerss,
     );
   }
 }

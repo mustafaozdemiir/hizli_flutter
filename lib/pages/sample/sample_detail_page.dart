@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hizliflutter/models/sample.dart';
 import 'package:hizliflutter/services/show_code_service/source_code_view.dart';
 
@@ -48,6 +49,15 @@ class _SampleDetailPageState extends State<SampleDetailPage> {
               indicatorColor: Colors.black,
               labelColor: Colors.black,
               tabs: tabKontrol,
+            ),
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Get.back();
+              },
             ),
           ),
           body: TabBarView(

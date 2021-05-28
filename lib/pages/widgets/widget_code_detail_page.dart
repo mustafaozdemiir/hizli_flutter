@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hizliflutter/kodlar/widget_ornekler.dart';
 import 'package:hizliflutter/models/widget_model.dart';
 import 'package:hizliflutter/services/show_code_service//source_code_view.dart';
@@ -15,7 +16,7 @@ class WidgetCodeDetailPage extends StatelessWidget {
     List<Widget> tabKontrol;
     List<Widget> tabBar;
     int sayfaSayisi;
-    if (model.kodDizin == 'eklenmedi') {
+    if (model.path == 'eklenmedi') {
       sayfaSayisi = 1;
       tabKontrol = [
         Tab(
@@ -42,8 +43,8 @@ class WidgetCodeDetailPage extends StatelessWidget {
       ];
       tabBar = [
         MetodSayfasi(model),
-        WidgetOrnek(model.adi),
-        KodGorunumu(model.kodDizin),
+        WidgetOrnek(model.name),
+        KodGorunumu(model.path),
       ];
     }
 
@@ -53,17 +54,26 @@ class WidgetCodeDetailPage extends StatelessWidget {
         length: sayfaSayisi,
         child: Scaffold(
           appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Get.back();
+              },
+            ),
             backgroundColor: Colors.white,
             bottom: TabBar(
               indicatorColor: Colors.black,
               labelColor: Colors.black,
               tabs: tabKontrol,
             ),
-            title: Center(
-              child: Text(
-                model.adi,
-                style: TextStyle(color: Colors.black),
-              ),
+            centerTitle: true,
+            title: Text(
+              model.name,
+              style: TextStyle(color: Colors.black),
+              textAlign: TextAlign.center,
             ),
           ),
           body: TabBarView(
@@ -84,7 +94,7 @@ class MetodSayfasi extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: ListMethodPage(model.metodlar),
+      child: ListMethodPage(model.methods),
     );
   }
 }

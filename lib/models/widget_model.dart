@@ -1,118 +1,137 @@
 class WidgetMetod {
-  String _adi;
-  String _aciklama;
-  String _turu;
+  int _id;
+  String _name;
+  String _explanation;
+  String _type;
 
-  WidgetMetod({String adi, String aciklama, String turu}) {
-    this._adi = adi;
-    this._aciklama = aciklama;
-    this._turu = turu;
+  WidgetMetod({int id, String name, String explanation, String type}) {
+    this._id = id;
+    this._name = name;
+    this._explanation = explanation;
+    this._type = type;
   }
 
-  String get adi => _adi;
+  int get id => _id;
 
-  set adi(String value) {
-    _adi = value;
+  set id(int value) {
+    _id = value;
   }
 
-  String get turu => _turu;
+  String get name => _name;
 
-  set turu(String value) {
-    _turu = value;
+  set name(String value) {
+    _name = value;
   }
 
-  String get aciklama => _aciklama;
+  String get type => _type;
 
-  set aciklama(String value) {
-    _aciklama = value;
+  set type(String value) {
+    _type = value;
+  }
+
+  String get explanation => _explanation;
+
+  set explanation(String value) {
+    _explanation = value;
   }
 
   factory WidgetMetod.fromJson(Map<String, dynamic> json) => WidgetMetod(
-        adi: json['adi'],
-        aciklama: json['aciklama'],
-        turu: json['turu'],
+        id: json['id'],
+        name: json['name'],
+        explanation: json['explanation'],
+        type: json['type'],
       );
 }
 
 class WidgetModel {
-  String _adi;
-  String _kisaAciklama;
-  String _uzunAciklama;
-  List<WidgetMetod> _metodlar;
-  String _kodDizin;
-  String _kodTuru;
-  String _cesit;
+  int _id;
+  String _name;
+  String _subTitle;
+  String _title;
+  String _path;
+  String _type;
+  String _kind;
+  List<WidgetMetod> _methods;
 
   WidgetModel({
-    String adi,
-    String kisaAciklama,
-    String uzunAciklama,
-    List<WidgetMetod> metodlar,
-    String kodDizin,
-    String kodTuru,
-    String cesit,
+    int id,
+    String name,
+    String subTitle,
+    String title,
+    String path,
+    String type,
+    String kind,
+    List<WidgetMetod> methods,
   }) {
-    this._adi = adi;
-    this._kisaAciklama = kisaAciklama;
-    this._uzunAciklama = uzunAciklama;
-    this._metodlar = metodlar;
-    this._kodDizin = kodDizin;
-    this._kodTuru = kodTuru;
-    this._cesit = cesit;
+    this._id = id;
+    this._name = name;
+    this._subTitle = subTitle;
+    this._title = title;
+    this._path = path;
+    this._type = type;
+    this._kind = kind;
+    this._methods = methods;
   }
 
-  String get adi => _adi;
+  int get id => _id;
 
-  set adi(String value) {
-    _adi = value;
+  set id(int value) {
+    _id = value;
   }
 
-  String get kisaAciklama => _kisaAciklama;
+  String get name => _name;
 
-  set kisaAciklama(String value) {
-    _kisaAciklama = value;
+  set name(String value) {
+    _name = value;
   }
 
-  String get uzunAciklama => _uzunAciklama;
+  String get subTitle => _subTitle;
 
-  set uzunAciklama(String value) {
-    _uzunAciklama = value;
+  set subTitle(String value) {
+    _subTitle = value;
   }
 
-  List<WidgetMetod> get metodlar => _metodlar;
+  String get title => _title;
 
-  set metodlar(List<WidgetMetod> value) {
-    _metodlar = value;
+  set title(String value) {
+    _title = value;
   }
 
-  String get kodDizin => _kodDizin;
+  List<WidgetMetod> get methods => _methods;
 
-  set kodDizin(String value) {
-    _kodDizin = value;
+  set methods(List<WidgetMetod> value) {
+    _methods = value;
   }
 
-  String get kodTuru => _kodTuru;
+  String get path => _path;
 
-  set kodTuru(String value) {
-    _kodTuru = value;
+  set path(String value) {
+    _path = value;
   }
 
-  String get cesit => _cesit;
+  String get type => _type;
 
-  set cesit(String value) {
-    _cesit = value;
+  set type(String value) {
+    _type = value;
+  }
+
+  String get kind => _kind;
+
+  set kind(String value) {
+    _kind = value;
   }
 
   factory WidgetModel.fromJson(Map<String, dynamic> json) {
-    var list = json['metodlar'] as List;
-    List<WidgetMetod> metodList = list.map((e) => WidgetMetod.fromJson(e)).toList();
+    var list = json['methods'] as List;
+    List<WidgetMetod> metodList =
+        list.map((e) => WidgetMetod.fromJson(e)).toList();
     return WidgetModel(
-        adi: json['adi'].toString().replaceAll("/n", "\n"),
-        kisaAciklama: json['kisaAciklama'],
-        uzunAciklama: json['uzunAciklama'],
-        kodDizin: json['kodDizin'],
-        kodTuru: json['kodTuru'],
-        cesit: json['cesit'],
-        metodlar: metodList);
+        name: json['name'].toString().replaceAll("/n", "\n"),
+        subTitle: json['subTitle'],
+        title: json['title'],
+        path: json['path'],
+        type: json['type'],
+        kind: json['kind'],
+        methods: metodList);
   }
 }
