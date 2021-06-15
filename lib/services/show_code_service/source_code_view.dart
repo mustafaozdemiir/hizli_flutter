@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:animated_floatactionbuttons/animated_floatactionbuttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hizliflutter/app_string.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 import 'syntax_highlighter.dart';
 
@@ -12,9 +13,8 @@ class SourceCodeView extends StatefulWidget {
   const SourceCodeView({Key key, @required this.filePath, this.codeLinkPrefix})
       : super(key: key);
 
-  String get codeLink => this.codeLinkPrefix == null
-      ? null
-      : '${this.codeLinkPrefix}';
+  String get codeLink =>
+      this.codeLinkPrefix == null ? null : '${this.codeLinkPrefix}';
 
   @override
   _SourceCodeViewState createState() {
@@ -61,11 +61,11 @@ class _SourceCodeViewState extends State<SourceCodeView> {
         FloatingActionButton(
           heroTag: null,
           child: Icon(Icons.content_copy),
-          tooltip: 'Kod linki kopyalandı!',
+          tooltip: AppString.codeLinkCopied,
           onPressed: () {
             Clipboard.setData(ClipboardData(text: this.widget.codeLink));
             Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text('Kod kopyalandı!'),
+              content: Text(AppString.codeCopied),
             ));
           },
         ),
@@ -73,13 +73,13 @@ class _SourceCodeViewState extends State<SourceCodeView> {
         FloatingActionButton(
           heroTag: null,
           child: Icon(Icons.open_in_new),
-          tooltip: 'Tarayıcıda Göster',
+          tooltip: AppString.showInBrowser,
           onPressed: () => url_launcher.launch(this.widget.codeLink),
         ),
       FloatingActionButton(
         heroTag: null,
         child: Icon(Icons.zoom_out),
-        tooltip: 'Uzaklaştır',
+        tooltip: AppString.zoomOut,
         onPressed: () => setState(() {
           this._textScaleFactor = max(0.8, this._textScaleFactor - 0.1);
         }),
@@ -87,7 +87,7 @@ class _SourceCodeViewState extends State<SourceCodeView> {
       FloatingActionButton(
         heroTag: null,
         child: Icon(Icons.zoom_in),
-        tooltip: 'Yakınlaştır',
+        tooltip: AppString.zoomIn,
         onPressed: () => setState(() {
           this._textScaleFactor += 0.1;
         }),

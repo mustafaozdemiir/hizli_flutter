@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:hizliflutter/app_string.dart';
 import 'pages/news//news_page.dart';
 import 'pages/sample//samples.dart';
 import 'pages/question//questions_page.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Hızlı Flutter',
+      title: AppString.appTitle,
       theme: ThemeData(primarySwatch: Colors.lightBlue),
       home: MyHomePage(),
     );
@@ -40,7 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
     QuestionsPage(),
     Samples(),
   ];
-
 
   @override
   void initState() {
@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('Tamam'),
+                  child: Text(AppString.ok),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
@@ -109,19 +109,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   tabs: [
                     GButton(
                       icon: Icons.apps,
-                      text: 'Widget',
+                      text: AppString.widget,
                     ),
                     GButton(
                       icon: Icons.library_books,
-                      text: 'Haberler',
+                      text: AppString.news,
                     ),
                     GButton(
                       icon: Icons.question_answer,
-                      text: 'Soru',
+                      text: AppString.answer,
                     ),
                     GButton(
                       icon: Icons.app_registration,
-                      text: 'Örnekler',
+                      text: AppString.examples,
                     ),
                   ],
                   selectedIndex: MyHomePage.page,

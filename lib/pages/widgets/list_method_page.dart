@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hizliflutter/app_string.dart';
 import 'package:hizliflutter/models/widget_model.dart';
 
 class ListMethodPage extends StatefulWidget {
@@ -83,7 +84,7 @@ class _ListMethodPageState extends State<ListMethodPage> {
         controller: _searchEdit,
         decoration: InputDecoration(
           border: InputBorder.none,
-          hintText: "Özellik Ara...",
+          hintText: AppString.featureSearch,
           hintStyle: TextStyle(color: Colors.grey[300]),
         ),
         textAlign: TextAlign.center,

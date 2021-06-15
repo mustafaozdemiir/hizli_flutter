@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hizliflutter/app_string.dart';
 import 'package:hizliflutter/controllers/question_controller.dart';
 
 class QuestionsPage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text("Soru"),
+        title: Text(AppString.answer),
       ),
       body: GetBuilder<QuestionController>(
           autoRemove: true,
@@ -50,7 +51,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         s.soruNo.value < s.soruListe.length) {
                       switch (s.soruListe[s.soruNo.value].difficulty) {
                         case "kolay":
-                          questionBanner.bannerMessage = "Kolay";
+                          questionBanner.bannerMessage = AppString.easy;
                           questionBanner.bannerColor =
                               Colors.green.withOpacity(.4);
                           questionBanner.bannerTextColor = Colors.white;
@@ -58,7 +59,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                           break;
 
                         case "orta":
-                          questionBanner.bannerMessage = "Orta";
+                          questionBanner.bannerMessage = AppString.middle;
                           questionBanner.bannerColor =
                               Colors.yellow.withOpacity(.7);
                           questionBanner.bannerTextColor = Colors.black;
@@ -66,7 +67,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                           break;
 
                         case "zor":
-                          questionBanner.bannerMessage = "Zor";
+                          questionBanner.bannerMessage = AppString.hard;
                           questionBanner.bannerColor =
                               Colors.red.withOpacity(.5);
                           questionBanner.bannerTextColor = Colors.white;
@@ -74,7 +75,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                           break;
 
                         default:
-                          questionBanner.bannerMessage = "";
+                          questionBanner.bannerMessage = '';
                           questionBanner.bannerColor =
                               Colors.green.withOpacity(.4);
                           questionBanner.bannerTextColor = Colors.white;
@@ -153,8 +154,8 @@ class _QuestionsPageState extends State<QuestionsPage> {
                           location: BannerLocation.bottomEnd,
                           message: s.sonCevap != null
                               ? s.sonCevap.value
-                                  ? "Doğru"
-                                  : "Yanlış"
+                                  ? AppString.correct
+                                  : AppString.wrong
                               : "",
                           color: s.sonCevap != null
                               ? s.sonCevap.value

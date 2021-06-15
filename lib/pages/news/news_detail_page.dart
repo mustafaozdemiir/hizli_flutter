@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hizliflutter/app_string.dart';
 import 'package:hizliflutter/models/news.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -62,15 +63,18 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
               ),
               centerTitle: true,
               flexibleSpace: FlexibleSpaceBar(
-                background: CachedNetworkImage(
-                  imageUrl: model.pictures[0],
-                  placeholder: (context, url) => Image.asset('res/loading.gif'),
-                  errorWidget: (context, url, error) => Icon(
-                    Icons.error,
-                    semanticLabel: "Resim Kaldırılmış",
-                    size: 50,
-                  ),
-                ),
+                background: GetPlatform.isWeb
+                    ? Image.network(model.pictures[0])
+                    : CachedNetworkImage(
+                        imageUrl: model.pictures[0],
+                        placeholder: (context, url) =>
+                            Image.asset('res/loading.gif'),
+                        errorWidget: (context, url, error) => Icon(
+                          Icons.error,
+                          semanticLabel: AppString.imageRemoved,
+                          size: 50,
+                        ),
+                      ),
               ),
             ),
             model.youtubeVideoUrl == "yok"
@@ -80,34 +84,44 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                     ),
                   )
                 : SliverList(
-                    delegate: SliverChildListDelegate([
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(model.title),
-                      ),
-                      SizedBox(height: 5),
-                      YoutubePlayerIFrame(
-                        controller: _controller,
-                        aspectRatio: 16 / 9,
-                      )
-                    ]),
+                    delegate: SliverChildListDelegate(
+                      [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(model.title),
+                        ),
+                        SizedBox(height: 5),
+                        Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Container(
+                            height: Get.height * 0.4,
+                            child: YoutubePlayerIFrame(
+                              controller: _controller,
+                              aspectRatio: 16 / 9,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) => Column(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CachedNetworkImage(
-                        imageUrl: model.pictures[index],
-                        placeholder: (context, url) =>
-                            Image.asset('res/loading.gif'),
-                        errorWidget: (context, url, error) => Icon(
-                          Icons.error,
-                          semanticLabel: "Resim Kaldırılmış",
-                          size: 50,
-                        ),
-                      ),
+                      padding: const EdgeInsets.all(18.0),
+                      child: GetPlatform.isWeb
+                          ? Image.network(model.pictures[index])
+                          : CachedNetworkImage(
+                              imageUrl: model.pictures[index],
+                              placeholder: (context, url) =>
+                                  Image.asset('res/loading.gif'),
+                              errorWidget: (context, url, error) => Icon(
+                                Icons.error,
+                                semanticLabel: AppString.imageRemoved,
+                                size: 50,
+                              ),
+                            ),
                     ),
                     SizedBox(
                       height: 5,
@@ -120,7 +134,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
             SliverToBoxAdapter(
               child: RaisedButton(
                 color: Colors.white,
-                child: Text("KAYNAK"),
+                child: Text(AppString.source),
                 onPressed: () {
                   launch(model.sourceLink);
                 },

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hizliflutter/app_string.dart';
 import 'package:hizliflutter/controllers/fetch_controller.dart';
 import 'widget_code_detail_page.dart';
 import 'dart:math';
@@ -55,7 +56,7 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text("Widget"),
+        title: Text(AppString.widget),
       ),
       backgroundColor: Colors.white,
       body: GetBuilder<FetchController>(
@@ -114,17 +115,17 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
 
             switch (s.widgetListe[index].type) {
               case 'basit':
-                messageBanner = "Basit";
+                messageBanner = AppString.easy;
                 bannerColor = Colors.green.withOpacity(.4);
                 bannerTextColor = Colors.white;
                 break;
               case 'orta':
-                messageBanner = "Orta";
+                messageBanner = AppString.middle;
                 bannerColor = Colors.yellow.withOpacity(.7);
                 bannerTextColor = Colors.black;
                 break;
               case 'zor':
-                messageBanner = "Zor";
+                messageBanner = AppString.hard;
                 bannerColor = Colors.red.withOpacity(.5);
                 bannerTextColor = Colors.white;
                 break;
@@ -232,17 +233,17 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
 
             switch (s.widgetListe[index].type) {
               case 'basit':
-                messageBanner = "Basit";
+                messageBanner = AppString.easy;
                 bannerColor = Colors.green.withOpacity(.4);
                 bannerTextColor = Colors.white;
                 break;
               case 'orta':
-                messageBanner = "Orta";
+                messageBanner = AppString.middle;
                 bannerColor = Colors.yellow.withOpacity(.7);
                 bannerTextColor = Colors.black;
                 break;
               case 'zor':
-                messageBanner = "Zor";
+                messageBanner = AppString.hard;
                 bannerColor = Colors.red.withOpacity(.5);
                 bannerTextColor = Colors.white;
                 break;

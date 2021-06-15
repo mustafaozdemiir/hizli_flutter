@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:hizliflutter/models/question.dart';
 import 'package:http/http.dart' as http;
 
+import '../app_string.dart';
+
 class QuestionController extends GetxController {
   List<Question> soruListe;
   var soruNo = 0.obs;
@@ -33,8 +35,8 @@ class QuestionController extends GetxController {
   Future<void> getQuestionApi() async {
     soruListe = List<Question>();
 
-    final http.Response response = await http
-        .get('http://webservice.yazilimmotoru.com/api.php/records/answers');
+    final http.Response response =
+        await http.get(AppString.webUrl + AppString.webDataUrl + 'answers');
 
     if (response.statusCode == 200) {
       var parsedJson = jsonDecode(response.body)['records'];
@@ -91,7 +93,7 @@ class QuestionController extends GetxController {
   }
 
   void bos_cevap() {
-    Get.snackbar("Zaman Doldu", "Zaman doldu! Yeni soru geliyor...",
+    Get.snackbar(AppString.timeIsUp, AppString.newQuestionComing,
         backgroundColor: Colors.blue,
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM);
@@ -115,7 +117,7 @@ class QuestionController extends GetxController {
         ? soruListe[soruNo.value].point / 2
         : 3;
     yanlisSayisi.value++;
-    Get.snackbar("Yanlış", "Malesef yanlış cevap!",
+    Get.snackbar(AppString.wrong, AppString.sorryWrongAnswer,
         backgroundColor: Colors.red,
         colorText: Colors.white,
         snackPosition: SnackPosition.TOP);
@@ -127,7 +129,7 @@ class QuestionController extends GetxController {
     toplamPuan.value += soruListe[soruNo.value].point;
     sonCevap.value = true;
     dogruSayisi.value++;
-    Get.snackbar("Doğru", "Tebrikler doğru cevap!",
+    Get.snackbar(AppString.correct, AppString.congratsOnTheCorrectAnswer,
         backgroundColor: Colors.green,
         colorText: Colors.white,
         snackPosition: SnackPosition.TOP);
@@ -150,13 +152,18 @@ class QuestionController extends GetxController {
   void soruBitis() {
     Get.dialog(
         AlertDialog(
-          title: Text('Sorular Bitti'),
+          title: Text(AppString.questionsDone),
           content: Text(
-            'Doğru Sayısı: ' +
+            AppString.numberOfCorrect +
+                ': ' +
                 dogruSayisi.value.toString() +
-                '\nYanlış Sayısı: ' +
+                '\n' +
+                AppString.numberOfInCorrect +
+                ': ' +
                 yanlisSayisi.value.toString() +
-                '\nToplam Puanınız: ' +
+                '\n' +
+                AppString.totalPoints +
+                ': ' +
                 toplamPuan.toStringAsFixed(0),
           ),
           actions: [
@@ -172,7 +179,7 @@ class QuestionController extends GetxController {
                 Get.back();
                 startTimer(soruListe[soruNo.value].time);
               },
-              child: Text("Tamam"),
+              child: Text(AppString.ok),
             ),
           ],
         ),

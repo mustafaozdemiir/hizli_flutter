@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:hizliflutter/app_string.dart';
 import 'package:hizliflutter/models/news.dart';
 import 'package:hizliflutter/models/widget_model.dart';
 import 'package:http/http.dart' as http;
@@ -40,8 +41,8 @@ class FetchController extends GetxController {
 
   Future<void> getNewsApi() async {
     haberListe.clear();
-    final http.Response response = await http
-        .get('http://webservice.yazilimmotoru.com/api.php/records/news');
+    final http.Response response =
+        await http.get(AppString.webUrl + AppString.webDataUrl + 'news');
 
     if (response.statusCode == 200) {
       var parsedJson = jsonDecode(response.body)['records'];
@@ -49,15 +50,15 @@ class FetchController extends GetxController {
         haberListe.add(News.fromJson(model));
       }
     } else {
-      print('Hata var');
+      print('Hata var:' + response.body);
     }
     update();
   }
 
   Future<void> getWidgetsApi() async {
     widgetListe.clear();
-    final http.Response response = await http.get(
-        'http://webservice.yazilimmotoru.com/api.php/records/widgets?join=methods');
+    final http.Response response = await http
+        .get(AppString.webUrl + AppString.webDataUrl + 'widgets?join=methods');
 
     if (response.statusCode == 200) {
       var parsedJson = jsonDecode(response.body)['records'];

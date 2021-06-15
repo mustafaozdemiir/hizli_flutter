@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hizliflutter/app_string.dart';
 import 'package:hizliflutter/controllers/fetch_controller.dart';
 import 'news_detail_page.dart';
 
@@ -14,7 +15,7 @@ class NewsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text("Haber"),
+        title: Text(AppString.news),
       ),
       backgroundColor: Colors.white,
       body: GetBuilder<FetchController>(
@@ -50,7 +51,7 @@ class NewsPage extends StatelessWidget {
                           .difference(s.haberListe[index].releaseDate)
                           .inDays ==
                       0) {
-                    bannerMessage = "Yeni";
+                    bannerMessage = AppString.recent;
                     bannerColor = Colors.yellow;
                     bannerTextColor = Colors.black;
                   } else {
@@ -62,7 +63,8 @@ class NewsPage extends StatelessWidget {
                               .difference(s.haberListe[index].releaseDate)
                               .inDays
                               .toString() +
-                          " Gün Önce";
+                          ' ' +
+                          AppString.dayAgo;
                       bannerColor = Colors.green;
                       bannerTextColor = Colors.white;
                     } else if (365 <=
@@ -73,14 +75,14 @@ class NewsPage extends StatelessWidget {
                                 .difference(s.haberListe[index].releaseDate)
                                 .inDays <=
                             730) {
-                      bannerMessage = "1 Yıl Önce";
+                      bannerMessage = '1 ' + AppString.yearAgo;
                       bannerColor = Colors.purple;
                       bannerTextColor = Colors.white;
                     } else if (DateTime.now()
                             .difference(s.haberListe[index].releaseDate)
                             .inDays >
                         365) {
-                      bannerMessage = "2 Yıl Önce";
+                      bannerMessage = '2 ' + AppString.yearAgo;
                       bannerColor = Colors.black;
                       bannerTextColor = Colors.white;
                     }
@@ -100,18 +102,20 @@ class NewsPage extends StatelessWidget {
                       ),
                       child: ListTile(
                         trailing: zaman,
-                        leading: CachedNetworkImage(
-                          width: Get.width * 0.2,
-                          height: Get.height * 0.2,
-                          imageUrl: s.haberListe[index].titlePicture,
-                          placeholder: (context, url) =>
-                              Image.asset('res/loading.gif'),
-                          errorWidget: (context, url, error) => Icon(
-                            Icons.error,
-                            semanticLabel: "Resim Kaldırılmış",
-                            size: 50,
-                          ),
-                        ),
+                        leading: GetPlatform.isWeb
+                            ? Image.network(s.haberListe[index].titlePicture)
+                            : CachedNetworkImage(
+                                width: Get.width * 0.2,
+                                height: Get.height * 0.2,
+                                imageUrl: s.haberListe[index].titlePicture,
+                                placeholder: (context, url) =>
+                                    Image.asset('res/loading.gif'),
+                                errorWidget: (context, url, error) => Icon(
+                                  Icons.error,
+                                  semanticLabel: AppString.imageRemoved,
+                                  size: 50,
+                                ),
+                              ),
                         onTap: () {
                           Navigator.push(
                             context,

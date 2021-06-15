@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hizliflutter/app_string.dart';
 import 'package:hizliflutter/kodlar//ornek_alt_yonlerdirme_cubuk.dart';
 import 'package:hizliflutter/kodlar/ornek_animated_text.dart';
 import 'package:hizliflutter/kodlar/ornek_appbar.dart';
@@ -96,7 +97,7 @@ class _SamplesState extends State<Samples> {
     Color bannerTextColor;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Örnekler'),
+        title: Text(AppString.examples),
         backgroundColor: Colors.white,
         centerTitle: true,
       ),
@@ -105,17 +106,17 @@ class _SamplesState extends State<Samples> {
           itemBuilder: (context, index) {
             switch (ornekler[index].zorluk) {
               case 'basit':
-                bannerMessage = "Basit";
+                bannerMessage = AppString.easy;
                 bannerColor = Colors.green.withOpacity(.4);
                 bannerTextColor = Colors.white;
                 break;
               case 'orta':
-                bannerMessage = "Orta";
+                bannerMessage = AppString.middle;
                 bannerColor = Colors.yellow.withOpacity(.7);
                 bannerTextColor = Colors.black;
                 break;
               case 'zor':
-                bannerMessage = "Zor";
+                bannerMessage = AppString.hard;
                 bannerColor = Colors.red.withOpacity(.5);
                 bannerTextColor = Colors.white;
                 break;

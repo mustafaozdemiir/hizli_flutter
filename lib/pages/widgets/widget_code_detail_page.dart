@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hizliflutter/app_string.dart';
 import 'package:hizliflutter/kodlar/widget_ornekler.dart';
 import 'package:hizliflutter/models/widget_model.dart';
 import 'package:hizliflutter/services/show_code_service//source_code_view.dart';
@@ -21,7 +22,7 @@ class WidgetCodeDetailPage extends StatelessWidget {
       tabKontrol = [
         Tab(
           icon: Icon(Icons.edit),
-          text: "Özellikler",
+          text: AppString.features,
         )
       ];
       tabBar = [MetodSayfasi(model)];
@@ -30,15 +31,15 @@ class WidgetCodeDetailPage extends StatelessWidget {
       tabKontrol = [
         Tab(
           icon: Icon(Icons.edit),
-          text: "Özellikler",
+          text: AppString.features,
         ),
         Tab(
           icon: Icon(Icons.play_arrow),
-          text: "Ön İzleme",
+          text: AppString.preview,
         ),
         Tab(
           icon: Icon(Icons.code),
-          text: "Kod",
+          text: AppString.code,
         )
       ];
       tabBar = [
