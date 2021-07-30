@@ -45,7 +45,7 @@ class FetchController extends GetxController {
         await http.get(AppString.webUrl + AppString.webDataUrl + 'news');
 
     if (response.statusCode == 200) {
-      var parsedJson = jsonDecode(response.body)['records'];
+      var parsedJson = jsonDecode(response.body);
       for (var model in parsedJson) {
         haberListe.add(News.fromJson(model));
       }
@@ -58,10 +58,10 @@ class FetchController extends GetxController {
   Future<void> getWidgetsApi() async {
     widgetListe.clear();
     final http.Response response = await http
-        .get(AppString.webUrl + AppString.webDataUrl + 'widgets?join=methods');
+        .get(AppString.webUrl + AppString.webDataUrl + 'widgets');
 
     if (response.statusCode == 200) {
-      var parsedJson = jsonDecode(response.body)['records'];
+      var parsedJson = jsonDecode(response.body);
       for (var model in parsedJson) {
         widgetListe.add(WidgetModel.fromJson(model));
       }

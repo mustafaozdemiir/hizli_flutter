@@ -33,7 +33,11 @@ class AppString {
   static String zoomOut = 'Uzaklaştır';
   static String zoomIn = 'Yakınlaştır';
 
-  static String sslWebUrl = 'https://webservice.yazilimmotoru.com/';
-  static String webUrl = 'http://webservice.yazilimmotoru.com/';
-  static String webDataUrl = 'api.php/records/';
+  static String sslWebUrl = 'https://api.hizliflutter.yazilimmotoru.com/';
+  static String webUrl = 'http://api.hizliflutter.yazilimmotoru.com/';
+  static String webDataUrl = 'api/';
+  static var header = {
+    'Content-type': 'application/json',
+    'Accept': 'application/json'
+  };
 }

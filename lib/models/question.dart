@@ -76,12 +76,12 @@ class Question {
     }
     answerss.shuffle();
     return Question(
-      id: json['id'],
+      id: int.parse(json['id']),
       heading: json['heading'].toString().replaceAll("/n", "\n"),
       difficulty: json['difficulty'],
       answer: json['answer'],
-      point: json['point'],
-      time: json['time'],
+      point:  int.parse(json['point']),
+      time:  int.parse(json['time']),
       answers: answerss,
     );
   }

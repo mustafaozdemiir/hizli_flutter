@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:hizliflutter/app_string.dart';
+import 'package:hizliflutter/pages/splash_page.dart';
 import 'pages/news//news_page.dart';
 import 'pages/sample//samples.dart';
 import 'pages/question//questions_page.dart';
@@ -20,7 +21,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: AppString.appTitle,
       theme: ThemeData(primarySwatch: Colors.lightBlue),
-      home: MyHomePage(),
+      home: SafeArea(
+        child: SplashScreen(),
+      ),
     );
   }
 }

@@ -58,7 +58,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                 },
               ),
               title: Text(
-                model.baslik,
+                model.heading,
                 style: TextStyle(color: Colors.black),
               ),
               centerTitle: true,

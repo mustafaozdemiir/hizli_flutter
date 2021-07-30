@@ -36,7 +36,7 @@ class WidgetMetod {
   }
 
   factory WidgetMetod.fromJson(Map<String, dynamic> json) => WidgetMetod(
-        id: json['id'],
+        id: int.parse(json['id']),
         name: json['name'],
         explanation: json['explanation'],
         type: json['type'],

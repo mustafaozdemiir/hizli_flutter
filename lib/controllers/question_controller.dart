@@ -36,10 +36,10 @@ class QuestionController extends GetxController {
     soruListe = List<Question>();
 
     final http.Response response =
-        await http.get(AppString.webUrl + AppString.webDataUrl + 'answers');
+        await http.get(AppString.webUrl + AppString.webDataUrl + 'questions');
 
     if (response.statusCode == 200) {
-      var parsedJson = jsonDecode(response.body)['records'];
+      var parsedJson = jsonDecode(response.body);
       for (var model in parsedJson) {
         soruListe.add(Question.fromJson(model));
       }

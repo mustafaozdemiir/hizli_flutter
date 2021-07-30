@@ -1,4 +1,5 @@
 class News {
+  int _id;
   String _heading;
   String _subTitle;
   String _title;
@@ -11,7 +12,8 @@ class News {
   String _titlePicture;
 
   News(
-      {String heading,
+      {int id,
+        String heading,
       String subTitle,
       String title,
       String type,
@@ -21,6 +23,7 @@ class News {
       List<String> pictures,
       DateTime releaseDate,
       String titlePicture}) {
+    this._id=id;
     this._heading = heading;
     this._subTitle = subTitle;
     this._title = title;
@@ -33,11 +36,25 @@ class News {
     this._titlePicture = titlePicture;
   }
 
-  String get baslik => _heading;
 
-  set baslik(String value) {
+  int get id => _id;
+
+  set id(int value) {
+    _id = value;
+  }
+
+  String get heading => _heading;
+
+  set heading(String value) {
     _heading = value;
   }
+
+  String get kind => _kind;
+
+  set kind(String value) {
+    _kind = value;
+  }
+
 
   String get subTitle => _subTitle;
 
@@ -102,6 +119,7 @@ class News {
       }
     }
     return News(
+        id: int.parse(json['id']),
         heading: json['heading'].toString().replaceAll("/n", "\n"),
         subTitle: json['subTitle'],
         title: json['title'],
@@ -113,4 +131,5 @@ class News {
         titlePicture: json['titlePicture'],
         pictures: picturess);
   }
+
 }

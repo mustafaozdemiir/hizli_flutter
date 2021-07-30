@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:hizliflutter/app_string.dart';
 import 'package:hizliflutter/controllers/fetch_controller.dart';
@@ -89,7 +90,7 @@ class NewsPage extends StatelessWidget {
                   }
                   return Banner(
                     message: bannerMessage,
-                    location: BannerLocation.topEnd,
+                    location: BannerLocation.bottomStart,
                     textStyle: TextStyle(color: bannerTextColor, fontSize: 10),
                     color: bannerColor,
                     child: Card(
@@ -101,7 +102,17 @@ class NewsPage extends StatelessWidget {
                         ),
                       ),
                       child: ListTile(
-                        trailing: zaman,
+                        trailing: Container(
+                          width: Get.width * 0.12,
+                          child: IconButton(
+                            onPressed: () => favWidget(),
+                            icon: Icon(
+                              FlutterIcons.favorite_border_mdi,
+                              color: Colors.blue,
+                              size: 35,
+                            ),
+                          ),
+                        ),
                         leading: GetPlatform.isWeb
                             ? Image.network(s.haberListe[index].titlePicture)
                             : CachedNetworkImage(
@@ -130,7 +141,7 @@ class NewsPage extends StatelessWidget {
                           height: Get.height * 0.05,
                           child: Center(
                             child: Text(
-                              s.haberListe[index].baslik,
+                              s.haberListe[index].heading,
                               style: TextStyle(fontSize: 20),
                               overflow: TextOverflow.clip,
                               maxLines: 1,
@@ -154,4 +165,6 @@ class NewsPage extends StatelessWidget {
           )
         : CircularProgressIndicator();
   }
+
+  favWidget() {}
 }
