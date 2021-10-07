@@ -23,6 +23,24 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
 
   @override
   void initState() {
+    buildPlayerController();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey.shade200,
+      body: buildScreen(),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void buildPlayerController() {
     if (model.youtubeVideoUrl != "yok") {
       _controller = YoutubePlayerController(
         initialVideoId: model.youtubeVideoUrl,
@@ -32,122 +50,109 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
         ),
       );
     }
-    super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.grey.shade200,
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              backgroundColor: Colors.white,
-              snap: false,
-              pinned: true,
-              floating: true,
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back_ios_new,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  Get.back();
-                },
-              ),
-              title: Text(
-                model.heading,
-                style: TextStyle(color: Colors.black),
-              ),
-              centerTitle: true,
-              flexibleSpace: FlexibleSpaceBar(
-                background: GetPlatform.isWeb
-                    ? Image.network(model.pictures[0])
-                    : CachedNetworkImage(
-                        imageUrl: model.pictures[0],
-                        placeholder: (context, url) =>
-                            Image.asset('res/loading.gif'),
-                        errorWidget: (context, url, error) => Icon(
-                          Icons.error,
-                          semanticLabel: AppString.imageRemoved,
-                          size: 50,
-                        ),
-                      ),
-              ),
+  Widget buildScreen() {
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverAppBar(
+          backgroundColor: Colors.white,
+          snap: false,
+          pinned: true,
+          floating: true,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.black,
             ),
-            model.youtubeVideoUrl == "yok"
-                ? SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 0,
-                    ),
-                  )
-                : SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(model.title),
-                        ),
-                        SizedBox(height: 5),
-                        Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: Container(
-                            height: Get.height * 0.4,
-                            child: YoutubePlayerIFrame(
-                              controller: _controller,
-                              aspectRatio: 16 / 9,
-                            ),
-                          ),
-                        )
-                      ],
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          title: Text(
+            model.heading,
+            style: TextStyle(color: Colors.black),
+          ),
+          centerTitle: true,
+
+        ),
+        model.youtubeVideoUrl == "yok"
+            ? SliverToBoxAdapter(
+          child: SizedBox(
+            height: 0,
+          ),
+        )
+            : SliverList(
+          delegate: SliverChildListDelegate(
+            [
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(model.title),
+              ),
+              GetPlatform.isWeb
+                  ? Image.network(model.pictures[0])
+                  : CachedNetworkImage(
+                imageUrl: model.pictures[0],
+                placeholder: (context, url) =>
+                    Image.asset('res/loading.gif'),
+                errorWidget: (context, url, error) => Icon(
+                  Icons.error,
+                  semanticLabel: AppString.imageRemoved,
+                  size: 50,
+                ),
+              ),
+              SizedBox(height: 5),
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Container(
+                  height: Get.height * 0.4,
+                  child: YoutubePlayerIFrame(
+                    controller: _controller,
+                    aspectRatio: 16 / 9,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+                (context, index) => Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: GetPlatform.isWeb
+                      ? Image.network(model.pictures[index])
+                      : CachedNetworkImage(
+                    imageUrl: model.pictures[index],
+                    placeholder: (context, url) =>
+                        Image.asset('res/loading.gif'),
+                    errorWidget: (context, url, error) => Icon(
+                      Icons.error,
+                      semanticLabel: AppString.imageRemoved,
+                      size: 50,
                     ),
                   ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: GetPlatform.isWeb
-                          ? Image.network(model.pictures[index])
-                          : CachedNetworkImage(
-                              imageUrl: model.pictures[index],
-                              placeholder: (context, url) =>
-                                  Image.asset('res/loading.gif'),
-                              errorWidget: (context, url, error) => Icon(
-                                Icons.error,
-                                semanticLabel: AppString.imageRemoved,
-                                size: 50,
-                              ),
-                            ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                  ],
                 ),
-                childCount: model.pictures.length,
-              ),
+                SizedBox(
+                  height: 5,
+                ),
+              ],
             ),
-            SliverToBoxAdapter(
-              child: RaisedButton(
-                color: Colors.white,
-                child: Text(AppString.source),
-                onPressed: () {
-                  launch(model.sourceLink);
-                },
-              ),
-            ),
-          ],
+            childCount: model.pictures.length,
+          ),
         ),
-      ),
+        SliverToBoxAdapter(
+          child: RaisedButton(
+            color: Colors.white,
+            child: Text(AppString.source),
+            onPressed: () {
+              launch(model.sourceLink);
+            },
+          ),
+        ),
+      ],
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

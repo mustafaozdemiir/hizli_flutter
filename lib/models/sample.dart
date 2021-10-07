@@ -7,12 +7,18 @@ class Sample {
   Widget _ornek;
   String _kaynak;
 
-  Sample({String adi, String zorluk, String kod, Widget ornek,String kaynak}) {
+  Sample({
+    String adi,
+    String zorluk,
+    String kod,
+    Widget ornek,
+    String kaynak,
+  }) {
     this._adi = adi;
-    this._zorluk=zorluk;
-    this._kod=kod;
-    this._ornek=ornek;
-    this._kaynak=kaynak;
+    this._zorluk = zorluk;
+    this._kod = kod;
+    this._ornek = ornek;
+    this._kaynak = kaynak;
   }
 
   String get adi => _adi;
@@ -44,6 +50,7 @@ class Sample {
   set kaynak(String value) {
     _kaynak = value;
   }
+
 
 
 }

@@ -44,10 +44,11 @@ class _ListMethodPageState extends State<ListMethodPage> {
 
   @override
   void initState() {
-    _liste = List<String>();
+    _liste = [];
     for (int i = 0; i < metodListe.length; i++) {
       _liste.add(metodListe[i].name);
     }
+    super.initState();
   }
 
   @override
@@ -58,7 +59,7 @@ class _ListMethodPageState extends State<ListMethodPage> {
         child: Container(
             child: Column(
           children: <Widget>[
-            _metodarama(),
+            _metodSearch(),
             SizedBox(
               height: 8,
             ),
@@ -69,7 +70,7 @@ class _ListMethodPageState extends State<ListMethodPage> {
     );
   }
 
-  Widget _metodarama() {
+  Widget _metodSearch() {
     return Card(
       shadowColor: Colors.black,
       shape: OutlineInputBorder(
@@ -138,7 +139,7 @@ class _ListMethodPageState extends State<ListMethodPage> {
   }
 
   Widget _metodsearchListView() {
-    _arananliste = List<String>();
+    _arananliste = [];
     for (int i = 0; i < _liste.length; i++) {
       var item = _liste[i];
 

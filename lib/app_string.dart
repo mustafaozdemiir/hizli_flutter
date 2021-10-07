@@ -33,10 +33,13 @@ class AppString {
   static String zoomOut = 'Uzaklaştır';
   static String zoomIn = 'Yakınlaştır';
 
+  static String post = 'Sosyal';
+
   static String sslWebUrl = 'https://api.hizliflutter.yazilimmotoru.com/';
   static String webUrl = 'http://api.hizliflutter.yazilimmotoru.com/';
   static String webDataUrl = 'api/';
-  static var header = {
+
+  static Map<String, String> header = {
     'Content-type': 'application/json',
     'Accept': 'application/json'
   };

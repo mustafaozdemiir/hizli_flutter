@@ -33,10 +33,10 @@ class QuestionController extends GetxController {
   }*/
 
   Future<void> getQuestionApi() async {
-    soruListe = List<Question>();
+    soruListe = [];
 
     final http.Response response =
-        await http.get(AppString.webUrl + AppString.webDataUrl + 'questions');
+        await http.get(Uri.parse(AppString.webUrl + AppString.webDataUrl + 'questions'));
 
     if (response.statusCode == 200) {
       var parsedJson = jsonDecode(response.body);

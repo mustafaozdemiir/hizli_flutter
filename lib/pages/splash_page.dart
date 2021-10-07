@@ -1,25 +1,29 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hizliflutter/controllers/auth_controller.dart';
+import 'package:hizliflutter/controllers/auth/auth_controller.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key key}) : super(key: key);
-
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
+class SplashPage extends StatelessWidget {
   AuthController authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
-    return Container();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    authController.isLogin().then((value) => {});
+    return Scaffold(
+        body: Center(
+          child: AnimatedTextKit(
+            onFinished: () {
+              authController.isLogin().then((value) => {});
+            },
+            animatedTexts: [
+              WavyAnimatedText(
+                'HIZLI FLUTTER',
+                speed: Duration(milliseconds:200),
+                textStyle: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.blueAccent, fontSize: 50),
+              ),
+            ],
+            isRepeatingAnimation: false,
+          ),
+        ));
   }
 }

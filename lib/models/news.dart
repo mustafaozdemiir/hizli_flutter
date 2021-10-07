@@ -1,4 +1,6 @@
-class News {
+import 'package:hizliflutter/models/main_model.dart';
+
+class News extends MainModel {
   int _id;
   String _heading;
   String _subTitle;
@@ -10,20 +12,25 @@ class News {
   DateTime _releaseDate;
   List<String> _pictures;
   String _titlePicture;
+  DateTime _createdAt;
+  DateTime _updatedAt;
 
-  News(
-      {int id,
-        String heading,
-      String subTitle,
-      String title,
-      String type,
-      String kind,
-      String youtubeVideoUrl,
-      String sourceLink,
-      List<String> pictures,
-      DateTime releaseDate,
-      String titlePicture}) {
-    this._id=id;
+  News({
+    int id,
+    String heading,
+    String subTitle,
+    String title,
+    String type,
+    String kind,
+    String youtubeVideoUrl,
+    String sourceLink,
+    List<String> pictures,
+    DateTime releaseDate,
+    String titlePicture,
+    DateTime createdAt,
+    DateTime updatedAt,
+  }) {
+    this._id = id;
     this._heading = heading;
     this._subTitle = subTitle;
     this._title = title;
@@ -34,8 +41,9 @@ class News {
     this._pictures = pictures;
     this._releaseDate = releaseDate;
     this._titlePicture = titlePicture;
+    this._createdAt = createdAt;
+    this._updatedAt = updatedAt;
   }
-
 
   int get id => _id;
 
@@ -54,7 +62,6 @@ class News {
   set kind(String value) {
     _kind = value;
   }
-
 
   String get subTitle => _subTitle;
 
@@ -110,6 +117,18 @@ class News {
     _titlePicture = value;
   }
 
+  DateTime get updatedAt => _updatedAt;
+
+  set updatedAt(DateTime value) {
+    _updatedAt = value;
+  }
+
+  DateTime get createdAt => _createdAt;
+
+  set createdAt(DateTime value) {
+    _createdAt = value;
+  }
+
   factory News.fromJson(Map<String, dynamic> json) {
     List<String> picturess = [];
     var photos = json['pictures'].toString().split(',');
@@ -119,17 +138,33 @@ class News {
       }
     }
     return News(
-        id: int.parse(json['id']),
-        heading: json['heading'].toString().replaceAll("/n", "\n"),
-        subTitle: json['subTitle'],
-        title: json['title'],
-        type: json['type'],
-        kind: json['kind'],
-        youtubeVideoUrl: json['youtubeVideoUrl'],
-        sourceLink: json['sourceLink'],
-        releaseDate: DateTime.parse(json['releaseDate']),
-        titlePicture: json['titlePicture'],
-        pictures: picturess);
+      id: int.parse(json['id']),
+      heading: json['heading'].toString().replaceAll("/n", "\n"),
+      subTitle: json['subTitle'],
+      title: json['title'],
+      type: json['type'],
+      kind: json['kind'],
+      youtubeVideoUrl: json['youtubeVideoUrl'],
+      sourceLink: json['sourceLink'],
+      releaseDate: DateTime.parse(json['releaseDate']),
+      titlePicture: json['titlePicture'],
+      pictures: picturess,
+      createdAt: DateTime.parse(json['created_at']),
+      updatedAt: DateTime.parse(json['updated_at']),
+    );
   }
 
+  @override
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'heading': heading,
+        'subTitle': subTitle,
+        'title': title,
+        'kind': kind,
+        'youtubeVideoUrl': youtubeVideoUrl,
+        'sourceLink': sourceLink,
+        'pictures': pictures,
+        'releaseDate': releaseDate,
+        'titlePicture': titlePicture,
+      };
 }

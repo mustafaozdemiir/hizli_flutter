@@ -1,10 +1,17 @@
-class WidgetMetod {
+import 'package:hizliflutter/models/main_model.dart';
+
+class WidgetMetod extends MainModel {
   int _id;
   String _name;
   String _explanation;
   String _type;
 
-  WidgetMetod({int id, String name, String explanation, String type}) {
+  WidgetMetod({
+    int id,
+    String name,
+    String explanation,
+    String type,
+  }) {
     this._id = id;
     this._name = name;
     this._explanation = explanation;
@@ -36,14 +43,22 @@ class WidgetMetod {
   }
 
   factory WidgetMetod.fromJson(Map<String, dynamic> json) => WidgetMetod(
-        id: int.parse(json['id']),
+        id: int.tryParse(json['id']),
         name: json['name'],
         explanation: json['explanation'],
         type: json['type'],
       );
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'explanation': explanation,
+        'type': type,
+      };
 }
 
-class WidgetModel {
+class WidgetModel extends MainModel {
   int _id;
   String _name;
   String _subTitle;
@@ -52,6 +67,8 @@ class WidgetModel {
   String _type;
   String _kind;
   List<WidgetMetod> _methods;
+  DateTime _createdAt;
+  DateTime _updatedAt;
 
   WidgetModel({
     int id,
@@ -62,6 +79,8 @@ class WidgetModel {
     String type,
     String kind,
     List<WidgetMetod> methods,
+    DateTime createdAt,
+    DateTime updatedAt,
   }) {
     this._id = id;
     this._name = name;
@@ -71,6 +90,8 @@ class WidgetModel {
     this._type = type;
     this._kind = kind;
     this._methods = methods;
+    this._createdAt = createdAt;
+    this._updatedAt = updatedAt;
   }
 
   int get id => _id;
@@ -121,17 +142,45 @@ class WidgetModel {
     _kind = value;
   }
 
+  DateTime get updatedAt => _updatedAt;
+
+  set updatedAt(DateTime value) {
+    _updatedAt = value;
+  }
+
+  DateTime get createdAt => _createdAt;
+
+  set createdAt(DateTime value) {
+    _createdAt = value;
+  }
+
   factory WidgetModel.fromJson(Map<String, dynamic> json) {
     var list = json['methods'] as List;
     List<WidgetMetod> metodList =
         list.map((e) => WidgetMetod.fromJson(e)).toList();
     return WidgetModel(
-        name: json['name'].toString().replaceAll("/n", "\n"),
-        subTitle: json['subTitle'],
-        title: json['title'],
-        path: json['path'],
-        type: json['type'],
-        kind: json['kind'],
-        methods: metodList);
+      id: int.tryParse(json['id']),
+      name: json['name'].toString().replaceAll("/n", "\n"),
+      subTitle: json['subTitle'],
+      title: json['title'],
+      path: json['path'],
+      type: json['type'],
+      kind: json['kind'],
+      methods: metodList,
+      createdAt: DateTime.parse(json['created_at']),
+      updatedAt: DateTime.parse(json['updated_at']),
+    );
   }
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'subTitle': subTitle,
+        'title': title,
+        'path': path,
+        'type': type,
+        'kind': kind,
+        'methods': methods,
+      };
 }

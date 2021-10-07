@@ -1,13 +1,18 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:hizliflutter/app_string.dart';
-import 'package:hizliflutter/controllers/fetch_controller.dart';
+import 'package:hizliflutter/controllers/auth/auth_controller.dart';
+import 'package:hizliflutter/controllers/favorite_controller.dart';
+import 'package:hizliflutter/controllers/news_controller.dart';
+import 'package:hizliflutter/services/functions.dart';
 import 'news_detail_page.dart';
 
 class NewsPage extends StatelessWidget {
-  final FetchController fetchController = Get.put(FetchController());
+  final FavoriteController fetchController = Get.put(FavoriteController());
+  final NewsController newsController = Get.put(NewsController());
+  AuthController authController = Get.put(AuthController());
   Widget zaman;
 
   @override
@@ -17,147 +22,237 @@ class NewsPage extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(AppString.news),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.logout,
+              color: Colors.red,
+            ),
+            onPressed: () => authController.logout(),
+          ),
+        ],
       ),
       backgroundColor: Colors.white,
-      body: GetBuilder<FetchController>(
-        initState: (_) => Get.find<FetchController>().getNewsApi(),
+      body: GetBuilder<NewsController>(
+        initState: (_) => Get.find<NewsController>().getNewsApi(),
         builder: (s) {
-          return s.haberListe.length < 1
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Column(
-                      children: <Widget>[_listView(s)],
-                    ),
-                  ),
-                );
+          return s.newsList == null
+              ? Functions.loadingView()
+              : s.newsList.length < 1
+                  ? Center(
+                      child: Text('Eklenmiş Haber Bulunmuyor !'),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Column(
+                          children: <Widget>[_listView(s)],
+                        ),
+                      ),
+                    );
         },
       ),
     );
   }
 
-  Widget _listView(FetchController s) {
-    String bannerMessage;
-    Color bannerColor;
-    Color bannerTextColor;
-    return s.haberListe != null
+  Widget _listView(NewsController s) {
+
+    return s.newsList != null
         ? Expanded(
             child: ListView.builder(
-                itemCount: s.haberListe.length,
+                itemCount: s.newsList.length,
                 itemBuilder: (context, int index) {
-                  if (DateTime.now()
-                          .difference(s.haberListe[index].releaseDate)
-                          .inDays ==
-                      0) {
-                    bannerMessage = AppString.recent;
-                    bannerColor = Colors.yellow;
-                    bannerTextColor = Colors.black;
-                  } else {
-                    if (DateTime.now()
-                            .difference(s.haberListe[index].releaseDate)
-                            .inDays <
-                        365) {
-                      bannerMessage = DateTime.now()
-                              .difference(s.haberListe[index].releaseDate)
-                              .inDays
-                              .toString() +
-                          ' ' +
-                          AppString.dayAgo;
-                      bannerColor = Colors.green;
-                      bannerTextColor = Colors.white;
-                    } else if (365 <=
-                            DateTime.now()
-                                .difference(s.haberListe[index].releaseDate)
-                                .inDays &&
-                        DateTime.now()
-                                .difference(s.haberListe[index].releaseDate)
-                                .inDays <=
-                            730) {
-                      bannerMessage = '1 ' + AppString.yearAgo;
-                      bannerColor = Colors.purple;
-                      bannerTextColor = Colors.white;
-                    } else if (DateTime.now()
-                            .difference(s.haberListe[index].releaseDate)
-                            .inDays >
-                        365) {
-                      bannerMessage = '2 ' + AppString.yearAgo;
-                      bannerColor = Colors.black;
-                      bannerTextColor = Colors.white;
-                    }
+                  Widget cesit;
+                  switch (s.newsList[index].type) {
+                    case 'Haftanın Widget\' i':
+                      cesit = Text(
+                        s.newsList[index].type,
+                        style: TextStyle(
+                          color: Colors.yellow[900].withOpacity(.7),
+                        ),
+                      );
+                      break;
+                    case 'Widget':
+                      cesit = Text(
+                        s.newsList[index].type,
+                        style: TextStyle(
+                          color: Colors.blue.withOpacity(.7),
+                        ),
+                      );
+                      break;
+                    default:
+                      cesit = Text(
+                        s.newsList[index].type,
+                        style: TextStyle(
+                          color: Color(
+                            (Random().nextDouble() * 0xFFFFFF).toInt(),
+                          ).withOpacity(1.0),
+                        ),
+                      );
                   }
-                  return Banner(
-                    message: bannerMessage,
-                    location: BannerLocation.bottomStart,
-                    textStyle: TextStyle(color: bannerTextColor, fontSize: 10),
-                    color: bannerColor,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(width: 3, color: Colors.black),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(14),
-                          topRight: Radius.circular(14),
+
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NewsDetailPage(
+                            s.newsList[index],
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      margin: EdgeInsets.all(8),
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(width: 3, color: Colors.black),
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(14),
+                            topRight: Radius.circular(14),
+                          ),
                         ),
                       ),
-                      child: ListTile(
-                        trailing: Container(
-                          width: Get.width * 0.12,
-                          child: IconButton(
-                            onPressed: () => favWidget(),
-                            icon: Icon(
-                              FlutterIcons.favorite_border_mdi,
-                              color: Colors.blue,
-                              size: 35,
-                            ),
-                          ),
-                        ),
-                        leading: GetPlatform.isWeb
-                            ? Image.network(s.haberListe[index].titlePicture)
-                            : CachedNetworkImage(
-                                width: Get.width * 0.2,
-                                height: Get.height * 0.2,
-                                imageUrl: s.haberListe[index].titlePicture,
-                                placeholder: (context, url) =>
-                                    Image.asset('res/loading.gif'),
-                                errorWidget: (context, url, error) => Icon(
-                                  Icons.error,
-                                  semanticLabel: AppString.imageRemoved,
-                                  size: 50,
-                                ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Row(children: [
+                                  Container(
+                                    width: 45,
+                                    height: 45,
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.blue,
+                                      child: Text(
+                                        s.newsList[index].kind[0],
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 30,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Flexible(
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Center(
+                                            child: Text(
+                                              s.newsList[index].heading,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            s.newsList[index].subTitle,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                              color: Colors.grey[500],
+                                            ),
+                                          ),
+                                        ]),
+                                  )
+                                ]),
                               ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  NewsDetailPage(s.haberListe[index]),
-                            ),
-                          );
-                        },
-                        title: Container(
-                          width: Get.width * 0.5,
-                          height: Get.height * 0.05,
-                          child: Center(
-                            child: Text(
-                              s.haberListe[index].heading,
-                              style: TextStyle(fontSize: 20),
-                              overflow: TextOverflow.clip,
-                              maxLines: 1,
-                            ),
+                              GestureDetector(
+                                onTap: () => fetchController.favWidget(
+                                    type: FavType.News,
+                                    id: s.newsList[index].id),
+                                child: Obx(
+                                  () => AnimatedContainer(
+                                      height: 35,
+                                      padding: EdgeInsets.all(5),
+                                      duration: Duration(milliseconds: 300),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          border: Border.all(
+                                            color: (fetchController
+                                                            .isFavNewsList[
+                                                        s.newsList[index]
+                                                            .id]) &&
+                                                    fetchController
+                                                                .isFavNewsList[
+                                                            s.newsList[index]
+                                                                .id] !=
+                                                        null
+                                                ? Colors.red.shade100
+                                                : Colors.grey.shade300,
+                                          )),
+                                      child: Center(
+                                          child: (fetchController.isFavNewsList[
+                                                      s.newsList[index].id]) &&
+                                                  fetchController.isFavNewsList[
+                                                          s.newsList[index]
+                                                              .id] !=
+                                                      null
+                                              ? Icon(
+                                                  Icons.favorite,
+                                                  color: Colors.red,
+                                                )
+                                              : Icon(
+                                                  Icons.favorite_outline,
+                                                  color: Colors.grey.shade600,
+                                                ))),
+                                ),
+                              )
+                            ],
                           ),
-                        ),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: Text(
-                              s.haberListe[index].subTitle,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
+                          SizedBox(
+                            height: 20,
                           ),
-                        ),
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 8, horizontal: 15),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          color: Colors.grey.shade200),
+                                      child: cesit,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    /* Container(
+                                padding:
+                                EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  'Level',
+                                ),
+                              ),*/
+                                  ],
+                                ),
+                                Text(
+                                  Functions.convertToAgo(
+                                      s.newsList[index].createdAt),
+                                  style: TextStyle(
+                                      color: Colors.grey.shade800,
+                                      fontSize: 12),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   );
@@ -165,6 +260,4 @@ class NewsPage extends StatelessWidget {
           )
         : CircularProgressIndicator();
   }
-
-  favWidget() {}
 }

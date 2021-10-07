@@ -1,35 +1,45 @@
-import 'dart:ui';
-
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:hizliflutter/controllers/widget_model_controller.dart';
-import 'package:hizliflutter/services/functions.dart';
-import '/app_string.dart';
-import '/controllers/auth/auth_controller.dart';
-import '/controllers/favorite_controller.dart';
-import '/models/widget_model.dart';
-import 'widget_code_detail_page.dart';
 import 'dart:math';
 
-class ListWidgetPage extends StatefulWidget {
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:get/get.dart';
+import 'package:hizliflutter/controllers/post_controller.dart';
+import 'package:hizliflutter/pages/post/add_post_page.dart';
+import 'package:hizliflutter/services/functions.dart';
+import '../../app_string.dart';
+import '/controllers/auth/auth_controller.dart';
+import '/controllers/favorite_controller.dart';
+import '/models/post.dart';
+import 'post_detail_page.dart';
+
+class PostPage extends StatefulWidget {
+  const PostPage({Key key}) : super(key: key);
+
   @override
-  _ListWidgetPageState createState() => _ListWidgetPageState();
+  _PostPageState createState() => _PostPageState();
 }
 
-class _ListWidgetPageState extends State<ListWidgetPage> {
-  final FavoriteController fetchController = Get.put(FavoriteController());
-  final WidgetModelController widgetModelController =
-      Get.put(WidgetModelController());
+class _PostPageState extends State<PostPage> {
+  final FavoriteController favoriteController = Get.put(FavoriteController());
+  final PostController postController = Get.put(PostController());
   AuthController authController = Get.put(AuthController());
+
   TextEditingController _searchEdit = TextEditingController();
 
   bool _isSearch = true;
   String _searchText = "";
 
-  List<WidgetModel> _liste;
-  List<WidgetModel> _arananliste;
+  List<Post> _list;
+  List<Post> _searchList;
 
-  _ListWidgetPageState() {
+  @override
+  void dispose() {
+    super.dispose();
+    _searchEdit.dispose();
+  }
+
+  _PostPageState() {
     _searchEdit.addListener(() {
       if (_searchEdit.text.isEmpty) {
         setState(() {
@@ -46,37 +56,30 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    _searchEdit.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Text(AppString.widget),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.logout,
-              color: Colors.red,
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          title: Text(AppString.post),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.logout,
+                color: Colors.red,
+              ),
+              onPressed: () => authController.logout(),
             ),
-            onPressed: () => authController.logout(),
-          ),
-        ],
-      ),
+          ]),
       backgroundColor: Colors.white,
-      body: GetBuilder<WidgetModelController>(
+      body: GetBuilder<PostController>(
         initState: (_) {
-          Get.find<WidgetModelController>().getWidgetsApi();
+          Get.find<PostController>().getPostsApi();
         },
         builder: (s) {
-          return s.widgetList == null
+          return s.postList == null
               ? Functions.loadingView()
-              : s.widgetList.length < 1
+              : s.postList.length < 1
                   ? Center(
                       child: Text('Eklenmiş Gönderi Bulunmuyor !'),
                     )
@@ -86,6 +89,18 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                         _isSearch ? _listView(s) : _searchListView(s)
                       ],
                     );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blueAccent,
+        child: Icon(
+          CupertinoIcons.add,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Get.to(
+            AddPostPage(),
+          );
         },
       ),
     );
@@ -108,7 +123,7 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
           controller: _searchEdit,
           decoration: InputDecoration(
             border: InputBorder.none,
-            hintText: "Widget Ara...",
+            hintText: "Gönderi Ara...",
             hintStyle: TextStyle(color: Colors.grey[300]),
           ),
           textAlign: TextAlign.center,
@@ -117,32 +132,59 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
     );
   }
 
-  Widget _listView(WidgetModelController s) {
+  Widget _listView(PostController s) {
     return Expanded(
       child: ListView.builder(
-          itemCount: s.widgetList.length,
+          itemCount: s.postList.length,
           itemBuilder: (context, int index) {
             Widget cesit;
-            switch (s.widgetList[index].kind) {
-              case 'Layout':
+            Widget icon;
+            switch (s.postList[index].type) {
+              case 'Soru':
                 cesit = Text(
-                  s.widgetList[index].kind,
+                  s.postList[index].type,
                   style: TextStyle(
                     color: Colors.yellow[900].withOpacity(.7),
                   ),
                 );
+                icon = Icon(
+                  FlutterIcons.question_ant,
+                  size: 50,
+                );
                 break;
-              case 'Widget':
+              case 'Haber':
                 cesit = Text(
-                  s.widgetList[index].kind,
+                  s.postList[index].type,
                   style: TextStyle(
                     color: Colors.blue.withOpacity(.7),
                   ),
                 );
+                icon = Icon(FlutterIcons.news_ent);
+
+                break;
+              case 'Kütüphane':
+                cesit = Text(
+                  s.postList[index].type,
+                  style: TextStyle(
+                    color: Colors.blue.withOpacity(.7),
+                  ),
+                );
+                icon = Icon(FlutterIcons.library_mco);
+
+                break;
+              case 'Eklenti':
+                cesit = Text(
+                  s.postList[index].type,
+                  style: TextStyle(
+                    color: Colors.blue.withOpacity(.7),
+                  ),
+                );
+                icon = Icon(FlutterIcons.extension_mdi);
+
                 break;
               default:
                 cesit = Text(
-                  s.widgetList[index].kind,
+                  s.postList[index].type,
                   style: TextStyle(
                     color: Color(
                       (Random().nextDouble() * 0xFFFFFF).toInt(),
@@ -155,8 +197,8 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => WidgetCodeDetailPage(
-                      s.widgetList[index],
+                    builder: (context) => PostDetailPage(
+                      s.postList[index],
                     ),
                   ),
                 );
@@ -184,14 +226,8 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                               width: 45,
                               height: 45,
                               child: CircleAvatar(
-                                backgroundColor: Colors.blue,
-                                child: Text(
-                                  s.widgetList[index].kind[0],
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 30,
-                                  ),
-                                ),
+                                backgroundColor: Colors.white,
+                                child: icon,
                               ),
                             ),
                             SizedBox(width: 10),
@@ -201,7 +237,7 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                                   children: [
                                     Center(
                                       child: Text(
-                                        s.widgetList[index].name,
+                                        s.postList[index].heading,
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 15,
@@ -212,7 +248,7 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                                       height: 5,
                                     ),
                                     Text(
-                                      s.widgetList[index].subTitle,
+                                      s.postList[index].content,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
                                       style: TextStyle(
@@ -224,29 +260,30 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                           ]),
                         ),
                         GestureDetector(
-                          onTap: () => fetchController.favWidget(
-                              type: FavType.Widget, id: s.widgetList[index].id),
+                          onTap: () => favoriteController.favWidget(
+                              type: FavType.Post, id: s.postList[index].id),
                           child: Obx(
                             () => AnimatedContainer(
                                 height: 35,
                                 padding: EdgeInsets.all(5),
                                 duration: Duration(milliseconds: 300),
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: (fetchController.isFavWidgetList[
-                                                  s.widgetList[index].id]) &&
-                                              fetchController.isFavWidgetList[
-                                                      s.widgetList[index].id] !=
-                                                  null
-                                          ? Colors.red.shade100
-                                          : Colors.grey.shade300,
-                                    )),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: (favoriteController.isFavPostList[
+                                                s.postList[index].id]) &&
+                                            favoriteController.isFavPostList[
+                                                    s.postList[index].id] !=
+                                                null
+                                        ? Colors.red.shade100
+                                        : Colors.grey.shade300,
+                                  ),
+                                ),
                                 child: Center(
-                                    child: (fetchController.isFavWidgetList[
-                                                s.widgetList[index].id]) &&
-                                            fetchController.isFavWidgetList[
-                                                    s.widgetList[index].id] !=
+                                    child: (favoriteController.isFavPostList[
+                                                s.postList[index].id]) &&
+                                            favoriteController.isFavPostList[
+                                                    s.postList[index].id] !=
                                                 null
                                         ? Icon(
                                             Icons.favorite,
@@ -280,24 +317,48 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                               SizedBox(
                                 width: 10,
                               ),
-                              /* Container(
+                              /*Container(
                                 padding:
                                 EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: Text(
-                                  'Level',
+                                child: Text('@'+
+                                  s.postList[index].userName,
                                 ),
                               ),*/
                             ],
                           ),
-                          Text(
-                            Functions.convertToAgo(
-                                s.widgetList[index].createdAt),
-                            style: TextStyle(
-                                color: Colors.grey.shade800, fontSize: 12),
-                          )
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 15),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      s.postList[index].userName,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Icon(CupertinoIcons.profile_circled),
+                                  ],
+                                ),
+                              ),
+                              Text(
+                                Functions.convertToAgo(
+                                    s.postList[index].createdAt),
+                                style: TextStyle(
+                                    color: Colors.grey.shade800, fontSize: 12),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     )
@@ -309,49 +370,76 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
     );
   }
 
-  Widget _searchListView(WidgetModelController s) {
-    _liste = <WidgetModel>[];
-    for (int i = 0; i < s.widgetList.length; i++) {
-      _liste.add(s.widgetList[i]);
+  Widget _searchListView(PostController s) {
+    _list = <Post>[];
+    for (int i = 0; i < s.postList.length; i++) {
+      _list.add(s.postList[i]);
     }
 
-    _arananliste = <WidgetModel>[];
-    for (int i = 0; i < _liste.length; i++) {
-      var item = _liste[i];
+    _searchList = <Post>[];
+    for (int i = 0; i < _list.length; i++) {
+      var item = _list[i];
 
-      if (item.name.toLowerCase().contains(_searchText.toLowerCase())) {
-        _arananliste.add(item);
+      if (item.heading.toLowerCase().contains(_searchText.toLowerCase())) {
+        _searchList.add(item);
       }
     }
     return _searchAddList(s);
   }
 
-  Widget _searchAddList(WidgetModelController s) {
+  Widget _searchAddList(PostController s) {
     return Expanded(
       child: ListView.builder(
-          itemCount: _arananliste.length,
+          itemCount: _searchList.length,
           itemBuilder: (context, int index) {
             Widget cesit;
-            switch (s.widgetList[index].kind) {
-              case 'Layout':
+            Widget icon;
+            switch (_searchList[index].type) {
+              case 'Soru':
                 cesit = Text(
-                  s.widgetList[index].kind,
+                  _searchList[index].type,
                   style: TextStyle(
                     color: Colors.yellow[900].withOpacity(.7),
                   ),
                 );
+                icon = Icon(
+                  FlutterIcons.question_ant,
+                  size: 50,
+                );
                 break;
-              case 'Widget':
+              case 'Haber':
                 cesit = Text(
-                  s.widgetList[index].kind,
+                  _searchList[index].type,
                   style: TextStyle(
                     color: Colors.blue.withOpacity(.7),
                   ),
                 );
+                icon = Icon(FlutterIcons.news_ent);
+
+                break;
+              case 'Kütüphane':
+                cesit = Text(
+                  _searchList[index].type,
+                  style: TextStyle(
+                    color: Colors.blue.withOpacity(.7),
+                  ),
+                );
+                icon = Icon(FlutterIcons.library_mco);
+
+                break;
+              case 'Eklenti':
+                cesit = Text(
+                  _searchList[index].type,
+                  style: TextStyle(
+                    color: Colors.blue.withOpacity(.7),
+                  ),
+                );
+                icon = Icon(FlutterIcons.extension_mdi);
+
                 break;
               default:
                 cesit = Text(
-                  s.widgetList[index].kind,
+                  _searchList[index].type,
                   style: TextStyle(
                     color: Color(
                       (Random().nextDouble() * 0xFFFFFF).toInt(),
@@ -364,8 +452,8 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => WidgetCodeDetailPage(
-                      s.widgetList[_liste.indexOf(_arananliste[index])],
+                    builder: (context) => PostDetailPage(
+                      _searchList[index],
                     ),
                   ),
                 );
@@ -393,17 +481,8 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                               width: 45,
                               height: 45,
                               child: CircleAvatar(
-                                backgroundColor: Colors.blue,
-                                child: Text(
-                                  s
-                                      .widgetList[
-                                          _liste.indexOf(_arananliste[index])]
-                                      .kind[0],
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 30,
-                                  ),
-                                ),
+                                backgroundColor: Colors.white,
+                                child: icon,
                               ),
                             ),
                             SizedBox(width: 10),
@@ -413,10 +492,7 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                                   children: [
                                     Center(
                                       child: Text(
-                                        s
-                                            .widgetList[_liste
-                                                .indexOf(_arananliste[index])]
-                                            .name,
+                                        _searchList[index].heading,
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 15,
@@ -427,10 +503,7 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                                       height: 5,
                                     ),
                                     Text(
-                                      s
-                                          .widgetList[_liste
-                                              .indexOf(_arananliste[index])]
-                                          .subTitle,
+                                      _searchList[index].content,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
                                       style: TextStyle(
@@ -442,47 +515,39 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                           ]),
                         ),
                         GestureDetector(
-                          onTap: () => fetchController.favWidget(
-                              type: FavType.Widget, id: s.widgetList[index].id),
+                          onTap: () => favoriteController.favWidget(
+                              type: FavType.Post, id: _searchList[index].id),
                           child: Obx(
-                            () => AnimatedContainer(
+                                () => AnimatedContainer(
                                 height: 35,
                                 padding: EdgeInsets.all(5),
                                 duration: Duration(milliseconds: 300),
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: (fetchController.isFavWidgetList[s
-                                                  .widgetList[_liste.indexOf(
-                                                      _arananliste[index])]
-                                                  .id]) &&
-                                              fetchController.isFavWidgetList[s
-                                                      .widgetList[_liste
-                                                          .indexOf(_arananliste[
-                                                              index])]
-                                                      .id] !=
-                                                  null
-                                          ? Colors.red.shade100
-                                          : Colors.grey.shade300,
-                                    )),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: (favoriteController.isFavPostList[
+                                    _searchList[index].id]) &&
+                                        favoriteController.isFavPostList[
+                                        _searchList[index].id] !=
+                                            null
+                                        ? Colors.red.shade100
+                                        : Colors.grey.shade300,
+                                  ),
+                                ),
                                 child: Center(
-                                    child: (fetchController.isFavWidgetList[s
-                                                .widgetList[_liste.indexOf(
-                                                    _arananliste[index])]
-                                                .id]) &&
-                                            fetchController.isFavWidgetList[s
-                                                    .widgetList[_liste.indexOf(
-                                                        _arananliste[index])]
-                                                    .id] !=
-                                                null
+                                    child: (favoriteController.isFavPostList[
+                                    _searchList[index].id]) &&
+                                        favoriteController.isFavPostList[
+                                        _searchList[index].id] !=
+                                            null
                                         ? Icon(
-                                            Icons.favorite,
-                                            color: Colors.red,
-                                          )
+                                      Icons.favorite,
+                                      color: Colors.red,
+                                    )
                                         : Icon(
-                                            Icons.favorite_outline,
-                                            color: Colors.grey.shade600,
-                                          ))),
+                                      Icons.favorite_outline,
+                                      color: Colors.grey.shade600,
+                                    ))),
                           ),
                         )
                       ],
@@ -507,25 +572,48 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                               SizedBox(
                                 width: 10,
                               ),
-                              /* Container(
+                              /*Container(
                                 padding:
                                 EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: Text(
-                                  'Level',
+                                child: Text('@'+
+                                  s.postList[index].userName,
                                 ),
                               ),*/
                             ],
                           ),
-                          Text(
-                            Functions.convertToAgo(s
-                                .widgetList[_liste.indexOf(_arananliste[index])]
-                                .createdAt),
-                            style: TextStyle(
-                                color: Colors.grey.shade800, fontSize: 12),
-                          )
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 15),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      _searchList[index].userName,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Icon(CupertinoIcons.profile_circled),
+                                  ],
+                                ),
+                              ),
+                              Text(
+                                Functions.convertToAgo(
+                                    _searchList[index].createdAt),
+                                style: TextStyle(
+                                    color: Colors.grey.shade800, fontSize: 12),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     )

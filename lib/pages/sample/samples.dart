@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hizliflutter/app_string.dart';
+import 'package:hizliflutter/controllers/auth/auth_controller.dart';
 import 'package:hizliflutter/kodlar//ornek_alt_yonlerdirme_cubuk.dart';
 import 'package:hizliflutter/kodlar/ornek_animated_text.dart';
 import 'package:hizliflutter/kodlar/ornek_appbar.dart';
@@ -14,12 +16,30 @@ import 'package:hizliflutter/kodlar/ornek_ust_yonlendirme_cubuk.dart';
 import 'package:hizliflutter/models/sample.dart';
 import 'sample_detail_page.dart';
 
-class Samples extends StatefulWidget {
+class Samples extends StatelessWidget {
+  AuthController authController = Get.put(AuthController());
+  String bannerMessage;
+  Color bannerColor;
+  Color bannerTextColor;
   @override
-  _SamplesState createState() => _SamplesState();
-}
-
-class _SamplesState extends State<Samples> {
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(AppString.examples),
+        backgroundColor: Colors.white,
+        centerTitle: true,actions: [
+        IconButton(
+          icon: Icon(
+            Icons.logout,
+            color: Colors.red,
+          ),
+          onPressed: () => authController.logout(),
+        ),
+      ],
+      ),
+      body: buildSampleScreen(),
+    );
+  }
   List<Sample> ornekler = [
     Sample(
         adi: 'Giriş Ekranı',
@@ -38,7 +58,7 @@ class _SamplesState extends State<Samples> {
         ornek: SayfaGecis(),
         kod: 'lib/kodlar/ornek_sayfa_gecis.dart',
         kaynak:
-            'https://flutter.dev/docs/cookbook/navigation/navigation-basics',
+        'https://flutter.dev/docs/cookbook/navigation/navigation-basics',
         zorluk: 'basit'),
     Sample(
         adi: 'Alt Yönlendirme Çubuğu',
@@ -89,66 +109,52 @@ class _SamplesState extends State<Samples> {
         kaynak: 'https://www.yazilimmotoru.com/',
         zorluk: 'orta'),
   ];
-
-  @override
-  Widget build(BuildContext context) {
-    String bannerMessage;
-    Color bannerColor;
-    Color bannerTextColor;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppString.examples),
-        backgroundColor: Colors.white,
-        centerTitle: true,
-      ),
-      body: ListView.builder(
-          itemCount: ornekler.length,
-          itemBuilder: (context, index) {
-            switch (ornekler[index].zorluk) {
-              case 'basit':
-                bannerMessage = AppString.easy;
-                bannerColor = Colors.green.withOpacity(.4);
-                bannerTextColor = Colors.white;
-                break;
-              case 'orta':
-                bannerMessage = AppString.middle;
-                bannerColor = Colors.yellow.withOpacity(.7);
-                bannerTextColor = Colors.black;
-                break;
-              case 'zor':
-                bannerMessage = AppString.hard;
-                bannerColor = Colors.red.withOpacity(.5);
-                bannerTextColor = Colors.white;
-                break;
-            }
-            return Banner(
-              location: BannerLocation.topStart,
-              message: bannerMessage,
-              color: bannerColor,
-              textStyle: TextStyle(color: bannerTextColor),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 3, color: Colors.black),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(14),
-                    topRight: Radius.circular(14),
-                    bottomRight: Radius.circular(14),
-                  ),
-                ),
-                child: ListTile(
-                  title: Center(child: Text(ornekler[index].adi)),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SampleDetailPage(ornekler[index]),
-                      ),
-                    );
-                  },
-                ),
+  Widget buildSampleScreen() {return ListView.builder(
+      itemCount: ornekler.length,
+      itemBuilder: (context, index) {
+        switch (ornekler[index].zorluk) {
+          case 'basit':
+            bannerMessage = AppString.easy;
+            bannerColor = Colors.green.withOpacity(.4);
+            bannerTextColor = Colors.white;
+            break;
+          case 'orta':
+            bannerMessage = AppString.middle;
+            bannerColor = Colors.yellow.withOpacity(.7);
+            bannerTextColor = Colors.black;
+            break;
+          case 'zor':
+            bannerMessage = AppString.hard;
+            bannerColor = Colors.red.withOpacity(.5);
+            bannerTextColor = Colors.white;
+            break;
+        }
+        return Banner(
+          location: BannerLocation.topStart,
+          message: bannerMessage,
+          color: bannerColor,
+          textStyle: TextStyle(color: bannerTextColor),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              side: BorderSide(width: 3, color: Colors.black),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(14),
+                topRight: Radius.circular(14),
+                bottomRight: Radius.circular(14),
               ),
-            );
-          }),
-    );
-  }
+            ),
+            child: ListTile(
+              title: Center(child: Text(ornekler[index].adi)),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SampleDetailPage(ornekler[index]),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      });}
 }

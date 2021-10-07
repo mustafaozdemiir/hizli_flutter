@@ -1,4 +1,6 @@
-class Question {
+import 'package:hizliflutter/models/main_model.dart';
+
+class Question extends MainModel {
   int _id;
   String _heading;
   String _difficulty;
@@ -80,9 +82,20 @@ class Question {
       heading: json['heading'].toString().replaceAll("/n", "\n"),
       difficulty: json['difficulty'],
       answer: json['answer'],
-      point:  int.parse(json['point']),
-      time:  int.parse(json['time']),
+      point: int.parse(json['point']),
+      time: int.parse(json['time']),
       answers: answerss,
     );
   }
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'heading': heading,
+        'difficulty': difficulty,
+        'answer': answer,
+        'answers': answers,
+        'point': point,
+        'time': time,
+      };
 }

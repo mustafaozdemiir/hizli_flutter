@@ -11,44 +11,14 @@ class WidgetCodeDetailPage extends StatelessWidget {
   WidgetModel model;
 
   WidgetCodeDetailPage(this.model);
+  List<Widget> tabKontrol;
+  List<Widget> tabBar;
+  int sayfaSayisi;
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> tabKontrol;
-    List<Widget> tabBar;
-    int sayfaSayisi;
-    if (model.path == 'eklenmedi') {
-      sayfaSayisi = 1;
-      tabKontrol = [
-        Tab(
-          icon: Icon(Icons.edit),
-          text: AppString.features,
-        )
-      ];
-      tabBar = [MetodSayfasi(model)];
-    } else {
-      sayfaSayisi = 3;
-      tabKontrol = [
-        Tab(
-          icon: Icon(Icons.edit),
-          text: AppString.features,
-        ),
-        Tab(
-          icon: Icon(Icons.play_arrow),
-          text: AppString.preview,
-        ),
-        Tab(
-          icon: Icon(Icons.code),
-          text: AppString.code,
-        )
-      ];
-      tabBar = [
-        MetodSayfasi(model),
-        WidgetOrnek(model.name),
-        KodGorunumu(model.path),
-      ];
-    }
 
+ hasSample();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
@@ -83,6 +53,40 @@ class WidgetCodeDetailPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void hasSample() {
+    if (model.path == 'eklenmedi') {
+      sayfaSayisi = 1;
+      tabKontrol = [
+        Tab(
+          icon: Icon(Icons.edit),
+          text: AppString.features,
+        )
+      ];
+      tabBar = [MetodSayfasi(model)];
+    } else {
+      sayfaSayisi = 3;
+      tabKontrol = [
+        Tab(
+          icon: Icon(Icons.edit),
+          text: AppString.features,
+        ),
+        Tab(
+          icon: Icon(Icons.play_arrow),
+          text: AppString.preview,
+        ),
+        Tab(
+          icon: Icon(Icons.code),
+          text: AppString.code,
+        )
+      ];
+      tabBar = [
+        MetodSayfasi(model),
+        WidgetOrnek(model.name),
+        KodGorunumu(model.path),
+      ];
+    }
   }
 }
 
