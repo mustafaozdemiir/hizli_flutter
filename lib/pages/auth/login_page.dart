@@ -1,3 +1,4 @@
+import 'package:animation_wrappers/animations/faded_scale_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
@@ -34,10 +35,12 @@ class LoginPage extends StatelessWidget {
     );
   }
   loginImage() {
-    return Image.asset(
-      'res/launcher_icon.png',
-      height: Get.height * 0.25,
-      width: Get.height * 0.25,
+    return FadedScaleAnimation(
+      child: Image.asset(
+        'res/launcher_icon.png',
+        height: Get.height * 0.25,
+        width: Get.height * 0.25,
+      ),
     );
   }
 
@@ -45,42 +48,46 @@ class LoginPage extends StatelessWidget {
     return Form(key: authController.loginFormKey,
       child: Column(
         children: [
-          TextFormField(
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Boş olamaz!';
-              }
-              return null;
-            },
-            controller: authController.mailLoginController,
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              hintText: 'E-mail',
-              labelText: 'E-mail',
-              suffixIcon: Icon(Icons.mail),
-              border: OutlineInputBorder(),
+          FadedScaleAnimation(
+            child: TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Boş olamaz!';
+                }
+                return null;
+              },
+              controller: authController.mailLoginController,
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                hintText: 'E-mail',
+                labelText: 'E-mail',
+                suffixIcon: Icon(Icons.mail),
+                border: OutlineInputBorder(),
+              ),
             ),
           ),
           SizedBox(
             height: 10,
           ),
-          TextFormField(
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Boş olamaz!';
-              }
-              return null;
-            },
-            obscureText: true,
-            controller: authController.passwordLoginController,
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.done,
-            decoration: InputDecoration(
-              hintText: 'Şifre',
-              labelText: 'Şifre',
-              suffixIcon: Icon(Icons.lock),
-              border: OutlineInputBorder(),
+          FadedScaleAnimation(
+            child: TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Boş olamaz!';
+                }
+                return null;
+              },
+              obscureText: true,
+              controller: authController.passwordLoginController,
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              decoration: InputDecoration(
+                hintText: 'Şifre',
+                labelText: 'Şifre',
+                suffixIcon: Icon(Icons.lock),
+                border: OutlineInputBorder(),
+              ),
             ),
           ),
         ],
@@ -94,36 +101,40 @@ class LoginPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 18.0),
         child: authController.isLoading.value
             ? CircularProgressIndicator()
-            : TextButton(
+            : FadedScaleAnimation(
+              child: TextButton(
           style: ButtonStyle(
-            minimumSize: MaterialStateProperty.all<Size>(
-              Size(Get.width * 0.95, 50),
-            ),
-            backgroundColor:
-            MaterialStateProperty.all<Color>(Colors.blue),
+              minimumSize: MaterialStateProperty.all<Size>(
+                Size(Get.width * 0.95, 50),
+              ),
+              backgroundColor:
+              MaterialStateProperty.all<Color>(Colors.blue),
           ),
           onPressed: authController.login,
           child: Text(
-            'Giriş',
-            style: TextStyle(color: Colors.white),
+              'Giriş',
+              style: TextStyle(color: Colors.white),
           ),
         ),
+            ),
       ),
     );
   }
 
   registerButton() {
-    return TextButton(
-      style: ButtonStyle(
-        minimumSize: MaterialStateProperty.all<Size>(
-          Size(Get.width * 0.95, 50),
+    return FadedScaleAnimation(
+      child: TextButton(
+        style: ButtonStyle(
+          minimumSize: MaterialStateProperty.all<Size>(
+            Size(Get.width * 0.95, 50),
+          ),
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
         ),
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-      ),
-      onPressed: () => Get.to(RegisterPage()),
-      child: Text(
-        'Kayıt Ol',
-        style: TextStyle(color: Colors.black),
+        onPressed: () => Get.to(RegisterPage()),
+        child: Text(
+          'Kayıt Ol',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
     );
   }

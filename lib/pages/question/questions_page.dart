@@ -1,3 +1,4 @@
+import 'package:animation_wrappers/animations/faded_scale_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hizliflutter/app_string.dart';
@@ -140,21 +141,23 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                   secenek = "D";
                                   break;
                               }
-                              return Padding(
-                                padding: const EdgeInsets.all(7.0),
-                                child: Card(
-                                  child: ListTile(
-                                    tileColor: Colors.grey.shade300,
-                                    leading: Text(secenek),
-                                    title: Text(s.soruListe[s.soruNo.value]
-                                        .answers[index]),
-                                    onTap: () {
-                                      s.stopTimer();
-                                      s.cevapKontrol(
-                                          s.soruListe[s.soruNo.value],
-                                          s.soruListe[s.soruNo.value]
-                                              .answers[index]);
-                                    },
+                              return FadedScaleAnimation(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(7.0),
+                                  child: Card(
+                                    child: ListTile(
+                                      tileColor: Colors.grey.shade300,
+                                      leading: Text(secenek),
+                                      title: Text(s.soruListe[s.soruNo.value]
+                                          .answers[index]),
+                                      onTap: () {
+                                        s.stopTimer();
+                                        s.cevapKontrol(
+                                            s.soruListe[s.soruNo.value],
+                                            s.soruListe[s.soruNo.value]
+                                                .answers[index]);
+                                      },
+                                    ),
                                   ),
                                 ),
                               );

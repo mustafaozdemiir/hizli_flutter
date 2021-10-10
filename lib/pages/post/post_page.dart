@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:animation_wrappers/animations/faded_scale_animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -78,11 +79,11 @@ class _PostPageState extends State<PostPage> {
         },
         builder: (s) {
           return s.postList == null
-              ? Functions.loadingView()
+              ? Center(
+                  child: Text('Eklenmiş Gönderi Bulunmuyor !'),
+                )
               : s.postList.length < 1
-                  ? Center(
-                      child: Text('Eklenmiş Gönderi Bulunmuyor !'),
-                    )
+                  ? Functions.loadingView()
                   : Column(
                       children: [
                         _search(),
@@ -203,166 +204,168 @@ class _PostPageState extends State<PostPage> {
                   ),
                 );
               },
-              child: Container(
-                padding: EdgeInsets.all(8),
-                margin: EdgeInsets.all(8),
-                decoration: ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 3, color: Colors.black),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(14),
-                      topRight: Radius.circular(14),
+              child: FadedScaleAnimation(
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  margin: EdgeInsets.all(8),
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 3, color: Colors.black),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(14),
+                        topRight: Radius.circular(14),
+                      ),
                     ),
                   ),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Row(children: [
-                            Container(
-                              width: 45,
-                              height: 45,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.white,
-                                child: icon,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Flexible(
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Center(
-                                      child: Text(
-                                        s.postList[index].heading,
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      s.postList[index].content,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                        color: Colors.grey[500],
-                                      ),
-                                    ),
-                                  ]),
-                            )
-                          ]),
-                        ),
-                        GestureDetector(
-                          onTap: () => favoriteController.favWidget(
-                              type: FavType.Post, id: s.postList[index].id),
-                          child: Obx(
-                            () => AnimatedContainer(
-                                height: 35,
-                                padding: EdgeInsets.all(5),
-                                duration: Duration(milliseconds: 300),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: (favoriteController.isFavPostList[
-                                                s.postList[index].id]) &&
-                                            favoriteController.isFavPostList[
-                                                    s.postList[index].id] !=
-                                                null
-                                        ? Colors.red.shade100
-                                        : Colors.grey.shade300,
-                                  ),
-                                ),
-                                child: Center(
-                                    child: (favoriteController.isFavPostList[
-                                                s.postList[index].id]) &&
-                                            favoriteController.isFavPostList[
-                                                    s.postList[index].id] !=
-                                                null
-                                        ? Icon(
-                                            Icons.favorite,
-                                            color: Colors.red,
-                                          )
-                                        : Icon(
-                                            Icons.favorite_outline,
-                                            color: Colors.grey.shade600,
-                                          ))),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      child: Row(
+                  child: Column(
+                    children: [
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
+                          Expanded(
+                            child: Row(children: [
                               Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 15),
-                                decoration: BoxDecoration(
+                                width: 45,
+                                height: 45,
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: icon,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Flexible(
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          s.postList[index].heading,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        s.postList[index].content,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                          color: Colors.grey[500],
+                                        ),
+                                      ),
+                                    ]),
+                              )
+                            ]),
+                          ),
+                          GestureDetector(
+                            onTap: () => favoriteController.favWidget(
+                                type: FavType.Post, id: s.postList[index].id),
+                            child: Obx(
+                              () => AnimatedContainer(
+                                  height: 35,
+                                  padding: EdgeInsets.all(5),
+                                  duration: Duration(milliseconds: 300),
+                                  decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
-                                    color: Colors.grey.shade200),
-                                child: cesit,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              /*Container(
-                                padding:
-                                EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text('@'+
-                                  s.postList[index].userName,
-                                ),
-                              ),*/
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 15),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      s.postList[index].userName,
+                                    border: Border.all(
+                                      color: (favoriteController.isFavPostList[
+                                                  s.postList[index].id]) &&
+                                              favoriteController.isFavPostList[
+                                                      s.postList[index].id] !=
+                                                  null
+                                          ? Colors.red.shade100
+                                          : Colors.grey.shade300,
                                     ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Icon(CupertinoIcons.profile_circled),
-                                  ],
-                                ),
-                              ),
-                              Text(
-                                Functions.convertToAgo(
-                                    s.postList[index].createdAt),
-                                style: TextStyle(
-                                    color: Colors.grey.shade800, fontSize: 12),
-                              ),
-                            ],
-                          ),
+                                  ),
+                                  child: Center(
+                                      child: (favoriteController.isFavPostList[
+                                                  s.postList[index].id]) &&
+                                              favoriteController.isFavPostList[
+                                                      s.postList[index].id] !=
+                                                  null
+                                          ? Icon(
+                                              Icons.favorite,
+                                              color: Colors.red,
+                                            )
+                                          : Icon(
+                                              Icons.favorite_outline,
+                                              color: Colors.grey.shade600,
+                                            ))),
+                            ),
+                          )
                         ],
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: Colors.grey.shade200),
+                                  child: cesit,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                /*Container(
+                                  padding:
+                                  EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text('@'+
+                                    s.postList[index].userName,
+                                  ),
+                                ),*/
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        s.postList[index].userName,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(CupertinoIcons.profile_circled),
+                                    ],
+                                  ),
+                                ),
+                                Text(
+                                  Functions.convertToAgo(
+                                      s.postList[index].createdAt),
+                                  style: TextStyle(
+                                      color: Colors.grey.shade800, fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             );
@@ -458,166 +461,168 @@ class _PostPageState extends State<PostPage> {
                   ),
                 );
               },
-              child: Container(
-                padding: EdgeInsets.all(8),
-                margin: EdgeInsets.all(8),
-                decoration: ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 3, color: Colors.black),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(14),
-                      topRight: Radius.circular(14),
+              child: FadedScaleAnimation(
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  margin: EdgeInsets.all(8),
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 3, color: Colors.black),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(14),
+                        topRight: Radius.circular(14),
+                      ),
                     ),
                   ),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Row(children: [
-                            Container(
-                              width: 45,
-                              height: 45,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.white,
-                                child: icon,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Flexible(
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Center(
-                                      child: Text(
-                                        _searchList[index].heading,
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      _searchList[index].content,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                        color: Colors.grey[500],
-                                      ),
-                                    ),
-                                  ]),
-                            )
-                          ]),
-                        ),
-                        GestureDetector(
-                          onTap: () => favoriteController.favWidget(
-                              type: FavType.Post, id: _searchList[index].id),
-                          child: Obx(
-                                () => AnimatedContainer(
-                                height: 35,
-                                padding: EdgeInsets.all(5),
-                                duration: Duration(milliseconds: 300),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: (favoriteController.isFavPostList[
-                                    _searchList[index].id]) &&
-                                        favoriteController.isFavPostList[
-                                        _searchList[index].id] !=
-                                            null
-                                        ? Colors.red.shade100
-                                        : Colors.grey.shade300,
-                                  ),
-                                ),
-                                child: Center(
-                                    child: (favoriteController.isFavPostList[
-                                    _searchList[index].id]) &&
-                                        favoriteController.isFavPostList[
-                                        _searchList[index].id] !=
-                                            null
-                                        ? Icon(
-                                      Icons.favorite,
-                                      color: Colors.red,
-                                    )
-                                        : Icon(
-                                      Icons.favorite_outline,
-                                      color: Colors.grey.shade600,
-                                    ))),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      child: Row(
+                  child: Column(
+                    children: [
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
+                          Expanded(
+                            child: Row(children: [
                               Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 15),
-                                decoration: BoxDecoration(
+                                width: 45,
+                                height: 45,
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: icon,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Flexible(
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          _searchList[index].heading,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        _searchList[index].content,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                          color: Colors.grey[500],
+                                        ),
+                                      ),
+                                    ]),
+                              )
+                            ]),
+                          ),
+                          GestureDetector(
+                            onTap: () => favoriteController.favWidget(
+                                type: FavType.Post, id: _searchList[index].id),
+                            child: Obx(
+                              () => AnimatedContainer(
+                                  height: 35,
+                                  padding: EdgeInsets.all(5),
+                                  duration: Duration(milliseconds: 300),
+                                  decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
-                                    color: Colors.grey.shade200),
-                                child: cesit,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              /*Container(
-                                padding:
-                                EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text('@'+
-                                  s.postList[index].userName,
-                                ),
-                              ),*/
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 15),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      _searchList[index].userName,
+                                    border: Border.all(
+                                      color: (favoriteController.isFavPostList[
+                                                  _searchList[index].id]) &&
+                                              favoriteController.isFavPostList[
+                                                      _searchList[index].id] !=
+                                                  null
+                                          ? Colors.red.shade100
+                                          : Colors.grey.shade300,
                                     ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Icon(CupertinoIcons.profile_circled),
-                                  ],
-                                ),
-                              ),
-                              Text(
-                                Functions.convertToAgo(
-                                    _searchList[index].createdAt),
-                                style: TextStyle(
-                                    color: Colors.grey.shade800, fontSize: 12),
-                              ),
-                            ],
-                          ),
+                                  ),
+                                  child: Center(
+                                      child: (favoriteController.isFavPostList[
+                                                  _searchList[index].id]) &&
+                                              favoriteController.isFavPostList[
+                                                      _searchList[index].id] !=
+                                                  null
+                                          ? Icon(
+                                              Icons.favorite,
+                                              color: Colors.red,
+                                            )
+                                          : Icon(
+                                              Icons.favorite_outline,
+                                              color: Colors.grey.shade600,
+                                            ))),
+                            ),
+                          )
                         ],
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: Colors.grey.shade200),
+                                  child: cesit,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                /*Container(
+                                  padding:
+                                  EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text('@'+
+                                    s.postList[index].userName,
+                                  ),
+                                ),*/
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        _searchList[index].userName,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(CupertinoIcons.profile_circled),
+                                    ],
+                                  ),
+                                ),
+                                Text(
+                                  Functions.convertToAgo(
+                                      _searchList[index].createdAt),
+                                  style: TextStyle(
+                                      color: Colors.grey.shade800, fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             );

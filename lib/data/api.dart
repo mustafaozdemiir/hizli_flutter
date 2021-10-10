@@ -1,9 +1,9 @@
 abstract class Api{
-Future<dynamic> get();
-Future<dynamic> post();
-Future<dynamic> put();
-Future<dynamic> delete();
-Future<dynamic> update();
+static Future<dynamic> get;
+static Future<dynamic> post;
+static Future<dynamic> put;
+static Future<dynamic> delete;
+static Future<dynamic> update;
 
 
 }

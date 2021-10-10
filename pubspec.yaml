@@ -47,6 +47,7 @@ dependencies:
   google_fonts: ^2.1.0
   animated_floatactionbuttons: ^0.1.0
   shimmer: ^2.0.0
+  animation_wrappers: ^3.0.0
 
 
 

@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hizliflutter/controllers/auth/auth_controller.dart';
 import 'package:hizliflutter/controllers/favorite_controller.dart';
+import 'package:hizliflutter/data/data.dart';
 import 'package:hizliflutter/models/comment.dart';
-import '../app_string.dart';
 import '../main.dart';
 import '/models/post.dart';
-import 'package:http/http.dart' as http;
 
 enum PostType {
   Question,
@@ -52,34 +51,23 @@ class PostController extends GetxController {
   }
 
   Future<void> getPostsApi() async {
-    try {
-      final http.Response response = await http
-          .get(Uri.parse(AppString.webUrl + AppString.webDataUrl + 'posts'))
-          .timeout(Duration(seconds: 3), onTimeout: () {
-        print('TimeOut GetPostApi');
+    var parsedJson;
+    postList = <Post>[].obs;
+    parsedJson = await Data.get(isSecure: false, dataType: DataType.Post);
+
+    for (var model in parsedJson) {
+      postList.add(
+        Post.fromJson(model),
+      );
+      bool isFavPost = false;
+      await fetchController
+          .isFav(type: FavType.Post, id: Post.fromJson(model).id)
+          .then((value) {
+        isFavPost = value;
       });
-
-      if (response.statusCode == 200) {
-        var parsedJson = jsonDecode(response.body);
-        postList = <Post>[].obs;
-
-        for (var model in parsedJson) {
-          postList.add(
-            Post.fromJson(model),
-          );
-          bool isFavPost = false;
-          await fetchController.isFav(
-                  type: FavType.Post, id: Post.fromJson(model).id)
-              .then((value) {
-            isFavPost = value;
-          });
-          fetchController.isFavPostList[Post.fromJson(model).id] = isFavPost;
-        }
-        postList = postList.reversed.toList();
-      } else {
-        print('Hata var');
-      }
-    } on TimeoutException catch (_) {}
+      fetchController.isFavPostList[Post.fromJson(model).id] = isFavPost;
+    }
+    postList = postList.reversed.toList();
 
     update();
   }
@@ -110,14 +98,9 @@ class PostController extends GetxController {
       post.userId = authController.user.value.id;
       post.numberOfComment = 0;
       post.numberOfLikes = 0;
-      var response = await http.post(Uri.parse(
-          AppString.webUrl + AppString.webDataUrl + 'post'),
-          body: jsonEncode(post.toJson()),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ' + authController.user.value.token,
-          });
+      var response = await Data.post(
+          isSecure: false, body: post, dataType: DataType.Post, isToken: true);
+
       if (response.statusCode > 400 || response.statusCode < 200) {
         isLoading.value = false;
         Get.snackbar('Hata', jsonDecode(response.body)['message']);
@@ -126,7 +109,8 @@ class PostController extends GetxController {
         contentPostController.clear();
         typeController.value = PostType.Question;
         isLoading.value = false;
-        await Get.offAll(MyHomePage());
+
+        Get.offAll(MyHomePage());
         Get.snackbar('Başarılı', 'Gönderiniz başarıyla eklendi');
       }
     }
@@ -142,14 +126,9 @@ class PostController extends GetxController {
       comment.userId = userId;
       comment.userName = userName;
 
-      var response = await http.post(
-          Uri.parse(AppString.webUrl + AppString.webDataUrl + 'comment'),
-          body: jsonEncode(comment.toJson()),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ' + authController.user.value.token,
-          });
+      var response = await Data.post(
+          isSecure: false, body: comment, dataType: DataType.Comment, isToken: true);
+
       if (response.statusCode > 400 || response.statusCode < 200) {
         isLoading.value = false;
         Get.snackbar('Hata', jsonDecode(response.body)['message'].toString());

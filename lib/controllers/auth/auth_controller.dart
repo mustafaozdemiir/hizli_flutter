@@ -2,11 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hizliflutter/app_string.dart';
+import 'package:hizliflutter/data/data.dart';
 import 'package:hizliflutter/main.dart';
 import 'package:hizliflutter/models/user.dart';
 import 'package:hizliflutter/pages/auth/login_page.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
@@ -55,10 +54,12 @@ class AuthController extends GetxController {
       User user = User();
       user.email = mailLoginController.text;
       user.password = passwordLoginController.text;
-      var response = await http.post(
-          Uri.parse(AppString.webUrl + AppString.webDataUrl + 'login'),
-          body: jsonEncode(user.toJson()),
-          headers: AppString.header);
+      var response = await Data.post(
+          isSecure: false,
+          body: user,
+          dataType: DataType.Login,
+          isToken: false);
+
       if (response.statusCode > 400 || response.statusCode < 200) {
         isLoading.value = false;
         Get.snackbar('Hata', jsonDecode(response.body)['message']);
@@ -66,6 +67,7 @@ class AuthController extends GetxController {
         user = User.fromJson(jsonDecode(response.body)['user']);
         user.token = jsonDecode(response.body)['token'];
         SharedPreferences preferences = await SharedPreferences.getInstance();
+        print(jsonDecode(response.body)['token'].toString() + ' User token');
         await preferences.setString(
             'userLoginToken', jsonDecode(response.body)['token']);
         await preferences.setString('user', jsonEncode(user));
@@ -74,8 +76,9 @@ class AuthController extends GetxController {
         mailLoginController.clear();
         passwordLoginController.clear();
 
-        Get.snackbar('Giriş başarılı', 'Hoşgeldiniz ' + user.name);
         await Get.offAll(MyHomePage());
+        Get.snackbar('Giriş başarılı', 'Hoşgeldiniz ' + user.name);
+
       }
     }
   }
@@ -93,33 +96,28 @@ class AuthController extends GetxController {
   }
 
   logout() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.remove('userLoginToken');
-    await preferences.remove('user');
-    print(user.value.token);
-    var response = await http.post(
-        Uri.parse(AppString.webUrl + AppString.webDataUrl + 'logout'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer ' + user.value.token,
-        });
+    var response = await Data.post(
+        isSecure: false, dataType: DataType.Logout, isToken: true);
     if (response.statusCode > 400 || response.statusCode < 200) {
       isLoading.value = false;
       print(response.body);
       Get.snackbar('Hata', jsonDecode(response.body).toString());
     } else if (200 <= response.statusCode && response.statusCode < 400) {
       SharedPreferences preferences = await SharedPreferences.getInstance();
-      Get.snackbar('Çıkış Başarılı', jsonDecode(response.body).toString());
-      await preferences
-          .remove('user')
-          .then((value) => preferences.remove('userLoginToken').then(
-                (value) => Get.offAll(
+      await preferences.remove('userLoginToken');
+      await preferences.remove('user');
+      await preferences.remove('user').then(
+            (value) => preferences.remove('userLoginToken').then(
+              (value) async {
+                Get.offAll(
                   LoginPage(),
-                ),
-              ));
+                );
+                Get.snackbar('Çıkış başarılı', 'Tekrar Görüşmek Üzere... ');
+
+              },
+            ),
+          );
       isLoading.value = false;
-      Get.snackbar('Çıkış başarılı', 'Tekrar Görüşmek Üzere... ');
     }
   }
 
@@ -133,10 +131,11 @@ class AuthController extends GetxController {
         user.email = mailRegisterController.text;
         user.password = passwordRegisterController.text;
         user.passwordAgain = passwordAgainRegisterController.text;
-        var response = await http.post(
-            Uri.parse(AppString.webUrl + AppString.webDataUrl + 'register'),
-            body: jsonEncode(user.toJson()),
-            headers: AppString.header);
+        var response = await Data.post(
+            isSecure: false,
+            body: user,
+            dataType: DataType.Register,
+            isToken: false);
         if (response.statusCode > 400 || response.statusCode < 200) {
           isLoading.value = false;
           Get.snackbar('Hata', jsonDecode(response.body)['message']);
@@ -146,9 +145,10 @@ class AuthController extends GetxController {
           passwordRegisterController.clear();
           passwordAgainRegisterController.clear();
           isLoading.value = false;
+          Get.back();
+          Get.back();
           Get.snackbar('Kayıt başarılı', 'Giriş yapabilirsiniz... ');
-          Get.back();
-          Get.back();
+
         }
       } else {
         Get.snackbar('Hata', 'Şifre ve tekrarı eşleşmiyor.');

@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:get/get.dart';
-import '../app_string.dart';
+import 'package:hizliflutter/data/data.dart';
 import '/models/news.dart';
-import 'package:http/http.dart' as http;
 
 import 'favorite_controller.dart';
 
@@ -13,14 +11,11 @@ class NewsController extends GetxController {
   List<News> newsList;
 
   Future<void> getNewsApi() async {
-    try {
-      final http.Response response = await http.get(
-        Uri.parse(AppString.webUrl + AppString.webDataUrl + 'news'),
-      );
 
-      if (response.statusCode == 200) {
-        var parsedJson = jsonDecode(response.body);
+        var parsedJson;
         newsList = <News>[].obs;
+        parsedJson = await Data.get(isSecure: false, dataType: DataType.News);
+
         for (var model in parsedJson) {
           newsList.add(
             News.fromJson(model),
@@ -34,10 +29,6 @@ class NewsController extends GetxController {
           fetchController.isFavNewsList[News.fromJson(model).id] = isFavWidget;
         }
         newsList = newsList.reversed.toList();
-      } else {
-        print('Hata var:' + response.body.toString());
-      }
-    } on TimeoutException catch (_) {}
 
     update();
   }

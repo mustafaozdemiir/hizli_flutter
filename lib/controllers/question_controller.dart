@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hizliflutter/data/data.dart';
 import 'package:hizliflutter/models/question.dart';
-import 'package:http/http.dart' as http;
 
 import '../app_string.dart';
 
@@ -33,20 +32,16 @@ class QuestionController extends GetxController {
   }*/
 
   Future<void> getQuestionApi() async {
+    var parsedJson;
     soruListe = [];
 
-    final http.Response response =
-        await http.get(Uri.parse(AppString.webUrl + AppString.webDataUrl + 'questions'));
+    parsedJson = await Data.get(isSecure: false, dataType: DataType.Question);
 
-    if (response.statusCode == 200) {
-      var parsedJson = jsonDecode(response.body);
-      for (var model in parsedJson) {
-        soruListe.add(Question.fromJson(model));
-      }
-      soruListe.shuffle();
-    } else {
-      print('Hata var');
+    for (var model in parsedJson) {
+      soruListe.add(Question.fromJson(model));
     }
+    soruListe.shuffle();
+
     update();
   }
 

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:animation_wrappers/animation_wrappers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hizliflutter/controllers/widget_model_controller.dart';
@@ -75,11 +76,11 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
         },
         builder: (s) {
           return s.widgetList == null
-              ? Functions.loadingView()
-              : s.widgetList.length < 1
-                  ? Center(
-                      child: Text('Eklenmiş Gönderi Bulunmuyor !'),
-                    )
+              ? Center(
+                  child: Text('Eklenmiş Widget Bulunmuyor !'),
+                )
+              : s.widgetList.length < 1 || s.widgetList.isEmpty
+                  ? Functions.loadingView()
                   : Column(
                       children: [
                         _search(),
@@ -92,26 +93,28 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
   }
 
   Widget _search() {
-    return Card(
-      shadowColor: Colors.black,
-      shape: OutlineInputBorder(
-        borderSide: BorderSide(width: 3, color: Colors.grey[700]),
-        borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(38),
-          topLeft: Radius.circular(38),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: TextField(
-          autofocus: false,
-          controller: _searchEdit,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: "Widget Ara...",
-            hintStyle: TextStyle(color: Colors.grey[300]),
+    return FadedScaleAnimation(
+      child: Card(
+        shadowColor: Colors.black,
+        shape: OutlineInputBorder(
+          borderSide: BorderSide(width: 3, color: Colors.grey[700]),
+          borderRadius: BorderRadius.only(
+            bottomRight: Radius.circular(38),
+            topLeft: Radius.circular(38),
           ),
-          textAlign: TextAlign.center,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextField(
+            autofocus: false,
+            controller: _searchEdit,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: "Widget Ara...",
+              hintStyle: TextStyle(color: Colors.grey[300]),
+            ),
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );
@@ -161,147 +164,149 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                   ),
                 );
               },
-              child: Container(
-                padding: EdgeInsets.all(8),
-                margin: EdgeInsets.all(8),
-                decoration: ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 3, color: Colors.black),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(14),
-                      topRight: Radius.circular(14),
+              child: FadedScaleAnimation(
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  margin: EdgeInsets.all(8),
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 3, color: Colors.black),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(14),
+                        topRight: Radius.circular(14),
+                      ),
                     ),
                   ),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Row(children: [
-                            Container(
-                              width: 45,
-                              height: 45,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.blue,
-                                child: Text(
-                                  s.widgetList[index].kind[0],
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 30,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Row(children: [
+                              Container(
+                                width: 45,
+                                height: 45,
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.blue,
+                                  child: Text(
+                                    s.widgetList[index].kind[0],
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 30,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(width: 10),
-                            Flexible(
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Center(
-                                      child: Text(
-                                        s.widgetList[index].name,
+                              SizedBox(width: 10),
+                              Flexible(
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          s.widgetList[index].name,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        s.widgetList[index].subTitle,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
                                         style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500),
+                                          color: Colors.grey[500],
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      s.widgetList[index].subTitle,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                        color: Colors.grey[500],
-                                      ),
-                                    ),
-                                  ]),
-                            )
-                          ]),
-                        ),
-                        GestureDetector(
-                          onTap: () => fetchController.favWidget(
-                              type: FavType.Widget, id: s.widgetList[index].id),
-                          child: Obx(
-                            () => AnimatedContainer(
-                                height: 35,
-                                padding: EdgeInsets.all(5),
-                                duration: Duration(milliseconds: 300),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: (fetchController.isFavWidgetList[
+                                    ]),
+                              )
+                            ]),
+                          ),
+                          GestureDetector(
+                            onTap: () => fetchController.favWidget(
+                                type: FavType.Widget, id: s.widgetList[index].id),
+                            child: Obx(
+                              () => AnimatedContainer(
+                                  height: 35,
+                                  padding: EdgeInsets.all(5),
+                                  duration: Duration(milliseconds: 300),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: (fetchController.isFavWidgetList[
+                                                    s.widgetList[index].id]) &&
+                                                fetchController.isFavWidgetList[
+                                                        s.widgetList[index].id] !=
+                                                    null
+                                            ? Colors.red.shade100
+                                            : Colors.grey.shade300,
+                                      )),
+                                  child: Center(
+                                      child: (fetchController.isFavWidgetList[
                                                   s.widgetList[index].id]) &&
                                               fetchController.isFavWidgetList[
                                                       s.widgetList[index].id] !=
                                                   null
-                                          ? Colors.red.shade100
-                                          : Colors.grey.shade300,
-                                    )),
-                                child: Center(
-                                    child: (fetchController.isFavWidgetList[
-                                                s.widgetList[index].id]) &&
-                                            fetchController.isFavWidgetList[
-                                                    s.widgetList[index].id] !=
-                                                null
-                                        ? Icon(
-                                            Icons.favorite,
-                                            color: Colors.red,
-                                          )
-                                        : Icon(
-                                            Icons.favorite_outline,
-                                            color: Colors.grey.shade600,
-                                          ))),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 15),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Colors.grey.shade200),
-                                child: cesit,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              /* Container(
-                                padding:
-                                EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  'Level',
-                                ),
-                              ),*/
-                            ],
-                          ),
-                          Text(
-                            Functions.convertToAgo(
-                                s.widgetList[index].createdAt),
-                            style: TextStyle(
-                                color: Colors.grey.shade800, fontSize: 12),
+                                          ? Icon(
+                                              Icons.favorite,
+                                              color: Colors.red,
+                                            )
+                                          : Icon(
+                                              Icons.favorite_outline,
+                                              color: Colors.grey.shade600,
+                                            ))),
+                            ),
                           )
                         ],
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: Colors.grey.shade200),
+                                  child: cesit,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                /* Container(
+                                  padding:
+                                  EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    'Level',
+                                  ),
+                                ),*/
+                              ],
+                            ),
+                            Text(
+                              Functions.convertToAgo(
+                                  s.widgetList[index].createdAt),
+                              style: TextStyle(
+                                  color: Colors.grey.shade800, fontSize: 12),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             );

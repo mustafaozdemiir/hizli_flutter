@@ -1,3 +1,4 @@
+import 'package:animation_wrappers/animations/faded_scale_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hizliflutter/app_string.dart';
@@ -129,30 +130,32 @@ class Samples extends StatelessWidget {
             bannerTextColor = Colors.white;
             break;
         }
-        return Banner(
-          location: BannerLocation.topStart,
-          message: bannerMessage,
-          color: bannerColor,
-          textStyle: TextStyle(color: bannerTextColor),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              side: BorderSide(width: 3, color: Colors.black),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(14),
-                topRight: Radius.circular(14),
-                bottomRight: Radius.circular(14),
+        return FadedScaleAnimation(
+          child: Banner(
+            location: BannerLocation.topStart,
+            message: bannerMessage,
+            color: bannerColor,
+            textStyle: TextStyle(color: bannerTextColor),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                side: BorderSide(width: 3, color: Colors.black),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(14),
+                  topRight: Radius.circular(14),
+                  bottomRight: Radius.circular(14),
+                ),
               ),
-            ),
-            child: ListTile(
-              title: Center(child: Text(ornekler[index].adi)),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SampleDetailPage(ornekler[index]),
-                  ),
-                );
-              },
+              child: ListTile(
+                title: Center(child: Text(ornekler[index].adi)),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SampleDetailPage(ornekler[index]),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         );
