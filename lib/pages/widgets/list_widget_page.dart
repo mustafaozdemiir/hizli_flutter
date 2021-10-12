@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:animation_wrappers/animation_wrappers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hizliflutter/controllers/widget_model_controller.dart';
@@ -60,13 +61,7 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
         centerTitle: true,
         title: Text(AppString.widget),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.logout,
-              color: Colors.red,
-            ),
-            onPressed: () => authController.logout(),
-          ),
+          Functions.loginLogoutButton(),
         ],
       ),
       backgroundColor: Colors.white,
@@ -185,23 +180,15 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                           Expanded(
                             child: Row(children: [
                               Container(
-                                width: 45,
-                                height: 45,
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.blue,
-                                  child: Text(
-                                    s.widgetList[index].kind[0],
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 30,
-                                    ),
-                                  ),
-                                ),
+                                width: 50,
+                                height: 50,
+                                child: Icon(Icons.apps,color: Colors.blue,size: 40,),
                               ),
                               SizedBox(width: 10),
                               Flexible(
                                 child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Center(
                                         child: Text(
@@ -229,7 +216,8 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                           ),
                           GestureDetector(
                             onTap: () => fetchController.favWidget(
-                                type: FavType.Widget, id: s.widgetList[index].id),
+                                type: FavType.Widget,
+                                id: s.widgetList[index].id),
                             child: Obx(
                               () => AnimatedContainer(
                                   height: 35,
@@ -241,7 +229,8 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                                         color: (fetchController.isFavWidgetList[
                                                     s.widgetList[index].id]) &&
                                                 fetchController.isFavWidgetList[
-                                                        s.widgetList[index].id] !=
+                                                        s.widgetList[index]
+                                                            .id] !=
                                                     null
                                             ? Colors.red.shade100
                                             : Colors.grey.shade300,

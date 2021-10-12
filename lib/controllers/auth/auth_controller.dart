@@ -5,10 +5,10 @@ import 'package:get/get.dart';
 import 'package:hizliflutter/data/data.dart';
 import 'package:hizliflutter/main.dart';
 import 'package:hizliflutter/models/user.dart';
-import 'package:hizliflutter/pages/auth/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
+  Rx<bool> isLogin = false.obs;
   Rx<User> user;
   var userLoginToken;
 
@@ -62,7 +62,8 @@ class AuthController extends GetxController {
 
       if (response.statusCode > 400 || response.statusCode < 200) {
         isLoading.value = false;
-        Get.snackbar('Hata', jsonDecode(response.body)['message']);
+        //jsonDecode(response.body)['message']
+        Get.snackbar('Hata', 'Giriş Başarısız!');
       } else if (200 <= response.statusCode && response.statusCode < 400) {
         user = User.fromJson(jsonDecode(response.body)['user']);
         user.token = jsonDecode(response.body)['token'];
@@ -71,28 +72,31 @@ class AuthController extends GetxController {
         await preferences.setString(
             'userLoginToken', jsonDecode(response.body)['token']);
         await preferences.setString('user', jsonEncode(user));
-        print(jsonDecode(response.body)['token']);
         isLoading.value = false;
         mailLoginController.clear();
         passwordLoginController.clear();
+        isLogin.value = true;
+        update();
 
         await Get.offAll(MyHomePage());
         Get.snackbar('Giriş başarılı', 'Hoşgeldiniz ' + user.name);
-
       }
     }
   }
 
-  Future<void> isLogin() async {
+  Future<void> isLoginFunction() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     if (preferences.containsKey('user') &&
         preferences.containsKey('userLoginToken')) {
       user.value = User.fromJson(jsonDecode(preferences.getString('user')));
       userLoginToken = preferences.getString('userLoginToken');
-      await Get.offAll(() => MyHomePage());
+      isLogin.value = true;
+      //await Get.offAll(() => MyHomePage());
     } else {
-      await Get.offAll(() => LoginPage());
+      isLogin.value = false;
+      //await Get.offAll(() => LoginPage());
     }
+    update();
   }
 
   logout() async {
@@ -100,8 +104,8 @@ class AuthController extends GetxController {
         isSecure: false, dataType: DataType.Logout, isToken: true);
     if (response.statusCode > 400 || response.statusCode < 200) {
       isLoading.value = false;
-      print(response.body);
-      Get.snackbar('Hata', jsonDecode(response.body).toString());
+      //jsonDecode(response.body).toString()
+      Get.snackbar('Hata', 'Çıkış Başarısız');
     } else if (200 <= response.statusCode && response.statusCode < 400) {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       await preferences.remove('userLoginToken');
@@ -109,15 +113,13 @@ class AuthController extends GetxController {
       await preferences.remove('user').then(
             (value) => preferences.remove('userLoginToken').then(
               (value) async {
-                Get.offAll(
-                  LoginPage(),
-                );
+                isLogin.value=false;
                 Get.snackbar('Çıkış başarılı', 'Tekrar Görüşmek Üzere... ');
-
               },
             ),
           );
       isLoading.value = false;
+      update();
     }
   }
 
@@ -138,7 +140,8 @@ class AuthController extends GetxController {
             isToken: false);
         if (response.statusCode > 400 || response.statusCode < 200) {
           isLoading.value = false;
-          Get.snackbar('Hata', jsonDecode(response.body)['message']);
+          //jsonDecode(response.body)['message']
+          Get.snackbar('Hata', 'Kayıt Başarısız!');
         } else if (200 <= response.statusCode && response.statusCode < 400) {
           nameRegisterController.clear();
           mailRegisterController.clear();
@@ -148,7 +151,6 @@ class AuthController extends GetxController {
           Get.back();
           Get.back();
           Get.snackbar('Kayıt başarılı', 'Giriş yapabilirsiniz... ');
-
         }
       } else {
         Get.snackbar('Hata', 'Şifre ve tekrarı eşleşmiyor.');

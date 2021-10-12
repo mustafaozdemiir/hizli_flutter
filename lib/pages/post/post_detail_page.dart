@@ -7,6 +7,7 @@ import 'package:hizliflutter/controllers/auth/auth_controller.dart';
 import 'package:hizliflutter/controllers/favorite_controller.dart';
 import 'package:hizliflutter/controllers/post_controller.dart';
 import 'package:hizliflutter/models/post.dart';
+import 'package:hizliflutter/pages/auth/login_page.dart';
 import 'package:hizliflutter/services/functions.dart';
 
 class PostDetailPage extends StatelessWidget {
@@ -218,14 +219,16 @@ class PostDetailPage extends StatelessWidget {
                                 Row(
                                   children: [
                                     Text(
-                                      Functions.convertToAgo(model.createdAt),style: TextStyle(color: Colors.black54),
+                                      Functions.convertToAgo(model.createdAt),
+                                      style: TextStyle(color: Colors.black54),
                                     ),
                                     SizedBox(
                                       width: 5,
                                     ),
                                     Icon(
                                       Icons.watch_later_outlined,
-                                      size: 20,color: Colors.black54,
+                                      size: 20,
+                                      color: Colors.black54,
                                     ),
                                   ],
                                 ),
@@ -324,37 +327,51 @@ class PostDetailPage extends StatelessWidget {
   }
 
   addCommentView() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Form(
-          key: postController.addCommentFormKey,
-          child: TextFormField(
-            controller: postController.addCommentController,
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Boş olamaz!';
-              }
-              if (value.length < 5) {
-                return 'En az 5 karakter girmelisiniz!';
-              }
-              return null;
-            },
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
+    return authController.isLogin.value
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Form(
+                key: postController.addCommentFormKey,
+                child: TextFormField(
+                  controller: postController.addCommentController,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Boş olamaz!';
+                    }
+                    if (value.length < 5) {
+                      return 'En az 5 karakter girmelisiniz!';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              MaterialButton(
+                onPressed: () => toComment(),
+                child: Obx(
+                  () => postController.isLoading.value
+                      ? CircularProgressIndicator()
+                      : Text('Yorum Yap'),
+                ),
+              ),
+            ],
+          )
+        : Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+              child: Column(
+                children: [
+                  Center(
+                    child: Text('Yorum yapabilmeniz için giriş yapmanız gerekiyor.',style: TextStyle(color: Colors.grey),),
+                  ),
+                  TextButton(child: Text('Giriş Yap'),onPressed: ()=>Get.to(LoginPage()),),
+                ],
+              ),
             ),
-          ),
-        ),
-        MaterialButton(
-          onPressed: () => toComment(),
-          child: Obx(
-            () => postController.isLoading.value
-                ? CircularProgressIndicator()
-                : Text('Yorum Yap'),
-          ),
-        ),
-      ],
-    );
+        );
   }
 
   toComment() async {

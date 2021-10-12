@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hizliflutter/controllers/auth/auth_controller.dart';
+import 'package:hizliflutter/pages/auth/login_page.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class Functions {
+  static AuthController authController = Get.put(AuthController());
+
   static String readTimestamp(int timestamp) {
     var now = DateTime.now();
     var format = DateFormat('HH:mm a');
@@ -297,5 +302,23 @@ class Functions {
         ],
       ),
     );
+  }
+
+  static Widget loginLogoutButton() {
+    return Obx(() => authController.isLogin.value
+        ? IconButton(
+            icon: Icon(
+              Icons.logout,
+              color: Colors.red,
+            ),
+            onPressed: () => authController.logout(),
+          )
+        : IconButton(
+            icon: Icon(
+              Icons.login,
+              color: Colors.green,
+            ),
+            onPressed: () => Get.to(LoginPage()),
+          ));
   }
 }

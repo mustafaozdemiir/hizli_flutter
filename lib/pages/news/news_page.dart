@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:animation_wrappers/animations/faded_scale_animation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hizliflutter/app_string.dart';
@@ -23,14 +24,7 @@ class NewsPage extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(AppString.news),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.logout,
-              color: Colors.red,
-            ),
-            onPressed: () => authController.logout(),
-          ),
+        actions: [Functions.loginLogoutButton(),
         ],
       ),
       backgroundColor: Colors.white,
@@ -123,18 +117,9 @@ class NewsPage extends StatelessWidget {
                                 Expanded(
                                   child: Row(children: [
                                     Container(
-                                      width: 45,
-                                      height: 45,
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.blue,
-                                        child: Text(
-                                          s.newsList[index].kind[0],
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 30,
-                                          ),
-                                        ),
-                                      ),
+                                      width: 50,
+                                      height: 50,
+                                      child: Icon(CupertinoIcons.news,color: Colors.blue,size: 40,),
                                     ),
                                     SizedBox(width: 10),
                                     Flexible(

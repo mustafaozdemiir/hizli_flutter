@@ -76,6 +76,7 @@ flutter:
   assets:
      - lib/kodlar/
      - res/
+     - assets/images/
 
   #   - images/a_dot_ham.jpeg
 

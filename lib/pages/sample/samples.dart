@@ -15,6 +15,7 @@ import 'package:hizliflutter/kodlar/ornek_slider_button.dart';
 import 'package:hizliflutter/kodlar/ornek_swiper.dart';
 import 'package:hizliflutter/kodlar/ornek_ust_yonlendirme_cubuk.dart';
 import 'package:hizliflutter/models/sample.dart';
+import 'package:hizliflutter/services/functions.dart';
 import 'sample_detail_page.dart';
 
 class Samples extends StatelessWidget {
@@ -28,14 +29,7 @@ class Samples extends StatelessWidget {
       appBar: AppBar(
         title: Text(AppString.examples),
         backgroundColor: Colors.white,
-        centerTitle: true,actions: [
-        IconButton(
-          icon: Icon(
-            Icons.logout,
-            color: Colors.red,
-          ),
-          onPressed: () => authController.logout(),
-        ),
+        centerTitle: true,actions: [Functions.loginLogoutButton(),
       ],
       ),
       body: buildSampleScreen(),

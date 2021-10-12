@@ -39,7 +39,7 @@ class RegisterPage extends StatelessWidget {
   loginImage() {
     return FadedScaleAnimation(
       child: Image.asset(
-        'res/launcher_icon.png',
+        'assets/images/account.png',
         height: Get.height * 0.25,
         width: Get.height * 0.25,
       ),
@@ -74,10 +74,13 @@ class RegisterPage extends StatelessWidget {
         FadedScaleAnimation(
           child: TextFormField(
             validator: (value) {
+              bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
               if (value.isEmpty) {
                 return 'Boş olamaz!';
               }
-              return null;
+              else if(!emailValid){
+                return 'E-mail adresinizi kontrol ediniz!';
+              }
             },
             controller: authController.mailRegisterController,
             textInputAction: TextInputAction.next,
@@ -104,7 +107,7 @@ class RegisterPage extends StatelessWidget {
             obscureText: true,
             controller: authController.passwordRegisterController,
             keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.done,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               hintText: 'Şifre',
               labelText: 'Şifre',

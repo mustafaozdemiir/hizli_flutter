@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:hizliflutter/controllers/post_controller.dart';
+import 'package:hizliflutter/pages/auth/login_page.dart';
 import 'package:hizliflutter/pages/post/add_post_page.dart';
 import 'package:hizliflutter/services/functions.dart';
 import '../../app_string.dart';
@@ -64,13 +65,7 @@ class _PostPageState extends State<PostPage> {
           centerTitle: true,
           title: Text(AppString.post),
           actions: [
-            IconButton(
-              icon: Icon(
-                Icons.logout,
-                color: Colors.red,
-              ),
-              onPressed: () => authController.logout(),
-            ),
+            Functions.loginLogoutButton(),
           ]),
       backgroundColor: Colors.white,
       body: GetBuilder<PostController>(
@@ -99,9 +94,21 @@ class _PostPageState extends State<PostPage> {
           color: Colors.white,
         ),
         onPressed: () {
-          Get.to(
-            AddPostPage(),
-          );
+          authController.isLogin.value
+              ? Get.to(
+                  AddPostPage(),
+                )
+              : Get.defaultDialog(middleText: 'Gönderi ekleyebilmeniz için giriş yapmanız gerekiyor',
+                  title: 'Gönderi ekle',
+                  cancel: TextButton(
+                    child: Text('Tamam'),
+                    onPressed: () => Get.back(),
+                  ),
+                  confirm: TextButton(style: ButtonStyle(backgroundColor:  MaterialStateProperty.all<Color>(Colors.blue)),
+                    child: Text('Giriş Yap',style: TextStyle(color: Colors.white),),
+                    onPressed: () => Get.to(LoginPage()),
+                  ),
+                );
         },
       ),
     );
@@ -235,7 +242,8 @@ class _PostPageState extends State<PostPage> {
                               SizedBox(width: 10),
                               Flexible(
                                 child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Center(
                                         child: Text(
@@ -357,7 +365,8 @@ class _PostPageState extends State<PostPage> {
                                   Functions.convertToAgo(
                                       s.postList[index].createdAt),
                                   style: TextStyle(
-                                      color: Colors.grey.shade800, fontSize: 12),
+                                      color: Colors.grey.shade800,
+                                      fontSize: 12),
                                 ),
                               ],
                             ),
@@ -492,7 +501,8 @@ class _PostPageState extends State<PostPage> {
                               SizedBox(width: 10),
                               Flexible(
                                 child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Center(
                                         child: Text(
@@ -614,7 +624,8 @@ class _PostPageState extends State<PostPage> {
                                   Functions.convertToAgo(
                                       _searchList[index].createdAt),
                                   style: TextStyle(
-                                      color: Colors.grey.shade800, fontSize: 12),
+                                      color: Colors.grey.shade800,
+                                      fontSize: 12),
                                 ),
                               ],
                             ),

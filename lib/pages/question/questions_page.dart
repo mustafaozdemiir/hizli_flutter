@@ -33,14 +33,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(AppString.answer),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.logout,
-              color: Colors.red,
-            ),
-            onPressed: () => authController.logout(),
-          ),
+        actions: [Functions.loginLogoutButton(),
         ],
       ),
       body: buildQuestionScreen(),

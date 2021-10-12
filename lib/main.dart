@@ -7,7 +7,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'app_string.dart';
 import 'pages/news//news_page.dart';
 import 'pages/post/post_page.dart';
-import 'pages/sample//samples.dart';
+import 'pages/sample/samples.dart';
 import 'pages/question//questions_page.dart';
 import 'pages/splash_page.dart';
 import 'pages/widgets//list_widget_page.dart';

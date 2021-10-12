@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -103,7 +102,9 @@ class PostController extends GetxController {
 
       if (response.statusCode > 400 || response.statusCode < 200) {
         isLoading.value = false;
-        Get.snackbar('Hata', jsonDecode(response.body)['message']);
+        //jsonDecode(response.body)['message']
+        Get.snackbar('Gönderi eklenemedi!', 'Gönderi eklenirken bir hata oluştu. Lütfen Daha sonra tekrar deneyiniz!');
+
       } else if (200 <= response.statusCode && response.statusCode < 400) {
         headingPostController.clear();
         contentPostController.clear();
@@ -131,7 +132,8 @@ class PostController extends GetxController {
 
       if (response.statusCode > 400 || response.statusCode < 200) {
         isLoading.value = false;
-        Get.snackbar('Hata', jsonDecode(response.body)['message'].toString());
+        //jsonDecode(response.body)['message'].toString()
+        Get.snackbar('Yorum eklenemedi!', 'Yorum eklenirken bir hata oluştu. Lütfen Daha sonra tekrar deneyiniz!');
       } else if (200 <= response.statusCode && response.statusCode < 400) {
         getPostsApi();
         addCommentController.clear();

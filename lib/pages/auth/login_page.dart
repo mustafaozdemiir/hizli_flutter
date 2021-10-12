@@ -9,7 +9,6 @@ import 'register_page.dart';
 class LoginPage extends StatelessWidget {
   AuthController authController = Get.put(AuthController());
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,18 +33,20 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
+
   loginImage() {
     return FadedScaleAnimation(
       child: Image.asset(
-        'res/launcher_icon.png',
-        height: Get.height * 0.25,
-        width: Get.height * 0.25,
+        'assets/images/login_image.png',
+        height: Get.height * 0.45,
+        width: Get.height * 0.45,
       ),
     );
   }
 
   formFields() {
-    return Form(key: authController.loginFormKey,
+    return Form(
+      key: authController.loginFormKey,
       child: Column(
         children: [
           FadedScaleAnimation(
@@ -97,26 +98,26 @@ class LoginPage extends StatelessWidget {
 
   loginButton() {
     return Obx(
-          () => Padding(
+      () => Padding(
         padding: const EdgeInsets.symmetric(vertical: 18.0),
         child: authController.isLoading.value
             ? CircularProgressIndicator()
             : FadedScaleAnimation(
-              child: TextButton(
-          style: ButtonStyle(
-              minimumSize: MaterialStateProperty.all<Size>(
-                Size(Get.width * 0.95, 50),
+                child: TextButton(
+                  style: ButtonStyle(
+                    minimumSize: MaterialStateProperty.all<Size>(
+                      Size(Get.width * 0.95, 50),
+                    ),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blue),
+                  ),
+                  onPressed: authController.login,
+                  child: Text(
+                    'Giriş',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
-              backgroundColor:
-              MaterialStateProperty.all<Color>(Colors.blue),
-          ),
-          onPressed: authController.login,
-          child: Text(
-              'Giriş',
-              style: TextStyle(color: Colors.white),
-          ),
-        ),
-            ),
       ),
     );
   }
@@ -139,4 +140,3 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
-
