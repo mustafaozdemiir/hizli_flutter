@@ -14,7 +14,6 @@ class WidgetModelController extends GetxController {
     fetchController.dispose();
   }
 
-
   @override
   void onInit() {
     super.onInit();
@@ -23,24 +22,25 @@ class WidgetModelController extends GetxController {
   Future<void> getWidgetsApi() async {
     var parsedJson;
 
-    widgetList = <WidgetModel>[].obs;
     parsedJson = await Data.get(isSecure: false, dataType: DataType.Widget);
+    widgetList = <WidgetModel>[].obs;
 
-    for (var model in parsedJson) {
-      widgetList.add(
-        WidgetModel.fromJson(model),
-      );
-      bool isFavWidget = false;
-      await fetchController
-          .isFav(type: FavType.Widget, id: WidgetModel.fromJson(model).id)
-          .then((value) {
-        isFavWidget = value;
-      });
-      fetchController.isFavWidgetList[WidgetModel.fromJson(model).id] =
-          isFavWidget;
+    if (parsedJson.toString() != '[]') {
+      for (var model in parsedJson) {
+        widgetList.add(
+          WidgetModel.fromJson(model),
+        );
+        bool isFavWidget = false;
+        await fetchController
+            .isFav(type: FavType.Widget, id: WidgetModel.fromJson(model).id)
+            .then((value) {
+          isFavWidget = value;
+        });
+        fetchController.isFavWidgetList[WidgetModel.fromJson(model).id] =
+            isFavWidget;
+      }
+      widgetList = widgetList.reversed.toList();
     }
-    widgetList = widgetList.reversed.toList();
-
     update();
   }
 }

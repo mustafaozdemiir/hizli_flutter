@@ -10,7 +10,7 @@ class QuestionController extends GetxController {
   List<Question> soruListe;
   var soruNo = 0.obs;
   var timerTime = 10.obs;
-  Timer _timer;
+  Timer timer;
 
   var toplamPuan = 0.0.obs;
   var zorlukRenk = Colors.blue.obs;
@@ -33,24 +33,25 @@ class QuestionController extends GetxController {
 
   Future<void> getQuestionApi() async {
     var parsedJson;
-    soruListe = [];
 
     parsedJson = await Data.get(isSecure: false, dataType: DataType.Question);
+    soruListe = [];
 
-    for (var model in parsedJson) {
-      soruListe.add(Question.fromJson(model));
+    if (parsedJson.toString() != '[]') {
+      for (var model in parsedJson) {
+        soruListe.add(Question.fromJson(model));
+      }
+      soruListe.shuffle();
     }
-    soruListe.shuffle();
-
     update();
   }
 
   void startTimer(int zaman) {
-    if (_timer != null) {
-      _timer.cancel();
+    if (timer != null) {
+      timer.cancel();
     }
     timerTime.value = zaman;
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (timerTime.value != 0) {
         timerTime.value--;
       } else if (timerTime.value == 0) {
@@ -64,13 +65,13 @@ class QuestionController extends GetxController {
   }
 
   void stopTimer() {
-    _timer.cancel();
+    timer.cancel();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _timer.cancel();
+    timer.cancel();
   }
 
   @override
@@ -133,7 +134,7 @@ class QuestionController extends GetxController {
 
   void nextQuestion() {
     if (soruNo.value < soruListe.length - 1) {
-      if (_timer.isActive) {
+      if (timer.isActive) {
         stopTimer();
       }
       soruNo.value++;

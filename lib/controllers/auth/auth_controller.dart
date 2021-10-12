@@ -102,25 +102,19 @@ class AuthController extends GetxController {
   logout() async {
     var response = await Data.post(
         isSecure: false, dataType: DataType.Logout, isToken: true);
-    if (response.statusCode > 400 || response.statusCode < 200) {
-      isLoading.value = false;
-      //jsonDecode(response.body).toString()
-      Get.snackbar('Hata', 'Çıkış Başarısız');
-    } else if (200 <= response.statusCode && response.statusCode < 400) {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      await preferences.remove('userLoginToken');
-      await preferences.remove('user');
-      await preferences.remove('user').then(
-            (value) => preferences.remove('userLoginToken').then(
-              (value) async {
-                isLogin.value=false;
-                Get.snackbar('Çıkış başarılı', 'Tekrar Görüşmek Üzere... ');
-              },
-            ),
-          );
-      isLoading.value = false;
-      update();
-    }
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.remove('user').then(
+          (value) => preferences.remove('userLoginToken').then(
+            (value) async {
+              isLogin.value = false;
+              Get.snackbar('Çıkış başarılı', 'Tekrar Görüşmek Üzere... ');
+            },
+          ),
+        );
+    isLoading.value = false;
+
+    update();
   }
 
   register() async {

@@ -73,18 +73,18 @@ class _PostPageState extends State<PostPage> {
           Get.find<PostController>().getPostsApi();
         },
         builder: (s) {
-          return s.postList == null
-              ? Center(
-                  child: Text('Eklenmiş Gönderi Bulunmuyor !'),
-                )
-              : s.postList.length < 1
-                  ? Functions.loadingView()
+          return s.postList != null
+              ? s.postList.length < 1 || s.postList.isEmpty
+                  ? Center(
+                      child: Text('Eklenmiş Gönderi Bulunmuyor !'),
+                    )
                   : Column(
-                      children: [
-                        _search(),
-                        _isSearch ? _listView(s) : _searchListView(s)
-                      ],
-                    );
+                          children: [
+                            _search(),
+                            _isSearch ? _listView(s) : _searchListView(s)
+                          ],
+                        )
+              : Functions.loadingView();
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -98,14 +98,22 @@ class _PostPageState extends State<PostPage> {
               ? Get.to(
                   AddPostPage(),
                 )
-              : Get.defaultDialog(middleText: 'Gönderi ekleyebilmeniz için giriş yapmanız gerekiyor',
+              : Get.defaultDialog(
+                  middleText:
+                      'Gönderi ekleyebilmeniz için giriş yapmanız gerekiyor',
                   title: 'Gönderi ekle',
                   cancel: TextButton(
                     child: Text('Tamam'),
                     onPressed: () => Get.back(),
                   ),
-                  confirm: TextButton(style: ButtonStyle(backgroundColor:  MaterialStateProperty.all<Color>(Colors.blue)),
-                    child: Text('Giriş Yap',style: TextStyle(color: Colors.white),),
+                  confirm: TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.blue)),
+                    child: Text(
+                      'Giriş Yap',
+                      style: TextStyle(color: Colors.white),
+                    ),
                     onPressed: () => Get.to(LoginPage()),
                   ),
                 );

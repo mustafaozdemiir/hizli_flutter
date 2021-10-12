@@ -70,18 +70,18 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
           Get.find<WidgetModelController>().getWidgetsApi();
         },
         builder: (s) {
-          return s.widgetList == null
-              ? Center(
-                  child: Text('Eklenmiş Widget Bulunmuyor !'),
-                )
-              : s.widgetList.length < 1 || s.widgetList.isEmpty
-                  ? Functions.loadingView()
+          return widgetModelController!=null&&widgetModelController.widgetList != null
+              ? s.widgetList.length < 1 || s.widgetList.isEmpty
+                  ? Center(
+                      child: Text('Eklenmiş Widget Bulunmuyor !'),
+                    )
                   : Column(
                       children: [
                         _search(),
                         _isSearch ? _listView(s) : _searchListView(s)
                       ],
-                    );
+                    )
+              : Functions.loadingView();
         },
       ),
     );
@@ -182,7 +182,11 @@ class _ListWidgetPageState extends State<ListWidgetPage> {
                               Container(
                                 width: 50,
                                 height: 50,
-                                child: Icon(Icons.apps,color: Colors.blue,size: 40,),
+                                child: Icon(
+                                  Icons.apps,
+                                  color: Colors.blue,
+                                  size: 40,
+                                ),
                               ),
                               SizedBox(width: 10),
                               Flexible(

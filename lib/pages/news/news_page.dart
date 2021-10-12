@@ -24,19 +24,19 @@ class NewsPage extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(AppString.news),
-        actions: [Functions.loginLogoutButton(),
+        actions: [
+          Functions.loginLogoutButton(),
         ],
       ),
       backgroundColor: Colors.white,
       body: GetBuilder<NewsController>(
         initState: (_) => Get.find<NewsController>().getNewsApi(),
         builder: (s) {
-          return s.newsList == null
-              ? Center(
-                  child: Text('Eklenmiş Haber Bulunmuyor !'),
-                )
-              : s.newsList.length < 1
-                  ? Functions.loadingView()
+          return newsController!=null&&newsController.newsList != null
+              ? s.newsList.length < 1 || s.newsList.isEmpty
+                  ? Center(
+                      child: Text('Eklenmiş Haber Bulunmuyor !'),
+                    )
                   : Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
@@ -44,7 +44,8 @@ class NewsPage extends StatelessWidget {
                           children: <Widget>[_listView(s)],
                         ),
                       ),
-                    );
+                    )
+              : Functions.loadingView();
         },
       ),
     );
@@ -119,7 +120,11 @@ class NewsPage extends StatelessWidget {
                                     Container(
                                       width: 50,
                                       height: 50,
-                                      child: Icon(CupertinoIcons.news,color: Colors.blue,size: 40,),
+                                      child: Icon(
+                                        CupertinoIcons.news,
+                                        color: Colors.blue,
+                                        size: 40,
+                                      ),
                                     ),
                                     SizedBox(width: 10),
                                     Flexible(
@@ -133,7 +138,8 @@ class NewsPage extends StatelessWidget {
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 15,
-                                                    fontWeight: FontWeight.w500),
+                                                    fontWeight:
+                                                        FontWeight.w500),
                                               ),
                                             ),
                                             SizedBox(
@@ -177,9 +183,12 @@ class NewsPage extends StatelessWidget {
                                                   : Colors.grey.shade300,
                                             )),
                                         child: Center(
-                                            child: (fetchController.isFavNewsList[
-                                                        s.newsList[index].id]) &&
-                                                    fetchController.isFavNewsList[
+                                            child: (fetchController
+                                                            .isFavNewsList[
+                                                        s.newsList[index]
+                                                            .id]) &&
+                                                    fetchController
+                                                                .isFavNewsList[
                                                             s.newsList[index]
                                                                 .id] !=
                                                         null
@@ -200,7 +209,8 @@ class NewsPage extends StatelessWidget {
                             ),
                             Container(
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [

@@ -51,28 +51,31 @@ class PostController extends GetxController {
 
   Future<void> getPostsApi() async {
     var parsedJson;
-    postList = <Post>[].obs;
     parsedJson = await Data.get(isSecure: false, dataType: DataType.Post);
+    postList = <Post>[].obs;
 
-    for (var model in parsedJson) {
-      postList.add(
-        Post.fromJson(model),
-      );
-      bool isFavPost = false;
-      await fetchController
-          .isFav(type: FavType.Post, id: Post.fromJson(model).id)
-          .then((value) {
-        isFavPost = value;
-      });
-      fetchController.isFavPostList[Post.fromJson(model).id] = isFavPost;
+    if (parsedJson.toString() != '[]') {
+      for (var model in parsedJson) {
+        postList.add(
+          Post.fromJson(model),
+        );
+        bool isFavPost = false;
+        await fetchController
+            .isFav(type: FavType.Post, id: Post.fromJson(model).id)
+            .then((value) {
+          isFavPost = value;
+        });
+        fetchController.isFavPostList[Post.fromJson(model).id] = isFavPost;
+      }
+      postList = postList.reversed.toList();
     }
-    postList = postList.reversed.toList();
 
     update();
   }
 
   addPost() async {
     if (postFormKey.currentState.validate()) {
+      await authController.isLoginFunction().then((value) => {});
       isLoading.value = true;
       String postType = '';
       switch (typeController.value) {
@@ -97,14 +100,16 @@ class PostController extends GetxController {
       post.userId = authController.user.value.id;
       post.numberOfComment = 0;
       post.numberOfLikes = 0;
+      print(authController.user.value.name);
       var response = await Data.post(
           isSecure: false, body: post, dataType: DataType.Post, isToken: true);
 
       if (response.statusCode > 400 || response.statusCode < 200) {
         isLoading.value = false;
         //jsonDecode(response.body)['message']
-        Get.snackbar('Gönderi eklenemedi!', 'Gönderi eklenirken bir hata oluştu. Lütfen Daha sonra tekrar deneyiniz!');
-
+        print(response.body);
+        Get.snackbar('Gönderi eklenemedi!',
+            'Gönderi eklenirken bir hata oluştu. Lütfen Daha sonra tekrar deneyiniz!');
       } else if (200 <= response.statusCode && response.statusCode < 400) {
         headingPostController.clear();
         contentPostController.clear();
@@ -128,12 +133,16 @@ class PostController extends GetxController {
       comment.userName = userName;
 
       var response = await Data.post(
-          isSecure: false, body: comment, dataType: DataType.Comment, isToken: true);
+          isSecure: false,
+          body: comment,
+          dataType: DataType.Comment,
+          isToken: true);
 
       if (response.statusCode > 400 || response.statusCode < 200) {
         isLoading.value = false;
         //jsonDecode(response.body)['message'].toString()
-        Get.snackbar('Yorum eklenemedi!', 'Yorum eklenirken bir hata oluştu. Lütfen Daha sonra tekrar deneyiniz!');
+        Get.snackbar('Yorum eklenemedi!',
+            'Yorum eklenirken bir hata oluştu. Lütfen Daha sonra tekrar deneyiniz!');
       } else if (200 <= response.statusCode && response.statusCode < 400) {
         getPostsApi();
         addCommentController.clear();
