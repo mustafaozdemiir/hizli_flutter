@@ -3,6 +3,21 @@
 A Hızlı Flutter project created in flutter using GetX. Hızlı Flutter supports both web, desktop and  mobile.
 
 ## Getting Started
+<p>
+  <img src="ScreenShots/1.jpg" width="300" />
+  <img src="ScreenShots/2.jpg" width="300" /> 
+  <img src="ScreenShots/3.jpg" width="300" />
+</p>
+<p>
+  <img src="ScreenShots/4.jpg" width="300" />
+  <img src="ScreenShots/5.jpg" width="300" /> 
+  <img src="ScreenShots/6.jpg" width="300" />
+</p>
+<p>
+  <img src="ScreenShots/7.jpg" width="300" />
+  <img src="ScreenShots/8.jpg" width="300" /> 
+  <img src="ScreenShots/9.jpg" width="300" />
+</p>
 
 
 ## How to Use 
