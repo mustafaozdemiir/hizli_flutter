@@ -3,6 +3,7 @@
 A Hızlı Flutter project created in flutter using GetX. Hızlı Flutter supports both web, desktop and  mobile.
 
 ## Getting Started
+[Play Store](https://play.google.com/store/apps/details?id=com.yazilimmotoru.hizliflutter)
 <p>
   <img src="ScreenShots/1.jpg" width="250" />
   <img src="ScreenShots/2.jpg" width="250" /> 
