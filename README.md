@@ -85,6 +85,7 @@ In Visual Studio Code, navigate to `Preferences` -> `Settings` and search for `F
 
 * Dark Theme Support
 * Multilingual Support
+* Null Safety
 
 ### Libraries & Tools Used
 
