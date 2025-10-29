@@ -1,0 +1,10 @@
+# Android Keystore Properties
+# Bu dosyayı ASLA git'e ekleme!
+# 
+# key.jks dosyanızı güvenli bir yerde saklayın
+# Aşağıdaki değerleri kendi keystore bilgilerinizle doldurun:
+
+storePassword=YOUR_STORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
+keyAlias=YOUR_KEY_ALIAS
+storeFile=../key.jks

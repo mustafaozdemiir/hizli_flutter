@@ -1,0 +1,7 @@
+class AppString {
+  // API Base URLs - BURAYA KENDI URL'LERİNİ YAZ
+  static String webUrl = "https://YOUR_API_URL_HERE/";
+  static String webDataUrl = "https://YOUR_DATA_API_URL_HERE/api/";
+  
+  // Diğer sabitler...
+}
