@@ -36,9 +36,7 @@ android {
     namespace = "com.yazilimmotoru.hizliflutter"
     compileSdk = flutter.compileSdkVersion
 
-    // Pin NDK version to ensure reproducible native builds that support 16KB page size.
-    // Do not start a build here; this only sets the configuration. Install the matching NDK
-    // via SDK Manager (recommended r25.x) before building.
+    // NDK 25.2 - 16KB page size desteği (backward compatible)
     ndkVersion "25.2.9519653"
 
     lintOptions {
